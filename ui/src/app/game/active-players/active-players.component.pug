@@ -1,0 +1,20 @@
+table.mat-elevation-z1(mat-table='', [dataSource]='activePlayers')
+  ng-container(matColumnDef='username')
+    th(mat-header-cell='', *matHeaderCellDef='')  Username
+    td(mat-cell='', *matCellDef='let element')  {{ element.spotifyUsername }}
+
+  ng-container(matColumnDef='artistCorrect')
+    th(mat-header-cell='', *matHeaderCellDef='')  Artist
+    td(mat-cell='', *matCellDef='let element')
+      mat-icon.correct(*ngIf="element.artistCorrect") done
+      mat-icon.wrong(*ngIf="!element.artistCorrect") clear
+
+  ng-container(matColumnDef='titleCorrect')
+    th(mat-header-cell='', *matHeaderCellDef='')  Title
+    td(mat-cell='', *matCellDef='let element')
+      mat-icon.correct(*ngIf="element.titleCorrect") done
+      mat-icon.wrong(*ngIf="!element.titleCorrect") clear
+
+
+  tr(mat-header-row='', *matHeaderRowDef='displayedColumns')
+  tr(mat-row='', *matRowDef='let row; columns: displayedColumns;')

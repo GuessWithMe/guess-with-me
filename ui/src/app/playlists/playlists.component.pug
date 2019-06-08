@@ -1,0 +1,23 @@
+.container
+  .row
+    .col-12.col-md-6(*ngFor="let spotifyPlaylist of spotifyPlaylists")
+      mat-card.d-flex.mb-4
+        div.d-flex
+          .img-container(*ngIf="!spotifyPlaylist.images[2]")
+            .no-image-place
+          .img-container(*ngIf="spotifyPlaylist.images[2]")
+            img(src="{{ spotifyPlaylist.images[2].url }}")
+          .div.ml-3.d-flex
+            div
+              h4.m-0 {{ spotifyPlaylist.name }}
+              p.m-0 {{ spotifyPlaylist.tracks.total }} tracks
+              p.m-0(*ngIf="playlists[spotifyPlaylist.id] && playlists[spotifyPlaylist.id].songAmountDifference > 0")
+                | {{ playlists[spotifyPlaylist.id].songAmountDifference }} new since last import
+            button.flex-center(mat-flat-button, color="primary", (click)="importPlaylist(spotifyPlaylist)", [disabled]="progress[spotifyPlaylist.id]") 
+              span(*ngIf="!progress[spotifyPlaylist.id] && !playlists[spotifyPlaylist.id]") Import
+              span(*ngIf="!progress[spotifyPlaylist.id] && playlists[spotifyPlaylist.id]") Reimport
+              mat-progress-spinner(*ngIf="progress[spotifyPlaylist.id]", [mode]="'determinate'", [value]="progress[spotifyPlaylist.id]", color="primary", diameter="20")
+
+
+
+

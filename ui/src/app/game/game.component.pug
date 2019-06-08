@@ -1,0 +1,42 @@
+.container
+  .row
+    .col-md-6
+      .timer
+        h3.m-0(*ngIf="timeLeft <= 30") {{ timeLeft }}
+
+      .guess-container(*ngIf="guess", [ngClass]="isPause ? 'hidden': ''")
+        div.artist
+          div.word-container(*ngFor='let guessWord of guess.artist')
+            span(*ngIf="guessWord.correct") {{ guessWord.word }}
+            span(*ngIf="!guessWord.correct")
+              span(*ngFor="let char of guessWord.word.split('')") _
+
+        div
+          div.word-container(*ngFor='let guessWord of guess.title')
+            span(*ngIf="guessWord.correct") {{ guessWord.word }}
+            span(*ngIf="!guessWord.correct")
+              span(*ngFor="let char of guessWord.word.split('')") _
+
+      .guess-input
+        form.d-flex.justify-content-center(
+          [formGroup]="guessAttemptForm",
+          (ngSubmit)='matchGuessInput()'
+        )
+          mat-form-field
+            input(
+              matInput
+              formControlName="currentGuess",
+            )
+
+      .icon-container
+        mat-icon.wrong([class.flashed]="flashRedBool==true") clear
+        mat-icon.correct([class.flashed]="flashGreenBool==true")  done
+
+
+    .col-md-6.mt-5
+      app-active-players([activePlayers]="activePlayers")
+
+app-previous-song([previousSong]="previousSong")
+
+
+router-outlet

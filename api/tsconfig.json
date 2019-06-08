@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "commonjs",
+    "outDir": "dist",
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "keyofStringsOnly": true,
+
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node",
+
+    "baseUrl": "./",
+    "paths": {
+      "@config/*": [ "./src/config/*" ],
+      "@controllers/*": [ "./src/controllers/*" ],
+      "@env": [ "./src/config/environment" ],
+      "@helpers/*": [ "./src/helpers/*" ],
+      "@middleware/*": [ "./src/middleware/*" ],
+      "@models": [ "./src/models" ],
+      "@routes/*": [ "./src/routes/*" ],
+      "@services/*": [ "./src/services/*" ],
+      "@t/*": [ "./src/types/*" ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "bin/**/*",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

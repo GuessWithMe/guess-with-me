@@ -1,0 +1,30 @@
+.img-container {
+  display: flex;
+  align-items: center;
+
+  img {
+    border-radius: 5px;
+  }
+
+  .no-image-place {
+    height: 60px;
+    width: 60px;
+    border: 2px dashed #b4b4b4;
+    border-radius: 5px;
+  }
+}
+
+.mat-flat-button {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+
+  width: 76px;
+  height: 37px;
+  display: flex;
+}
+
+// .mat-card {
+//   background: #1d263b;
+//   color: white;
+// }

@@ -1,0 +1,48 @@
+version: "3.3"
+
+volumes:
+  mariadb_data:
+    driver: local
+
+services:
+  redis:
+    image: redis:3.2.10
+    ports:
+      - "16379:6379"
+    logging:
+      driver: none
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "3002:8081"
+    logging:
+      driver: none
+
+  maria_db:
+    image: library/mariadb:10.2.6
+    ports:
+      - "13306:3306"
+    volumes:
+      - "mariadb_data:/var/lib/mysql"
+    environment:
+      - MYSQL_ROOT_PASSWORD=option123
+    logging:
+      driver: none
+  # ui:
+  #   build:
+  #     context: ./ui
+  #     dockerfile: Dockerfile.dev
+  #   command: ng serve --watch --host=0.0.0.0
+  #   depends_on:
+  #     - redis
+  #   volumes:
+  #     - './ui:/app'
+  #   ports:
+  #     - '4200:4200'
+  #   environment:
+  #     - USER=$USER
+  #     - DOCKER=TRUE
+  #   tty: true

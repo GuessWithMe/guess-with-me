@@ -1,0 +1,244 @@
+@import url('https://use.fontawesome.com/releases/v5.3.1/css/all.css');
+@import url('https://fonts.googleapis.com/css?family=Pacifico');
+$spotify-green: #00b563;
+$header-color: #1D263B;
+
+.mat-toolbar {
+  background: none;
+  position: absolute;
+  top: 0px;
+
+  h1 {
+    color: white;
+    font-family: 'Pacifico', cursive;
+  }
+
+
+  a.mat-stroked-button {
+    box-shadow: 0px 0px 25px -5px $spotify-green !important;
+    border-color: $spotify-green !important;
+
+    img {
+      height: 24px;
+    }
+
+    p {
+      color: white;
+      font-weight: 100;
+
+
+      margin-right: 1rem;
+      text-decoration: none;
+    }
+
+    .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+
+header {
+  background: #1d263b;
+  background: -moz-linear-gradient(-45deg, #1d263b 0%, #2b3456 100%);
+  background: -webkit-linear-gradient(-45deg, #1d263b 0%,#2b3456 100%);
+  background: linear-gradient(135deg, #1d263b 0%,#2b3456 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1d263b', endColorstr='#2b3456',GradientType=1 );
+
+  padding: 9rem 0rem;
+
+  a.mat-stroked-button {
+    box-shadow: 0px 0px 25px -5px $spotify-green !important;
+    border-color: $spotify-green !important;
+
+    img {
+      height: 48px;
+    }
+
+    h1 {
+      color: white;
+      font-weight: 100;
+      font-size: 1.5rem;
+      margin-right: 1rem;
+      text-decoration: none;
+    }
+
+    .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+
+  .heading {
+    color: white;
+    text-align: center;
+
+    h1 {
+      margin-top: 100px;
+      font-size: 100px;
+      font-family: 'Pacifico', cursive;
+    }
+
+    hr {
+      width: 61px;
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+
+    h2 {
+      font-weight: lighter;
+      margin-top: -25px;
+    }
+  }
+}
+
+
+section.features {
+  padding: 4rem 0;
+  position: relative;
+  text-align: center;
+  color: white;
+
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#28afb0+0,30ced3+100 */
+  background: #28afb0; /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #28afb0 0%, #30ced3 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #28afb0 0%,#30ced3 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #28afb0 0%,#30ced3 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#28afb0', endColorstr='#30ced3',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+  h2 {
+    font-family: 'Pacifico', cursive;
+    font-size: 50px;
+  }
+
+  > .container {
+    // margin-top: 50px;
+  }
+
+  i {
+    font-size: 5rem;
+    // color: $header-color;
+  }
+
+  .middle-line {
+    height: calc(100% - 200px);
+    width: 1px;
+    background: white;
+    position: absolute;
+    left: 50%;
+    bottom: 0px;
+  }
+
+  .feature {
+    // margin-top: -50px;
+
+    h3 {
+      text-transform: uppercase;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
+    .line {
+      position: absolute;
+      right: -93px;
+      top: 50%;
+      width: 60px;
+      height: 1px;
+      background: white;
+
+      &.right {
+        left: -90px;
+      }
+    }
+  }
+}
+
+footer {
+  background: #1e2842;
+  color: white;
+  padding: 20px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  p {
+    margin: 0;
+  }
+}
+
+
+@media(max-width: 768px) {
+  header {
+    padding: 1rem 0rem 8rem;
+
+    .heading {
+      h1 {
+        font-size: 60px;
+      }
+    }
+
+    a.mat-stroked-button {
+      img {
+        height: 30px;
+      }
+
+      h1 {
+        font-size: 20px;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+
+@media(max-width: 1200px) {
+  section.features {
+    .feature {
+      .line {
+        right: -78px;
+
+        &.right {
+          // left: unset;
+          left: -78px;
+        }
+      }
+    }
+  }
+}
+
+
+@media(max-width: 992px) {
+  section.features {
+    .feature {
+      .line {
+        right: -58px;
+
+        &.right {
+          // left: unset;
+          left: -58px;
+        }
+      }
+    }
+  }
+}
+
+@media(max-width: 768px) {
+  section.features {
+    .middle-line {
+      display: none;
+    }
+
+    .feature {
+      margin-bottom: 7rem;
+
+      .line {
+        display: none;
+      }
+    }
+  }
+}
+

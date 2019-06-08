@@ -1,0 +1,13 @@
+############################################################
+# Dockerfile to build Arcanine Messenger Ng container image
+# Based on Node image < Ubuntu
+############################################################
+
+FROM node
+
+RUN apt-get update && apt-get install rsync -y -qq
+RUN npm install -g @angular/cli
+
+# Create app dependencies directory
+WORKDIR /app
+ENV HOME=/app PATH="/app/bin:$(yarn global bin):$PATH"

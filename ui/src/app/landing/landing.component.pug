@@ -1,0 +1,44 @@
+mat-toolbar()
+  .container.d-flex.justify-content-between
+    .logo
+      h1.m-0 GuessWith.me
+    a.d-flex(mat-stroked-button, href="{{apiUrl}}/auth/spotify")
+      p.m-0.mr-1 Connect with
+      img.d-none.d-md-block(src="/assets/images/Spotify_Logo_CMYK_Green.png")
+      img.d-block.d-md-none.ml-1(src="/assets/images/spotify.svg")
+
+
+header
+  .container
+    .heading
+      h1.d-none.d-md-block.m-0 GuessWith.me
+      h1.d-block.d-md-none Guess With Me
+      h2 to challenge your inner melomaniac
+      hr
+
+    .col-xs-12.offset-xs-0.d-flex.justify-content-center
+      a.d-flex(mat-stroked-button, href="{{apiUrl}}/auth/spotify")
+        h1 Connect with
+        img(src="/assets/images/Spotify_Logo_CMYK_Green.png")
+
+section.features
+  .container
+    h2.m-0.mb-5 Features
+
+    .row
+      .middle-line
+      .col-12(*ngFor="let feature of features; let i = index")
+        div.col-sm-12.offset-sm-0.col-md-5.offset-md-0.feature(*ngIf="i % 2 == 0")
+          .line.left
+          i.fas.mb-4(class="{{ feature.iconClass }}")
+          h3 {{ feature.heading }}
+          p {{ feature.description }}
+
+        div.feature.col-sm-12.offset-0.col-md-5.offset-md-7(*ngIf="i % 2 != 0")
+          .line.right
+          i.fas.mb-4(class="{{ feature.iconClass }}")
+          h3 {{ feature.heading }}
+          p {{ feature.description }}
+
+footer
+  p Made with  ❤️ by E.E.

@@ -1,0 +1,45 @@
+.guess-container {
+  padding: 20px 0;
+  margin-top: 100px;
+
+  div {
+    text-align: center;
+
+    .word-container {
+      font-size: 30px;
+      letter-spacing: 3px;
+      text-transform: lowercase;
+      display: inline-block;
+      margin-right: 12px;
+    }
+  }
+}
+
+.guess-input {
+  input {
+    text-align: center;
+  }
+}
+
+.icon-container {
+  display: flex;
+  justify-content: space-evenly;
+
+  .mat-icon {
+    font-size: 100px;
+    height: 100px;
+    width: 100px;
+    color: #e3e3e3;
+    transition: all 0.2s;
+
+    &.flashed {
+      &.correct {
+        color: green;
+      }
+
+      &.wrong {
+        color: red;
+      }
+    }
+  }
+}
