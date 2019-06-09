@@ -124,3 +124,5 @@ testem.log
 Thumbs.db
 
 .bash_history
+
+docker-compose.prod.yml
