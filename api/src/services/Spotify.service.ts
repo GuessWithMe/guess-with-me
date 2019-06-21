@@ -15,6 +15,7 @@ export default class SpotifyService {
   public async getPlaylist(user: User, id: string): Promise<SpotifyPlaylist> {
     this.spotify = await SpotifyHelper.initializeSpotify(user);
     const res = await this.spotify.getPlaylist(id);
+
     return res.body;
   }
 }

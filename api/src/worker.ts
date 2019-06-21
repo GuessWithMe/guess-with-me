@@ -1,7 +1,6 @@
 import kue, { Job, Queue } from 'kue';
 
 import Environment from '@env';
-import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
 import { ImportHelper } from '@helpers/ImportHelper';
 import { User } from '@models';
 import SocketService from '@services/Socket.service';
@@ -27,7 +26,6 @@ class BackgroundWorker {
 
         const playlist = await new SpotifyService().getPlaylist(job.data.user, job.data.playlistId);
         const eligibleTracks = playlist.tracks.items.filter(s => !s.is_local);
-
         const dbPlaylist = await ImportHelper.createOrUpdatePlaylist(job.data.user, playlist, eligibleTracks.length);
 
         for (const s of eligibleTracks as SpotifySong[]) {
@@ -47,18 +45,8 @@ class BackgroundWorker {
           await song.$add('playlist', dbPlaylist);
 
           songsProcessed += 1;
-          // Sending a message about a song import
-          const activePlayers = await ActivePlayerHelper.getActivePlayers();
           const progress = songsProcessed / eligibleTracks.length;
-          let socketId: string;
-          for (const key in activePlayers) {
-            if (activePlayers[key].id === job.data.user.id) {
-              socketId = key;
-              break;
-            }
-          }
-
-          new SocketService().sendPlaylistImportProgress(socketId, {
+          new SocketService().sendPlaylistImportProgress(job.data.socketId, {
             playlist: {
               id: playlist.id,
               name: playlist.name
@@ -74,8 +62,8 @@ class BackgroundWorker {
     });
   }
 
-  public importPlaylist(user: User, playlistId: string) {
-    const job = this.queue.create('importPlaylist', { user, playlistId }).save();
+  public importPlaylist(user: User, playlistId: string, socketId: string) {
+    const job = this.queue.create('importPlaylist', { user, playlistId, socketId }).save();
 
     job
       .on('complete', result => {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Song } from '@t';
+import { Song } from '@types';
 
 @Component({
   selector: 'app-previous-song',
@@ -12,6 +12,4 @@ export class PreviousSongComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-
 }
-

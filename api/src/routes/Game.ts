@@ -4,20 +4,10 @@ const router = Router();
 import * as GameController from '@controllers/GameController';
 import { isAuthenticated } from '@middleware/AuthMiddleware';
 
-router.get('/status',
-  isAuthenticated, GameController.getStatus
-);
+router.get('/status', isAuthenticated, GameController.getStatus);
 
-router.post('/add-player',
-  isAuthenticated, GameController.addActiveUser
-);
+router.post('/remove-player', isAuthenticated, GameController.removeActiveUser);
 
-router.post('/remove-player',
-  isAuthenticated, GameController.removeActiveUser
-);
-
-router.get('/health',
-  GameController.health
-);
+router.get('/health', GameController.health);
 
 export default router;

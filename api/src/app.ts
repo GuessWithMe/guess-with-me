@@ -29,15 +29,16 @@ class App {
   public app: Express;
   public spotifyStrategy = SpotifyStrategy;
   public server: http.Server;
+  private session: express.RequestHandler;
 
   constructor() {
     this.app = express();
     this.server = http.createServer(this.app);
 
-    this.configureWebSockets();
     this.configureSequelize();
     this.configureCors();
     this.configureExpressSession();
+    this.configureWebSockets();
     this.setupPassport(passport);
     this.configureMorgan();
     this.mountRoutes();
@@ -84,19 +85,18 @@ class App {
     this.app.use(cookieParser());
 
     const RedisStore = require('connect-redis')(session);
-
-    this.app.use(
-      session({
-        cookie: { secure: false },
-        resave: false,
-        saveUninitialized: true,
-        secret: 'keyboard cat',
-        store: new RedisStore({
-          host: Environment.redis.host,
-          port: Environment.redis.port
-        })
+    this.session = session({
+      cookie: { secure: false },
+      resave: false,
+      saveUninitialized: true,
+      secret: 'keyboard cat',
+      store: new RedisStore({
+        host: Environment.redis.host,
+        port: Environment.redis.port
       })
-    );
+    });
+
+    this.app.use(this.session);
   }
 
   // tslint:disable-next-line: no-shadowed-variable
@@ -150,7 +150,7 @@ class App {
   }
 
   private configureWebSockets() {
-    Websockets.initialize(this.server);
+    Websockets.initialize(this.server, this.session);
   }
 
   private async startSongDistributer() {

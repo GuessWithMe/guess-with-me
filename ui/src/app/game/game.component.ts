@@ -2,11 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Howl } from 'howler';
 import { MatSnackBar } from '@angular/material';
-import { Subscription } from 'rxjs';
 import FuzzySet from 'fuzzyset.js';
 
-import { UserService, GameService, SocketService } from '@services';
-import { User, Guess, Word, Song } from '@t';
+import { RoomStatus, Guess, User, Word, Song } from '@types';
+import { GameService, SocketService } from '@services';
 
 @Component({
   selector: 'app-game',
@@ -27,73 +26,28 @@ export class GameComponent implements OnInit, OnDestroy {
   public previousSong: Song;
   public isPause = false;
   public isAutoplayDisabled = false;
-  private songSubscription: Subscription;
 
   public guessAttemptForm = new FormGroup({
     currentGuess: new FormControl('')
   });
 
-  constructor(
-    private userService: UserService,
-    private gameService: GameService,
-    private socketService: SocketService,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private gameService: GameService, private socketService: SocketService, private snackBar: MatSnackBar) {}
 
   async ngOnInit() {
-    this.initiateSockets();
-
-    // this.user = await this.userService.getUser();
-
-    // // Getting the current song upon starting the game.
-    // const res = await this.gameService.getStatus();
-    // this.activePlayers = res['activePlayers'];
-
-    // this.processIncomingSong(res['status']['currentSong'], res['status']['timeLeft']);
-    // this.previousSong = res['status']['previousSong'];
-
-    // this.songSubscription = this.gameService.song.subscribe(song => {
-    //   if (song) {
-    //     this.processIncomingSong(song);
-    //   }
-    // });
-
-    // setInterval(() => {
-    //   if (this.timeLeft > 0) {
-    //     this.timeLeft = this.timeLeft - 1;
-    //   }
-    // }, 1000);
-
-    // this.processAutoplayRestrictions();
-  }
-
-  ngOnDestroy() {
-    this.gameService.setCurrentSong(null);
-    this.songSubscription.unsubscribe();
-
-    if (this.socket) {
-      this.gameService.removeUserFromPlayerList(this.socket);
-    }
-
-    if (this.sound) {
-      this.sound.stop();
-    }
-  }
-
-  /**
-   * Initiates webosockets for controlling the game flow, incoming songs,
-   * connecting/disconnecting players etc.
-   * @private
-   * @returns void
-   * @memberof GameComponent
-   */
-  private initiateSockets(): void {
     this.socket = this.socketService.getSocket();
+    this.socketService.joinRoom('general');
 
-    this.gameService.addUserToPlayerList(this.socket);
+    this.socket.on('players', (players: User[]) => {
+      this.activePlayers = players;
+    });
 
-    this.socket.on('song', (song: any) => {
-      this.gameService.setCurrentSong(song);
+    this.socket.on('song', (song: Song) => {
+      this.processIncomingSong(song);
+    });
+
+    this.socket.on('status', (status: RoomStatus) => {
+      this.processIncomingSong(status.currentSong, status.timeLeft);
+      this.previousSong = status.previousSong;
     });
 
     this.socket.on('pause', (previousSong: Song) => {
@@ -103,9 +57,20 @@ export class GameComponent implements OnInit, OnDestroy {
       this.timeLeft = 0;
     });
 
-    this.socket.on('activePlayers', activePlayers => {
-      this.activePlayers = activePlayers;
-    });
+    setInterval(() => {
+      if (this.timeLeft > 0) {
+        this.timeLeft = this.timeLeft - 1;
+      }
+    }, 1000);
+    // this.processAutoplayRestrictions();
+  }
+
+  ngOnDestroy() {
+    this.socketService.leaveRoom('general');
+
+    if (this.sound) {
+      this.sound.stop();
+    }
   }
 
   private prepareGuessArray(songData: object) {
@@ -279,16 +244,12 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private sendProgressUpdateToOtherPlayers() {
-    try {
-      this.socket.emit('guessProgressUpdate', {
-        userId: this.user.id,
-        spotifyUsername: this.user.spotifyUsername,
-        titleCorrect: this.guess.titleCorrect,
-        artistCorrect: this.guess.artistCorrect
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    this.socket.emit('guessProgressUpdate', {
+      userId: this.user.id,
+      spotifyUsername: this.user.spotifyUsername,
+      titleCorrect: this.guess.titleCorrect,
+      artistCorrect: this.guess.artistCorrect
+    });
   }
 
   /**

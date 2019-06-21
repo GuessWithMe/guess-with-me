@@ -13,7 +13,7 @@
     "lib": ["es2018", "dom"],
     "paths": {
       "@services": ["./src/app/services"],
-      "@t": ["./src/types"],
+      "@types": ["./../types"],
       "@environment": ["./src/environments/environment"]
     }
   }

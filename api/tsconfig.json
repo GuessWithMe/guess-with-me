@@ -14,22 +14,18 @@
 
     "baseUrl": "./",
     "paths": {
-      "@config/*": [ "./src/config/*" ],
-      "@controllers/*": [ "./src/controllers/*" ],
-      "@env": [ "./src/config/environment" ],
-      "@helpers/*": [ "./src/helpers/*" ],
-      "@middleware/*": [ "./src/middleware/*" ],
-      "@models": [ "./src/models" ],
-      "@routes/*": [ "./src/routes/*" ],
-      "@services/*": [ "./src/services/*" ],
-      "@t/*": [ "./src/types/*" ]
+      "@config/*": ["./src/config/*"],
+      "@controllers/*": ["./src/controllers/*"],
+      "@env": ["./src/config/environment"],
+      "@helpers/*": ["./src/helpers/*"],
+      "@middleware/*": ["./src/middleware/*"],
+      "@models": ["./src/models"],
+      "@routes/*": ["./src/routes/*"],
+      "@services/*": ["./src/services/*"],
+      "@t/*": ["./src/types/*"],
+      "@types": ["./../types"]
     }
   },
-  "include": [
-    "src/**/*.ts",
-    "bin/**/*",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*.ts", "bin/**/*"],
+  "exclude": ["node_modules"]
 }

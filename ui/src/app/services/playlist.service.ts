@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { environment } from '@environment';
-import { Playlist, SpotifyPlaylists } from '@t';
+import { Playlist, SpotifyPlaylists } from '@types';
 
 @Injectable()
 export class PlaylistService {
@@ -11,10 +11,5 @@ export class PlaylistService {
   getPlaylists() {
     const url = `${environment.apiUrl}/playlists`;
     return this.http.get(url).toPromise() as Promise<{ playlists: Playlist[]; spotifyPlaylists: SpotifyPlaylists }>;
-  }
-
-  importPlaylist(playlist: Playlist) {
-    const url = `${environment.apiUrl}/playlists/import`;
-    return this.http.post(url, { playlistId: playlist.id }).toPromise();
   }
 }

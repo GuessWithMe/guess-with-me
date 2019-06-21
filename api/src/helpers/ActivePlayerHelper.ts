@@ -1,11 +1,7 @@
-import { getConnection as getRedisConnection, ACTIVE_PLAYERS_KEY } from '@config/redis';
-import SocketService from '@services/Socket.service';
+import { ACTIVE_PLAYERS_KEY, getConnection as getRedisConnection } from '@config/redis';
 
 export class ActivePlayerHelper {
   public static async setActivePlayers(activePlayers: object): Promise<any> {
-    // Double check if connections are open.
-    activePlayers = new SocketService().filterActivePlayers(activePlayers);
-
     return new Promise((resolve, reject) => {
       const RedisClient = getRedisConnection();
       RedisClient.set(`${ACTIVE_PLAYERS_KEY}`, JSON.stringify(activePlayers), (error, result) => {
@@ -17,7 +13,6 @@ export class ActivePlayerHelper {
       });
     });
   }
-
 
   public static async getActivePlayers(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -36,7 +31,6 @@ export class ActivePlayerHelper {
     });
   }
 
-
   /**
    * Changes active player list from object to array, filters sensitive data
    * @static
@@ -44,15 +38,13 @@ export class ActivePlayerHelper {
    * @returns object[]
    */
   public static filterActivePlayerListForClient(activePlayers: object): object[] {
-    return Object.keys(activePlayers).map((key) => {
+    return Object.keys(activePlayers).map(key => {
       return {
         id: activePlayers[key].id,
         spotifyUsername: activePlayers[key].spotifyUsername,
         titleCorrect: activePlayers[key].titleCorrect || false,
         artistCorrect: activePlayers[key].artistCorrect || false
-      }
+      };
     });
   }
 }
-
-

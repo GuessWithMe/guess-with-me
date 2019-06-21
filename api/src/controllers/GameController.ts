@@ -2,7 +2,6 @@ import { Handler, Response } from 'express';
 
 import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
 import GameService from '@services/Game.service';
-import SocketService from '@services/Socket.service';
 import * as SongDistributer from '@services/SongDistributer.service';
 
 /**
@@ -15,26 +14,6 @@ export const getStatus: Handler = async (req, res): Promise<Response> => {
     activePlayers = ActivePlayerHelper.filterActivePlayerListForClient(activePlayers);
 
     return res.json({ status, activePlayers });
-  } catch (error) {
-    return res.status(500).json(error.message);
-  }
-};
-
-export const addActiveUser: Handler = async (req, res): Promise<Response> => {
-  try {
-    let activePlayers = await ActivePlayerHelper.getActivePlayers();
-
-    if (!activePlayers) {
-      activePlayers = {};
-    }
-    activePlayers[req.body.socketId] = res.locals.user;
-
-    new SocketService().joinGeneral(req.body.socketId);
-
-    await ActivePlayerHelper.setActivePlayers(activePlayers);
-    new SocketService().broadcastActivePlayerList(activePlayers);
-
-    return res.json(activePlayers);
   } catch (error) {
     return res.status(500).json(error.message);
   }

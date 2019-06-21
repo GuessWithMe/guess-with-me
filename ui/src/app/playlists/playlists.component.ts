@@ -2,8 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 
 import { PlaylistService, SocketService } from '@services';
-import { PlaylistItem } from 'src/types/SpotifyPlaylists';
-import { Playlist } from '@t';
+import { Playlist, PlaylistItem } from '@types';
 
 @Component({
   selector: 'app-playlists',
@@ -47,19 +46,16 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
   }
 
   public async importPlaylist(playlist: Playlist) {
-    try {
-      await this.playlistService.importPlaylist(playlist);
-    } catch (error) {
-      console.log(error);
-    }
+    this.socketService.getSocket();
+
+    this.socket.emit('importPlaylist', {
+      playlist
+    });
   }
 
   private initiateSockets(): void {
     this.socket = this.socketService.getSocket();
-
     this.socket.on('playlistProgress', (data: { progress: number; playlist: { id: string; name: string } }) => {
-      console.log(data);
-
       this.progress[data.playlist.id] = data.progress * 100;
       if (this.progress[data.playlist.id] === 100) {
         this.snackBar.open(`Finished importing "${data.playlist.name}"`, 'Dismiss', {

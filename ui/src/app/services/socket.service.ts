@@ -1,19 +1,27 @@
+import * as socketIo from 'socket.io-client';
+
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { environment } from '@environment';
 
 @Injectable()
 export class SocketService {
-  private socketSource = new BehaviorSubject(null);
-  socket = this.socketSource.asObservable();
+  socket: SocketIOClient.Socket;
 
-  constructor(private http: HttpClient) {}
-
-  public setSocket(socket: SocketIOClient.Socket) {
-    this.socketSource.next(socket);
+  initiateSocket(): void {
+    this.socket = socketIo(environment.apiUrl, {
+      transports: ['websocket']
+    });
   }
 
-  public getSocket(): SocketIOClient.Socket {
-    return this.socketSource.value;
+  joinRoom(room: string): void {
+    this.socket.emit('join', room);
   }
+
+  leaveRoom(room: string): void {
+    this.socket.emit('leave', room);
+  }
+
+  getSocket = () => {
+    return this.socket;
+  };
 }

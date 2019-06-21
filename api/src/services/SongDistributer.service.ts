@@ -1,12 +1,13 @@
-import SocketService from '@services/Socket.service';
+import moment from 'moment';
+import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 
 import { Album, Artist, Song } from '@models';
-import moment from 'moment';
-import { Op } from 'sequelize';
+import SocketService from '@services/Socket.service';
+import { RoomStatus } from '@types';
 
-const PAUSE_LENGTH = 2000;
-const GUESS_TIME = 10000;
+const PAUSE_LENGTH = 5000;
+const GUESS_TIME = 30000;
 
 let currentSong: Song;
 let previousSong: Song;
@@ -43,7 +44,7 @@ export async function start(): Promise<void> {
   );
 }
 
-export function getStatus(): object {
+export function getStatus(): RoomStatus {
   return {
     currentSong,
     isPaused,
