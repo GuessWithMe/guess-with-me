@@ -126,3 +126,5 @@ Thumbs.db
 .bash_history
 
 docker-compose.prod.yml
+
+ui/dist/*

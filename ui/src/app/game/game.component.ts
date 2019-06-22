@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material';
 import FuzzySet from 'fuzzyset.js';
 
 import { RoomStatus, Guess, User, Word, Song } from '@types';
-import { GameService, SocketService } from '@services';
+import { GameService, SocketService, UserService } from '@services';
 
 @Component({
   selector: 'app-game',
@@ -25,15 +25,23 @@ export class GameComponent implements OnInit, OnDestroy {
   public user: User;
   public previousSong: Song;
   public isPause = false;
-  public isAutoplayDisabled = false;
 
   public guessAttemptForm = new FormGroup({
     currentGuess: new FormControl('')
   });
 
-  constructor(private gameService: GameService, private socketService: SocketService, private snackBar: MatSnackBar) {}
+  constructor(
+    private gameService: GameService,
+    private userService: UserService,
+    private socketService: SocketService,
+    private snackBar: MatSnackBar
+  ) {}
 
   async ngOnInit() {
+    this.userService.user.subscribe(user => {
+      this.user = user;
+    });
+
     this.socket = this.socketService.getSocket();
     this.socketService.joinRoom('general');
 
@@ -46,8 +54,14 @@ export class GameComponent implements OnInit, OnDestroy {
     });
 
     this.socket.on('status', (status: RoomStatus) => {
-      this.processIncomingSong(status.currentSong, status.timeLeft);
       this.previousSong = status.previousSong;
+
+      if (status.isPaused) {
+        this.timeLeft = 0;
+        this.setPause();
+      }
+
+      this.processIncomingSong(status.currentSong, status.timeLeft);
     });
 
     this.socket.on('pause', (previousSong: Song) => {
@@ -62,15 +76,16 @@ export class GameComponent implements OnInit, OnDestroy {
         this.timeLeft = this.timeLeft - 1;
       }
     }, 1000);
-    // this.processAutoplayRestrictions();
   }
 
   ngOnDestroy() {
-    this.socketService.leaveRoom('general');
-
     if (this.sound) {
       this.sound.stop();
     }
+
+    this.socketService.leaveRoom('general');
+    this.socket.off('song');
+    this.socket.off('status');
   }
 
   private prepareGuessArray(songData: object) {
@@ -238,6 +253,14 @@ export class GameComponent implements OnInit, OnDestroy {
       needsProgressUpdate = true;
     }
 
+    if (this.guess.artistCorrect && this.guess.titleCorrect) {
+      const successSound = new Howl({
+        src: ['src/assets/sounds/success.wav']
+      });
+
+      successSound.play();
+    }
+
     if (needsProgressUpdate) {
       this.sendProgressUpdateToOtherPlayers();
     }
@@ -263,19 +286,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
     if (this.sound) {
       this.sound.stop();
-    }
-  }
-
-  public processAutoplayRestrictions() {
-    if (this.sound && !this.sound.playing()) {
-      this.isAutoplayDisabled = true;
-      const snackBarRef = this.snackBar.open(`If there's no sound, hit the play button!`, 'Play', {
-        duration: 20000
-      });
-      snackBarRef.onAction().subscribe(() => {
-        this.sound.seek(15000);
-        this.sound.play();
-      });
     }
   }
 }

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import * as socketIo from 'socket.io-client';
 
-import { SocketService, GameService } from '@services';
+import { UserService } from '@services';
 
 @Component({
   selector: 'app-game-shell',
@@ -11,7 +10,14 @@ import { SocketService, GameService } from '@services';
 export class GameShellComponent implements OnInit {
   public socket: SocketIOClient.Socket;
 
-  constructor(private gameService: GameService, private socketService: SocketService) {}
+  constructor(private userService: UserService) {}
 
-  ngOnInit() {}
+  async ngOnInit() {
+    try {
+      const user = await this.userService.getUser();
+      this.userService.setUser(user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
