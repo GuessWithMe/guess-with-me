@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { GameComponent } from './game.component';
 import { PlaylistsComponent } from '../playlists/playlists.component';
 import { GameShellComponent } from './shell/shell.component';
-
+import { RoomsComponent } from '../rooms/rooms.component';
 
 const routes: Routes = [
   {
@@ -12,22 +12,22 @@ const routes: Routes = [
     children: [
       {
         path: 'playlists',
-        component: PlaylistsComponent,
+        component: PlaylistsComponent
+      },
+      {
+        path: 'rooms',
+        component: RoomsComponent
       },
       {
         path: '',
-        component: GameComponent,
-      },
+        component: GameComponent
+      }
     ]
-  },
+  }
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forChild(routes)
-  ],
-  exports: [
-    RouterModule
-  ]
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
 })
-export class GameRoutingModule { }
+export class GameRoutingModule {}

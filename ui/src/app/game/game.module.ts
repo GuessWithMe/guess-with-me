@@ -12,6 +12,7 @@ import { GameRoutingModule } from './game-routing.module';
 import { MaterialImportsModule } from 'src/app/material-imports.module';
 import { PlaylistsComponent } from '../playlists/playlists.component';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
+import { RoomsComponent } from '../rooms/rooms.component';
 
 @NgModule({
   declarations: [
@@ -21,15 +22,9 @@ import { ToolbarComponent } from '../toolbar/toolbar.component';
     PlaylistsComponent,
     GameShellComponent,
     ToolbarComponent,
+    RoomsComponent
   ],
-  imports: [
-    CommonModule,
-    GameRoutingModule,
-    MaterialImportsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CountdownModule,
-  ],
-  providers: [],
+  imports: [CommonModule, GameRoutingModule, MaterialImportsModule, FormsModule, ReactiveFormsModule, CountdownModule],
+  providers: []
 })
-export class GameModule { }
+export class GameModule {}
