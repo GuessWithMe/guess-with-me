@@ -1,5 +1,4 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-rooms',
@@ -8,7 +7,6 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class RoomsComponent implements OnInit, OnDestroy {
   filterValue = '';
-
   rooms = [
     {
       title: 'Mixed',
@@ -17,13 +15,19 @@ export class RoomsComponent implements OnInit, OnDestroy {
     }
   ];
 
+  filteredRooms = this.rooms;
+
   constructor() {}
 
   async ngOnInit() {}
 
   ngOnDestroy() {}
 
-  onFilterChange(event) {
-    console.log(event);
+  onFilterChange(filterValue: string) {
+    if (!event) {
+      this.filteredRooms = this.rooms;
+    } else {
+      this.filteredRooms = this.rooms.filter(room => room.title.includes(filterValue));
+    }
   }
 }

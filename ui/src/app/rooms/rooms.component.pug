@@ -5,7 +5,7 @@
         form.example-form
           mat-form-field.example-full-width
             input(matInput='', placeholder='Filter rooms', name="filter", [ngModel]="filterValue", (ngModelChange)="onFilterChange($event)")
-    .col-12.col-md-6(*ngFor="let room of rooms")
+    .col-12.col-md-6(*ngFor="let room of filteredRooms")
       mat-card.d-flex.mb-4
         div.d-flex
           .img-container
