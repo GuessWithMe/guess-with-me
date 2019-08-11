@@ -9,11 +9,12 @@ module.exports = shipit => {
       workspace: './dist',
       deployTo: '/home/ubuntu/ui',
       ignores: ['.git', 'node_modules'],
-      key: '~/.ssh/guesswithme-aws.pem'
+      key: '~/.ssh/guesswithme-aws.pem',
+      shallowClone: false
     },
     // Set custom Variables
     production: {
-      servers: 'ubuntu@ec2-18-191-188-37.us-east-2.compute.amazonaws.com',
+      servers: 'ubuntu@ec2-18-223-191-60.us-east-2.compute.amazonaws.com',
       build: 'ng build --prod'
     }
   });
@@ -46,7 +47,9 @@ module.exports = shipit => {
 
     if (Number(versionCount[0]['stdout']) > 5) {
       await shipit.remote(
-        `rm -R ${shipit.config.deployTo}/$(ls -lt ${shipit.config.deployTo} | grep '^d' | tail -1  | tr " " "\n" | tail -1)`
+        `rm -R ${shipit.config.deployTo}/$(ls -lt ${
+          shipit.config.deployTo
+        } | grep '^d' | tail -1  | tr " " "\n" | tail -1)`
       );
     }
   });
