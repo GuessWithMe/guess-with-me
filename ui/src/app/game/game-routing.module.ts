@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { GameComponent } from './game.component';
-import { PlaylistsComponent } from '../playlists/playlists.component';
 import { GameShellComponent } from './shell/shell.component';
+import { PlaylistsComponent } from '../playlists/playlists.component';
 import { RoomsComponent } from '../rooms/rooms.component';
+import { RoomsCreateComponent } from '../rooms/create/create.component';
 
 const routes: Routes = [
   {
@@ -16,7 +18,16 @@ const routes: Routes = [
       },
       {
         path: 'rooms',
-        component: RoomsComponent
+        children: [
+          {
+            path: '',
+            component: RoomsComponent
+          },
+          {
+            path: 'create',
+            component: RoomsCreateComponent
+          }
+        ]
       },
       {
         path: '',
