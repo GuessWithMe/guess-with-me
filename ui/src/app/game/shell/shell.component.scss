@@ -1,0 +1,64 @@
+@import './../styles/app-theme.scss';
+
+.sidenav-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.mat-sidenav {
+  width: 260px;
+  padding: 0px !important;
+
+  .top {
+    padding: 1.5rem 1.5rem;
+    background: mat-color($app-primary);
+    background: linear-gradient(135deg, #1d263b 0, #323e63 100%);
+    border-bottom: 1px solid mat-color($app-accent);
+
+    h3 {
+      font-family: 'Pacifico';
+    }
+
+    .username {
+      // color:
+    }
+
+    .close {
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+    }
+
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 1px solid white;
+      display: block;
+    }
+  }
+
+  .nav {
+    padding: 0.5rem;
+
+    .link-container {
+      button {
+        width: 100%;
+        text-align: left;
+
+        &.active {
+          font-weight: bold;
+          background-color: mat-color($app-accent, 700, 0.4);
+          color: mat-color($app-accent);
+
+          .mat-icon {
+            color: mat-color($app-accent);
+          }
+        }
+      }
+    }
+  }
+}
