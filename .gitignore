@@ -84,7 +84,6 @@ database.json
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/ui/dist
 /tmp
 /out-tsc
 
@@ -128,3 +127,4 @@ Thumbs.db
 docker-compose.prod.yml
 
 ui/dist/*
+api/dist/*
