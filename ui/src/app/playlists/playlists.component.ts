@@ -26,12 +26,17 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
 
     try {
       const res = await this.playlistService.getPlaylists();
+      console.log(res);
+
       this.spotifyPlaylists = res.spotifyPlaylists.items;
       this.playlists = Object.assign(
         {},
         ...res.playlists.map(playlist => {
           const spotifyPlaylist = this.spotifyPlaylists.find(sp => sp.id === playlist.spotifyId);
-          playlist.songAmountDifference = spotifyPlaylist.tracks.total - playlist.totalSongsAtLastImport;
+
+          if (spotifyPlaylist) {
+            playlist.songAmountDifference = spotifyPlaylist.tracks.total - playlist.totalSongsAtLastImport;
+          }
 
           return { [playlist.spotifyId]: playlist };
         })

@@ -7,37 +7,40 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 
 import {
-  Interceptor, PlaylistService, SpotifyService, UserService, SocketService,
+  Interceptor,
+  PlaylistService,
+  SpotifyService,
+  UserService,
+  SocketService,
   GameService,
-  AuthService
+  AuthService,
+  RoomService
 } from '@services';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LandingModule } from './landing/landing.module';
 import { MaterialImportsModule } from './material-imports.module';
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
     HttpClientModule,
     LandingModule,
-    MaterialImportsModule,
+    MaterialImportsModule
   ],
   providers: [
     HttpClient,
     PlaylistService,
     SpotifyService,
     UserService,
+    RoomService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
-      multi: true,
+      multi: true
     },
     SocketService,
     GameService,
@@ -45,4 +48,4 @@ import { MaterialImportsModule } from './material-imports.module';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

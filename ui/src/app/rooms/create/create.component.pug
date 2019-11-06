@@ -1,0 +1,37 @@
+.container
+  .row
+    .col-12
+      form([formGroup]='roomForm')
+        mat-form-field.mb-3(appearance="outline")
+          mat-label Room name
+          input(
+            matInput
+            formControlName="title",
+            placeholder="Room name"
+          )
+
+        div.mb-4
+          label I want the room to be:
+          mat-radio-group(formControlName='status')
+            div
+              mat-radio-button.ml-3(value='public') Public
+            div
+              mat-radio-button.ml-3(value='private') Private
+
+          mat-form-field.mt-2(*ngIf="roomForm.value.status === 'private'")
+            input(
+              matInput
+              formControlName="password",
+              placeholder="Password"
+            )
+
+      div.mb-3
+        label.mb-3.d-block Playlists for song selection
+        mat-chip-list(multiple="true", focused="false")
+          mat-chip(
+            *ngFor="let playlist of playlists", 
+            [selected]="selectedPlaylists.includes(playlist)", 
+            (click)="togglePlaylist(playlist)",
+          ) {{ playlist.title }}
+
+      a.flex-center(mat-flat-button, color="primary", (click)="createRoom()") Create room

@@ -1,3 +1,26 @@
-app-toolbar
+mat-sidenav-container.sidenav-container
+  mat-sidenav(#sidenav, mode='push', (keydown.escape)="close('escape')")
+    div.top.justify-content-between.align-items-center(*ngIf="user")
+      div
+        img([src]="user.spotifyImageUrl")
 
-router-outlet
+      h3.mb-0 {{ user.spotifyDisplayName }}
+      span.username {{ user.spotifyUsername }}
+
+      button.close(mat-button='', (click)="close('toggle button')")
+        mat-icon chevron_left
+
+    .nav
+      div.link-container
+        button.mb-1(mat-button,  routerLink="/game/rooms", routerLinkActive="active") 
+          mat-icon.mr-4 meeting_room
+          | Rooms
+      div.link-container
+        button.mb-1(mat-button, routerLink="/game/playlists", routerLinkActive="active") 
+          mat-icon.mr-4 queue_music
+          | Playlists
+
+  mat-sidenav-content
+    app-toolbar((toggleNav)="toggleNav()")
+    router-outlet
+

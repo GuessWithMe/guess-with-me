@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { Album, Artist, Song, Playlist, User } from '@models';
+import { Album, Artist, Playlist, Song, User } from '@models';
 import { SpotifyPlaylist } from '@t/SpotifyPlaylist';
 import { Album as SpotifyAlbum } from '@t/SpotifySong';
 
@@ -53,6 +53,7 @@ export class ImportHelper {
       eligibleSongsAtLastImport: eligibleTracks,
       lastImportAt: new Date(),
       spotifyId: spotifyPlaylist.id,
+      title: spotifyPlaylist.name,
       totalSongsAtLastImport: spotifyPlaylist.tracks.items.length,
       userId: user.id
     };

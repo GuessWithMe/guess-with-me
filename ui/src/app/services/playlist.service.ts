@@ -12,4 +12,9 @@ export class PlaylistService {
     const url = `${environment.apiUrl}/playlists`;
     return this.http.get(url).toPromise() as Promise<{ playlists: Playlist[]; spotifyPlaylists: SpotifyPlaylists }>;
   }
+
+  getImportedPlaylists() {
+    const url = `${environment.apiUrl}/playlists/imported`;
+    return this.http.get(url).toPromise() as Promise<{ playlists: Playlist[] }>;
+  }
 }

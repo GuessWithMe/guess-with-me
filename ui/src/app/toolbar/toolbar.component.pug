@@ -1,7 +1,8 @@
-mat-toolbar()
-  .container.d-flex.justify-content-end
-    button(mat-button, [matMenuTriggerFor]="menu") Menu
-    mat-menu(#menu="matMenu")
-      button(mat-menu-item, routerLink="/game") Game
-      button(mat-menu-item, routerLink="/game/playlists") Playlists
-      button(mat-menu-item, (click)="logOut()") Logout
+mat-toolbar.mb-4
+  .container
+    .row
+      .d-flex.justify-content-between.align-items-center
+        .menu-toggle.mr-4
+          button(mat-button, (click)="toggleNav.emit()") 
+            mat-icon menu
+        h1 GuessWith.me

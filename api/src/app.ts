@@ -21,9 +21,10 @@ import AdminRoutes from '@routes/Admin';
 import AuthRoutes from '@routes/Auth';
 import GameRoutes from '@routes/Game';
 import PlaylistRoutes from '@routes/Playlist';
+import RoomRoutes from '@routes/Room';
 import UserRoutes from '@routes/User';
 
-import { Album, Artist, Song, SongArtist, User, SongPlaylist, Playlist } from '@models';
+import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from '@models';
 
 class App {
   public app: Express;
@@ -53,6 +54,7 @@ class App {
     this.app.use('/playlists', PlaylistRoutes);
     this.app.use('/users', UserRoutes);
     this.app.use('/admin', AdminRoutes);
+    this.app.use('/rooms', RoomRoutes);
     this.app.use('/', router);
   }
 
@@ -76,7 +78,7 @@ class App {
       username: Environment.maria.user
     });
 
-    sequelize.addModels([Album, Artist, Playlist, Song, SongArtist, SongPlaylist, User]);
+    sequelize.addModels([Album, Artist, Playlist, Song, SongArtist, SongPlaylist, Room, RoomPlaylist, User]);
   }
 
   private configureExpressSession() {
