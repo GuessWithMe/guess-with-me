@@ -31,7 +31,7 @@
   }
 
   .mat-button.account {
-    /deep/ .mat-button-wrapper {
+    ::ng-deep .mat-button-wrapper {
       display: flex;
       align-items: center;
     }
