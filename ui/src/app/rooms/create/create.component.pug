@@ -2,7 +2,8 @@
   .row
     .col-12
       form([formGroup]='roomForm')
-        mat-form-field.mb-3
+        mat-form-field.mb-3(appearance="outline")
+          mat-label Room name
           input(
             matInput
             formControlName="title",
@@ -12,8 +13,10 @@
         div.mb-4
           label I want the room to be:
           mat-radio-group(formControlName='status')
-            mat-radio-button.ml-3(value='public') Public
-            mat-radio-button.ml-3(value='private') Private
+            div
+              mat-radio-button.ml-3(value='public') Public
+            div
+              mat-radio-button.ml-3(value='private') Private
 
           mat-form-field.mt-2(*ngIf="roomForm.value.status === 'private'")
             input(

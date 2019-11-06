@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "ts-node  -r tsconfig-paths/register src/index.ts",
     "test": "mocha",
     "lint": "eslint src --ext ts",
     "migrate": "npx sequelize-cli db:migrate",
