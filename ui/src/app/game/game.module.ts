@@ -24,9 +24,16 @@ import { ToolbarComponent } from '../toolbar/toolbar.component';
     GameShellComponent,
     ToolbarComponent,
     RoomsComponent,
-    RoomsCreateComponent
+    RoomsCreateComponent,
   ],
-  imports: [CommonModule, GameRoutingModule, MaterialImportsModule, FormsModule, ReactiveFormsModule, CountdownModule],
-  providers: []
+  imports: [
+    CommonModule,
+    GameRoutingModule,
+    MaterialImportsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CountdownModule,
+  ],
+  providers: [],
 })
 export class GameModule {}

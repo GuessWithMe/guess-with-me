@@ -14,31 +14,31 @@ const routes: Routes = [
     children: [
       {
         path: 'playlists',
-        component: PlaylistsComponent
+        component: PlaylistsComponent,
       },
       {
         path: 'rooms',
         children: [
           {
             path: '',
-            component: RoomsComponent
+            component: RoomsComponent,
           },
           {
             path: 'create',
-            component: RoomsCreateComponent
-          }
-        ]
+            component: RoomsCreateComponent,
+          },
+        ],
       },
       {
         path: '',
-        component: GameComponent
-      }
-    ]
-  }
+        component: GameComponent,
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class GameRoutingModule {}

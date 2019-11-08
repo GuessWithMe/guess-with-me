@@ -8,11 +8,11 @@ import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-game-shell',
-  templateUrl: './shell.component.pug',
+  templateUrl: './shell.component.html',
   styleUrls: ['./shell.component.scss']
 })
 export class GameShellComponent implements OnInit, OnDestroy {
-  @ViewChild('sidenav') sidenav: MatSidenav;
+  @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
   public socket: SocketIOClient.Socket;
 
   private userSubscription: Subscription;

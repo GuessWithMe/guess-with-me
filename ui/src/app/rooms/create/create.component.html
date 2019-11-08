@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <form [formGroup]="roomForm">
+        <mat-form-field class="mb-3" appearance="outline">
+          <mat-label>Room name</mat-label
+          ><input matInput="matInput" formControlName="title" placeholder="Room name"
+        /></mat-form-field>
+        <div class="mb-4">
+          <label>I want the room to be:</label>
+          <mat-radio-group formControlName="status">
+            <div>
+              <mat-radio-button class="ml-3" value="public">Public</mat-radio-button>
+            </div>
+            <div>
+              <mat-radio-button class="ml-3" value="private">Private</mat-radio-button>
+            </div>
+          </mat-radio-group>
+          <mat-form-field class="mt-2" *ngIf="roomForm.value.status === 'private'"
+            ><input matInput="matInput" formControlName="password" placeholder="Password"
+          /></mat-form-field>
+        </div>
+      </form>
+      <div class="mb-3">
+        <label class="mb-3 d-block">Playlists for song selection</label>
+        <mat-chip-list multiple="true" focused="false">
+          <mat-chip
+            *ngFor="let playlist of playlists"
+            [selected]="selectedPlaylists.includes(playlist)"
+            (click)="togglePlaylist(playlist)"
+            >{{ playlist.title }}</mat-chip
+          >
+        </mat-chip-list>
+      </div>
+      <a
+        class="flex-center"
+        mat-flat-button="mat-flat-button"
+        color="primary"
+        (click)="createRoom()"
+        >Create room</a
+      >
+    </div>
+  </div>
+</div>

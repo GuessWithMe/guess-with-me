@@ -1,5 +1,3 @@
-@import './../styles/app-theme.scss';
-
 .sidenav-container {
   position: absolute;
   top: 0;
@@ -14,9 +12,9 @@
 
   .top {
     padding: 1.5rem 1.5rem;
-    background: mat-color($app-primary);
+    // background: mat-color($app-primary);
     background: linear-gradient(135deg, #1d263b 0, #323e63 100%);
-    border-bottom: 1px solid mat-color($app-accent);
+    // border-bottom: 1px solid mat-color($app-accent);
 
     h3 {
       font-family: 'Pacifico';
@@ -52,11 +50,11 @@
 
         &.active {
           font-weight: bold;
-          background-color: mat-color($app-accent, 700, 0.4);
-          color: mat-color($app-accent);
+          // background-color: mat-color($app-accent, 700, 0.4);
+          // color: mat-color($app-accent);
 
           .mat-icon {
-            color: mat-color($app-accent);
+            // color: mat-color($app-accent);
           }
         }
       }

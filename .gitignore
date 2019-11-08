@@ -128,3 +128,5 @@ docker-compose.prod.yml
 
 ui/dist/*
 api/dist/*
+
+ui-old

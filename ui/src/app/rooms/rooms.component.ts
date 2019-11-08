@@ -9,8 +9,8 @@ interface GameRoom {
 
 @Component({
   selector: 'app-rooms',
-  templateUrl: './rooms.component.pug',
-  styleUrls: ['./rooms.component.scss']
+  templateUrl: './rooms.component.html',
+  styleUrls: ['./rooms.component.scss'],
 })
 export class RoomsComponent implements OnInit, OnDestroy {
   filterValue = '';
@@ -18,8 +18,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
   gameRooms: GameRoom[] = [
     {
       title: 'GuessWith.me selection',
-      value: 'general'
-    }
+      value: 'general',
+    },
   ];
   filteredGameRooms = this.gameRooms;
 
@@ -54,10 +54,10 @@ export class RoomsComponent implements OnInit, OnDestroy {
       this.filteredGameRooms = this.gameRooms;
     } else {
       this.filteredPlayerRooms = this.playerRooms.filter(
-        room => room.title && room.title.toLowerCase().includes(filterValue.toLowerCase())
+        room => room.title && room.title.toLowerCase().includes(filterValue.toLowerCase()),
       );
       this.filteredGameRooms = this.gameRooms.filter(
-        room => room.title && room.title.toLowerCase().includes(filterValue.toLowerCase())
+        room => room.title && room.title.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
   }

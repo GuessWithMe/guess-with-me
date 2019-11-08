@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Howl } from 'howler';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import FuzzySet from 'fuzzyset.js';
 
 import { RoomStatus, Guess, User, Word, Song } from '@types';
@@ -9,7 +9,7 @@ import { GameService, SocketService, UserService } from '@services';
 
 @Component({
   selector: 'app-game',
-  templateUrl: './game.component.pug',
+  templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit, OnDestroy {

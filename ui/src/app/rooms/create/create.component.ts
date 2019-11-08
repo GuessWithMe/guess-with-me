@@ -6,14 +6,14 @@ import { PlaylistService, RoomService } from '@services';
 
 @Component({
   selector: 'app-rooms-create',
-  templateUrl: './create.component.pug',
-  styleUrls: ['./create.component.scss']
+  templateUrl: './create.component.html',
+  styleUrls: ['./create.component.scss'],
 })
 export class RoomsCreateComponent implements OnInit, OnDestroy {
   roomForm = new FormGroup({
     title: new FormControl(''),
     status: new FormControl('public'),
-    password: new FormControl()
+    password: new FormControl(),
   });
 
   selectedPlaylists: Playlist[] = [];
@@ -48,7 +48,7 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
     try {
       await this.roomService.create({
         ...this.roomForm.value,
-        playlists: this.selectedPlaylists
+        playlists: this.selectedPlaylists,
       });
     } catch (error) {
       console.log(error);

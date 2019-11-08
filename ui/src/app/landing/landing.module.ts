@@ -6,16 +6,9 @@ import { MaterialImportsModule } from '../material-imports.module';
 
 import { LandingComponent } from './landing.component';
 
-
 @NgModule({
-  declarations: [
-    LandingComponent
-  ],
-  imports: [
-    CommonModule,
-    LandingRoutingModule,
-    MaterialImportsModule,
-  ],
-  providers: [],
+  declarations: [LandingComponent],
+  imports: [CommonModule, LandingRoutingModule, MaterialImportsModule],
+  providers: []
 })
 export class LandingModule {}

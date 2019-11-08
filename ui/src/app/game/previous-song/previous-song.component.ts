@@ -3,7 +3,7 @@ import { Song } from '@types';
 
 @Component({
   selector: 'app-previous-song',
-  templateUrl: './previous-song.component.pug',
+  templateUrl: './previous-song.component.html',
   styleUrls: ['./previous-song.component.scss']
 })
 export class PreviousSongComponent implements OnInit {

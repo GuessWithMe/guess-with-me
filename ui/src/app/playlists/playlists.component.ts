@@ -1,13 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { PlaylistService, SocketService } from '@services';
 import { Playlist, PlaylistItem } from '@types';
 
 @Component({
   selector: 'app-playlists',
-  templateUrl: './playlists.component.pug',
-  styleUrls: ['./playlists.component.scss']
+  templateUrl: './playlists.component.html',
+  styleUrls: ['./playlists.component.scss'],
 })
 export class PlaylistsComponent implements OnInit, OnDestroy {
   public spotifyPlaylists: PlaylistItem[];
@@ -18,7 +18,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
   constructor(
     private playlistService: PlaylistService,
     private socketService: SocketService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   async ngOnInit() {
@@ -39,7 +39,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
           }
 
           return { [playlist.spotifyId]: playlist };
-        })
+        }),
       );
     } catch (error) {
       console.log(error);
@@ -54,7 +54,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
     this.socketService.getSocket();
 
     this.socket.emit('importPlaylist', {
-      playlist
+      playlist,
     });
   }
 
@@ -64,7 +64,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
       this.progress[data.playlist.id] = data.progress * 100;
       if (this.progress[data.playlist.id] === 100) {
         this.snackBar.open(`Finished importing "${data.playlist.name}"`, 'Dismiss', {
-          duration: 5000
+          duration: 5000,
         });
       }
     });
