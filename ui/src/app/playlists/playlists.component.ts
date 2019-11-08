@@ -26,8 +26,6 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
 
     try {
       const res = await this.playlistService.getPlaylists();
-      console.log(res);
-
       this.spotifyPlaylists = res.spotifyPlaylists.items;
       this.playlists = Object.assign(
         {},
@@ -35,7 +33,8 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
           const spotifyPlaylist = this.spotifyPlaylists.find(sp => sp.id === playlist.spotifyId);
 
           if (spotifyPlaylist) {
-            playlist.songAmountDifference = spotifyPlaylist.tracks.total - playlist.totalSongsAtLastImport;
+            playlist.songAmountDifference =
+              spotifyPlaylist.tracks.total - playlist.totalSongsAtLastImport;
           }
 
           return { [playlist.spotifyId]: playlist };
@@ -60,13 +59,16 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
 
   private initiateSockets(): void {
     this.socket = this.socketService.getSocket();
-    this.socket.on('playlistProgress', (data: { progress: number; playlist: { id: string; name: string } }) => {
-      this.progress[data.playlist.id] = data.progress * 100;
-      if (this.progress[data.playlist.id] === 100) {
-        this.snackBar.open(`Finished importing "${data.playlist.name}"`, 'Dismiss', {
-          duration: 5000,
-        });
-      }
-    });
+    this.socket.on(
+      'playlistProgress',
+      (data: { progress: number; playlist: { id: string; name: string } }) => {
+        this.progress[data.playlist.id] = data.progress * 100;
+        if (this.progress[data.playlist.id] === 100) {
+          this.snackBar.open(`Finished importing "${data.playlist.name}"`, 'Dismiss', {
+            duration: 5000,
+          });
+        }
+      },
+    );
   }
 }

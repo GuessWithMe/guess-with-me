@@ -5,26 +5,23 @@ import { UserService } from '@services';
 import { Subscription } from 'rxjs';
 import { User } from '@types';
 import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs/internal/operators/filter';
 
 @Component({
   selector: 'app-game-shell',
   templateUrl: './shell.component.html',
-  styleUrls: ['./shell.component.scss']
+  styleUrls: ['./shell.component.scss'],
 })
 export class GameShellComponent implements OnInit, OnDestroy {
-  @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
+  // @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
+  @ViewChild('sidenav') public sidenav: MatSidenav;
+
   public socket: SocketIOClient.Socket;
 
   private userSubscription: Subscription;
   public user: User;
 
-  constructor(private userService: UserService, private router: Router) {
-    router.events.subscribe(val => {
-      if (val instanceof NavigationEnd) {
-        this.close('nav');
-      }
-    });
-  }
+  constructor(private userService: UserService, private router: Router) {}
 
   close(reason: string) {
     this.sidenav.close();
@@ -44,6 +41,10 @@ export class GameShellComponent implements OnInit, OnDestroy {
 
     this.userSubscription = this.userService.user.subscribe(user => {
       this.user = user;
+    });
+
+    this.router.events.pipe(filter(e => e instanceof NavigationEnd)).subscribe(e => {
+      this.close('nav');
     });
   }
 
