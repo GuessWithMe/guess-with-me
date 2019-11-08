@@ -1,0 +1,54 @@
+<mat-toolbar>
+  <div class="container d-flex justify-content-between">
+    <div class="logo">
+      <h1 class="m-0">GuessWith.me</h1>
+    </div>
+    <a class="d-flex" mat-stroked-button="mat-stroked-button" href="{{ apiUrl }}/auth/spotify">
+      <p class="m-0 mr-1">Connect with</p>
+      <img class="d-none d-md-block" src="/assets/images/Spotify_Logo_CMYK_Green.png"/><img
+        class="d-block d-md-none ml-1"
+        src="/assets/images/spotify.svg"
+    /></a>
+  </div>
+</mat-toolbar>
+<header>
+  <div class="container">
+    <div class="heading">
+      <h1 class="d-none d-md-block">GuessWith.me</h1>
+      <h1 class="d-block d-md-none">Guess With Me</h1>
+      <h2>to challenge your inner melomaniac</h2>
+      <hr />
+    </div>
+    <div class="col-xs-12 offset-xs-0 d-flex justify-content-center">
+      <a class="d-flex" mat-stroked-button="mat-stroked-button" href="{{ apiUrl }} + '/auth/spotify'">
+        <h1>Connect with</h1>
+        <img src="/assets/images/Spotify_Logo_CMYK_Green.png"
+      /></a>
+    </div>
+  </div>
+</header>
+<section class="features">
+  <div class="container">
+    <h2 class="m-0 mb-5">Features</h2>
+    <div class="row">
+      <div class="middle-line"></div>
+      <div class="col-12" *ngFor="let feature of features; let i = index">
+        <div class="col-sm-12 offset-sm-0 col-md-5 offset-md-0 feature" *ngIf="i % 2 == 0">
+          <div class="line left"></div>
+          <i class="fas mb-4 {{ feature.iconClass }}"></i>
+          <h3>{{ feature.heading }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+        <div class="feature col-sm-12 offset-0 col-md-5 offset-md-7" *ngIf="i % 2 != 0">
+          <div class="line right"></div>
+          <i class="fas mb-4 {{ feature.iconClass }}"></i>
+          <h3>{{ feature.heading }}</h3>
+          <p>{{ feature.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <p>Made with ❤️ by E.E.</p>
+</footer>

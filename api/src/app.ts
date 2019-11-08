@@ -1,15 +1,16 @@
+import { createTerminus } from '@godaddy/terminus';
+import { Express } from 'express-serve-static-core';
+import { Sequelize } from 'sequelize-typescript';
+import { Strategy as SpotifyStrategy } from 'passport-spotify';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
-import { Express } from 'express-serve-static-core';
-import session from 'express-session';
 import http from 'http';
 import moment from 'moment';
 import morgan from 'morgan';
 import passport, { PassportStatic } from 'passport';
-import { Strategy as SpotifyStrategy } from 'passport-spotify';
-import { Sequelize } from 'sequelize-typescript';
+import session from 'express-session';
 
 import Websockets from '@config/websockets';
 import Environment from '@env';
@@ -25,6 +26,7 @@ import RoomRoutes from '@routes/Room';
 import UserRoutes from '@routes/User';
 
 import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from '@models';
+import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
 
 class App {
   public app: Express;
@@ -44,7 +46,10 @@ class App {
     this.configureMorgan();
     this.mountRoutes();
     this.startSongDistributer();
+    this.configureTerminus();
     startWorker();
+
+    console.log('----------------- Server started -----------------');
   }
 
   private mountRoutes(): void {
@@ -72,6 +77,7 @@ class App {
       database: Environment.maria.db,
       dialect: 'mysql',
       host: Environment.maria.host,
+      logging: false,
       password: Environment.maria.pass,
       port: Environment.maria.port,
       storage: ':memory:',
@@ -157,6 +163,20 @@ class App {
 
   private async startSongDistributer() {
     SongDistrubuter.start();
+  }
+
+  private configureTerminus() {
+    const options = {
+      timeout: 1000,
+      signals: ['SIGINT', 'SIGTERM'],
+      beforeShutdown: async () => {
+        await ActivePlayerHelper.setActivePlayers({});
+      },
+      onSignal: () => {},
+      onShutdown: () => {}
+    };
+
+    createTerminus(this.server, options as any);
   }
 }
 

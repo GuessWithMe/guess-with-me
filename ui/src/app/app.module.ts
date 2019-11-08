@@ -1,51 +1,41 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from '@angular/platform-browser';
+import { HttpClient, HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
 
 import {
-  Interceptor,
-  PlaylistService,
-  SpotifyService,
-  UserService,
-  SocketService,
-  GameService,
   AuthService,
-  RoomService
+  GameService,
+  //   Interceptor,
+  PlaylistService,
+  RoomService,
+  SocketService,
+  //   SpotifyService,
+  UserService,
+  Interceptor,
 } from '@services';
-
-import { AppRoutingModule } from './app-routing.module';
-import { LandingModule } from './landing/landing.module';
-import { MaterialImportsModule } from './material-imports.module';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    BrowserModule,
-    HttpClientModule,
-    LandingModule,
-    MaterialImportsModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, BrowserAnimationsModule, HttpClientModule],
   providers: [
-    HttpClient,
+    // HttpClient,
     PlaylistService,
-    SpotifyService,
+    // SpotifyService,
     UserService,
     RoomService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: Interceptor,
-      multi: true
+      multi: true,
     },
     SocketService,
     GameService,
-    AuthService
+    AuthService,
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

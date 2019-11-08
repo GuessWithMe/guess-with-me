@@ -15,7 +15,6 @@ export class UserService {
   /**
    * Retrieves the currently authenticated user.
    * @returns Promise<User>
-   * @memberof UserService
    */
   public getUser(): Promise<User> {
     const url = `${environment.apiUrl}/users/current`;

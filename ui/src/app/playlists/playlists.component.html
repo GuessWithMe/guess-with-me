@@ -1,0 +1,45 @@
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-6" *ngFor="let spotifyPlaylist of spotifyPlaylists">
+      <mat-card class="d-flex mb-4">
+        <div class="d-flex">
+          <div class="img-container" *ngIf="!spotifyPlaylist.images[2]">
+            <div class="no-image-place"></div>
+          </div>
+          <div class="img-container" *ngIf="spotifyPlaylist.images[2]">
+            <img src="{{ spotifyPlaylist.images[2].url }}" />
+          </div>
+          <div class="div ml-3 d-flex">
+            <div>
+              <h4 class="m-0">{{ spotifyPlaylist.name }}</h4>
+              <p class="m-0">{{ spotifyPlaylist.tracks.total }} tracks</p>
+              <p
+                class="m-0"
+                *ngIf="playlists[spotifyPlaylist.id] &amp;&amp; playlists[spotifyPlaylist.id].songAmountDifference &gt; 0"
+              >
+                {{ playlists[spotifyPlaylist.id].songAmountDifference }} new since last import
+              </p>
+            </div>
+            <button
+              class="flex-center"
+              mat-flat-button="mat-flat-button"
+              color="primary"
+              (click)="importPlaylist(spotifyPlaylist)"
+              [disabled]="progress[spotifyPlaylist.id]"
+            >
+              <span *ngIf="!progress[spotifyPlaylist.id] &amp;&amp; !playlists[spotifyPlaylist.id]">Import</span
+              ><span *ngIf="!progress[spotifyPlaylist.id] &amp;&amp; playlists[spotifyPlaylist.id]">Reimport</span
+              ><mat-progress-spinner
+                *ngIf="progress[spotifyPlaylist.id]"
+                [mode]="'determinate'"
+                [value]="progress[spotifyPlaylist.id]"
+                color="primary"
+                diameter="20"
+              ></mat-progress-spinner>
+            </button>
+          </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

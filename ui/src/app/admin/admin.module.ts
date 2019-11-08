@@ -8,9 +8,7 @@ import { AdminComponent } from './admin.component';
 import { AdminService } from '../services/admin.service';
 
 @NgModule({
-  declarations: [
-    AdminComponent,
-  ],
+  declarations: [AdminComponent],
   imports: [
     CommonModule,
     AdminRoutingModule,
@@ -18,8 +16,6 @@ import { AdminService } from '../services/admin.service';
     FormsModule,
     ReactiveFormsModule,
   ],
-  providers: [
-    AdminService
-  ]
+  providers: [AdminService],
 })
-export class AdminModule { }
+export class AdminModule {}

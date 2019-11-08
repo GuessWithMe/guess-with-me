@@ -1,0 +1,16 @@
+/* You can add global styles to this file, and also import other style files */
+@import '~normalize.css';
+@import url('https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.2.1/css/bootstrap-grid.min.css');
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,400,700&display=swap');
+
+* {
+  font-family: 'Nunito', sans-serif;
+}
+
+.text-muted {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+body {
+  background: linear-gradient(135deg, #1d263b 0, #323e63 100%) fixed;
+}

@@ -3,16 +3,13 @@ import { AdminService } from '../services/admin.service';
 
 @Component({
   selector: 'app-admin',
-  templateUrl: './admin.component.pug',
-  styleUrls: ['./admin.component.scss']
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.scss'],
 })
 export class AdminComponent implements OnInit {
-  constructor(
-    private adminService: AdminService,
-  ) {}
+  constructor(private adminService: AdminService) {}
 
-  ngOnInit() { }
-
+  ngOnInit() {}
 
   public truncateDatabase() {
     try {
@@ -22,4 +19,3 @@ export class AdminComponent implements OnInit {
     }
   }
 }
-
