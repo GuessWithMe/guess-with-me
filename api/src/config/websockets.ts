@@ -43,7 +43,7 @@ export default class Websockets {
 
         io.in('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(players));
 
-        const status = await getStatus();
+        const status = getStatus();
         socket.emit('status', status);
       });
 
@@ -59,6 +59,10 @@ export default class Websockets {
     });
 
     return server;
+  }
+
+  public static close() {
+    io.close();
   }
 
   public static getIo(): SocketIO.Server {

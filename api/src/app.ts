@@ -172,7 +172,10 @@ class App {
       beforeShutdown: async () => {
         await ActivePlayerHelper.setActivePlayers({});
       },
-      onSignal: () => {},
+      onSignal: () => {
+        Websockets.close();
+        process.exit();
+      },
       onShutdown: () => {}
     };
 

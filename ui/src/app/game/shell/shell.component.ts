@@ -13,7 +13,6 @@ import { filter } from 'rxjs/internal/operators/filter';
   styleUrls: ['./shell.component.scss'],
 })
 export class GameShellComponent implements OnInit, OnDestroy {
-  // @ViewChild('sidenav', { static: false }) sidenav: MatSidenav;
   @ViewChild('sidenav') public sidenav: MatSidenav;
 
   public socket: SocketIOClient.Socket;

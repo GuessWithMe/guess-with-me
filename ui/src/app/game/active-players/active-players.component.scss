@@ -1,3 +1,33 @@
-table {
-  width: 100%;
+$border-radius: 7px;
+
+img {
+  height: 20px;
+  width: 20px;
+  border-radius: 5px;
+}
+
+.player {
+  background: white;
+  border-radius: $border-radius;
+  height: 40px;
+  padding: 6px 11px;
+
+  display: grid;
+  grid-template-columns: 30px 1fr 50px 50px 50px;
+
+  &.header {
+    background: none;
+    color: white;
+    height: 20px;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .username {
+    font-size: 14px;
+  }
+}
+
+.wrong {
+  color: #d2d2d2;
 }

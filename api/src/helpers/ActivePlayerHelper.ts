@@ -43,7 +43,8 @@ export class ActivePlayerHelper {
         id: activePlayers[key].id,
         spotifyUsername: activePlayers[key].spotifyUsername,
         titleCorrect: activePlayers[key].titleCorrect || false,
-        artistCorrect: activePlayers[key].artistCorrect || false
+        artistCorrect: activePlayers[key].artistCorrect || false,
+        avatar: activePlayers[key].spotifyImageUrl
       };
     });
   }
