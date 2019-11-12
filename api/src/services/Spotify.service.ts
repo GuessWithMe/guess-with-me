@@ -1,9 +1,9 @@
-import { SpotifyHelper } from '@helpers/SpotifyHelper';
-import { User } from '@models';
+import { SpotifyHelper } from '@helpers';
 import { SpotifyPlaylist } from '@t/SpotifyPlaylist';
 import { SpotifyPlaylists } from '@t/SpotifyPlaylists';
+import { User } from '@models';
 
-export default class SpotifyService {
+class SpotifyService {
   public spotify: any;
 
   public async getUserPlaylists(user: User): Promise<SpotifyPlaylists> {
@@ -19,3 +19,5 @@ export default class SpotifyService {
     return res.body;
   }
 }
+
+export default SpotifyPlaylist;

@@ -1,4 +1,4 @@
-import SpotifyService from '@services/Spotify.service';
+import { SpotifyService } from '@services';
 import { Handler, Response } from 'express';
 
 /**

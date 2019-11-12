@@ -1,6 +1,5 @@
-import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
-import * as SongDistrubuter from '@services/SongDistributer.service';
-import SocketService from '@services/Socket.service';
+import { ActivePlayerHelper, PreviousTracksHelper } from '@helpers';
+import { SongDistributer, SocketService } from '@services';
 
 export default class GameService {
   public static async removeActiveUser(socketId: string) {
@@ -14,6 +13,20 @@ export default class GameService {
     await ActivePlayerHelper.setActivePlayers(activePlayers);
     new SocketService().broadcastActivePlayerList(activePlayers);
   }
+
+  public static getStatus = async () => {
+    const status = SongDistributer.getStatus();
+    let activePlayers = await ActivePlayerHelper.getActivePlayers();
+    activePlayers = ActivePlayerHelper.filterActivePlayerListForClient(activePlayers);
+
+    const previousTracks = await PreviousTracksHelper.get();
+
+    return {
+      status,
+      activePlayers,
+      previousTracks
+    };
+  };
 
   public static async updatePlayersGuessProgress(socketId: string, guessData: object) {
     let activePlayers = await ActivePlayerHelper.getActivePlayers();
@@ -31,7 +44,7 @@ export default class GameService {
     if (GameService.areAllPlayersFinished(activePlayers)) {
       // Set all active player guess statuses as false.
       activePlayers = await GameService.resetGuessStatuses(activePlayers);
-      await SongDistrubuter.restartAfterPause();
+      await SongDistributer.restartAfterPause();
       return;
     }
 

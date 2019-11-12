@@ -1,8 +1,7 @@
 import { Handler, Response } from 'express';
 
-import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
-import GameService from '@services/Game.service';
-import * as SongDistributer from '@services/SongDistributer.service';
+import { ActivePlayerHelper } from '@helpers';
+import { GameService, SongDistributer } from '@services';
 
 /**
  * Retrives the active song, time left and active player list.

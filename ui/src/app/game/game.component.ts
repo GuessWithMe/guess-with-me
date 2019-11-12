@@ -10,7 +10,7 @@ import { GameService, SocketService, UserService } from '@services';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit, OnDestroy {
   private timeToGuess = 30;
@@ -23,18 +23,18 @@ export class GameComponent implements OnInit, OnDestroy {
   public sound: Howl;
   public timeLeft = this.timeToGuess;
   public user: User;
-  public previousSong: Song;
+  public previousTracks: Song[];
   public isPause = false;
 
   public guessAttemptForm = new FormGroup({
-    currentGuess: new FormControl('')
+    currentGuess: new FormControl(''),
   });
 
   constructor(
     private gameService: GameService,
     private userService: UserService,
     private socketService: SocketService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
   ) {}
 
   async ngOnInit() {
@@ -54,18 +54,20 @@ export class GameComponent implements OnInit, OnDestroy {
     });
 
     this.socket.on('status', (status: RoomStatus) => {
-      this.previousSong = status.previousSong;
+      console.log(status);
 
-      if (status.isPaused) {
-        this.timeLeft = 0;
-        this.setPause();
-      }
+      // this.previousTracks = status.previousTracks;
 
-      this.processIncomingSong(status.currentSong, status.timeLeft);
+      // if (status.isPaused) {
+      //   this.timeLeft = 0;
+      //   this.setPause();
+      // }
+
+      // this.processIncomingSong(status.currentSong, status.timeLeft);
     });
 
-    this.socket.on('pause', (previousSong: Song) => {
-      this.previousSong = previousSong;
+    this.socket.on('pause', (previousTracks: Song[]) => {
+      this.previousTracks = previousTracks;
       this.gameService.setCurrentSong(null);
       this.setPause();
       this.timeLeft = 0;
@@ -93,7 +95,7 @@ export class GameComponent implements OnInit, OnDestroy {
       artist: [],
       title: [],
       artistCorrect: false,
-      titleCorrect: false
+      titleCorrect: false,
     };
 
     const artistStripped = this.removeParentheses(songData['artists'][0]['name']);
@@ -101,7 +103,7 @@ export class GameComponent implements OnInit, OnDestroy {
       const cleanWord = this.cleanUpWord(word);
       const guessWord: Word = {
         word: cleanWord,
-        correct: false
+        correct: false,
       };
 
       this.guess.artist.push(guessWord);
@@ -112,7 +114,7 @@ export class GameComponent implements OnInit, OnDestroy {
       const cleanWord = this.cleanUpWord(word);
       const guessWord: Word = {
         word: cleanWord,
-        correct: false
+        correct: false,
       };
       this.guess.title.push(guessWord);
     }
@@ -133,7 +135,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.sound = new Howl({
       src: [song.previewUrl],
-      html5: true
+      html5: true,
     });
 
     this.timeLeft = timeLeft;
@@ -255,7 +257,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     if (this.guess.artistCorrect && this.guess.titleCorrect) {
       const successSound = new Howl({
-        src: ['src/assets/sounds/success.wav']
+        src: ['src/assets/sounds/success.wav'],
       });
 
       successSound.play();
@@ -271,7 +273,7 @@ export class GameComponent implements OnInit, OnDestroy {
       userId: this.user.id,
       spotifyUsername: this.user.spotifyUsername,
       titleCorrect: this.guess.titleCorrect,
-      artistCorrect: this.guess.artistCorrect
+      artistCorrect: this.guess.artistCorrect,
     });
   }
 

@@ -2,9 +2,8 @@ import express from 'express';
 import sharedSession from 'express-socket.io-session';
 import SocketIO from 'socket.io';
 
-import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
-import GameService from '@services/Game.service';
-import { getStatus } from '@services/SongDistributer.service';
+import { ActivePlayerHelper } from '@helpers';
+import { GameService } from '@services';
 import { worker } from 'src/worker';
 
 let io: SocketIO.Server;
@@ -43,7 +42,7 @@ export default class Websockets {
 
         io.in('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(players));
 
-        const status = getStatus();
+        const status = await GameService.getStatus();
         socket.emit('status', status);
       });
 
