@@ -1,18 +1,10 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
-
-import { GameService } from '@services';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-active-players',
   templateUrl: './active-players.component.html',
   styleUrls: ['./active-players.component.scss'],
 })
-export class ActivePlayersComponent implements OnInit, OnChanges {
+export class ActivePlayersComponent {
   @Input() activePlayers: any;
-
-  constructor(private gameService: GameService) {}
-
-  async ngOnInit() {}
-
-  async ngOnChanges() {}
 }

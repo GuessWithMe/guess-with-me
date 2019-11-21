@@ -15,11 +15,14 @@ import { RoomsComponent } from '../rooms/rooms.component';
 import { RoomsCreateComponent } from '../rooms/create/create.component';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
 
+import { MoveTextDirective } from '../directives/moveText';
+
 @NgModule({
   declarations: [
     ActivePlayersComponent,
     GameComponent,
     GameShellComponent,
+    MoveTextDirective,
     PlaylistsComponent,
     PreviousTracksComponent,
     RoomsComponent,

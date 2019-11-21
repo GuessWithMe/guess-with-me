@@ -1,5 +1,6 @@
-import { SpotifyService } from '@services';
 import { Handler, Response } from 'express';
+
+import { SpotifyService } from '@services';
 
 /**
  * Retreives users playlists

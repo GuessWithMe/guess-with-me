@@ -20,4 +20,4 @@ class SpotifyService {
   }
 }
 
-export default SpotifyPlaylist;
+export default SpotifyService;

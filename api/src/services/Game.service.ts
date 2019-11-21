@@ -15,7 +15,7 @@ export default class GameService {
   }
 
   public static getStatus = async () => {
-    const status = SongDistributer.getStatus();
+    const status = await SongDistributer.getStatus();
     let activePlayers = await ActivePlayerHelper.getActivePlayers();
     activePlayers = ActivePlayerHelper.filterActivePlayerListForClient(activePlayers);
 

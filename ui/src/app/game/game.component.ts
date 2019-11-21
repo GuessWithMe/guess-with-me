@@ -53,18 +53,21 @@ export class GameComponent implements OnInit, OnDestroy {
       this.processIncomingSong(song);
     });
 
-    this.socket.on('status', (status: RoomStatus) => {
-      console.log(status);
+    this.socket.on(
+      'status',
+      (payload: { status: RoomStatus; previousTracks: Song[]; activePlayers: User[] }) => {
+        console.log(payload);
 
-      // this.previousTracks = status.previousTracks;
+        this.previousTracks = payload.previousTracks;
 
-      // if (status.isPaused) {
-      //   this.timeLeft = 0;
-      //   this.setPause();
-      // }
+        if (payload.status.isPaused) {
+          this.timeLeft = 0;
+          this.setPause();
+        }
 
-      // this.processIncomingSong(status.currentSong, status.timeLeft);
-    });
+        this.processIncomingSong(payload.status.currentSong, payload.status.timeLeft);
+      },
+    );
 
     this.socket.on('pause', (previousTracks: Song[]) => {
       this.previousTracks = previousTracks;
@@ -279,9 +282,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   /**
    * Sets a game on pause until a new song comes in.
-   *
-   * @private
-   * @memberof GameComponent
    */
   private setPause() {
     this.isPause = true;

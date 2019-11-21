@@ -28,8 +28,7 @@ class ActivePlayerHelper {
       return {
         id: activePlayers[key].id,
         spotifyUsername: activePlayers[key].spotifyUsername,
-        // titleCorrect: activePlayers[key].titleCorrect || false,
-        titleCorrect: true,
+        titleCorrect: activePlayers[key].titleCorrect || false,
         artistCorrect: activePlayers[key].artistCorrect || false,
         avatar: activePlayers[key].spotifyImageUrl
       };

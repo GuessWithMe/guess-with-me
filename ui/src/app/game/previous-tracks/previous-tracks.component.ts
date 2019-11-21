@@ -13,7 +13,11 @@ export class PreviousTracksComponent implements OnInit, OnChanges {
 
   ngOnInit() {}
 
-  ngOnChanges() {
-    console.log(this.previousTracks);
+  ngOnChanges() {}
+
+  getPreviousTracks() {
+    // console.log();
+
+    return this.previousTracks.slice(0, 10);
   }
 }

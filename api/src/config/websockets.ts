@@ -4,11 +4,12 @@ import SocketIO from 'socket.io';
 
 import { ActivePlayerHelper } from '@helpers';
 import { GameService } from '@services';
-import { worker } from 'src/worker';
+
+import { worker } from './../../src/worker';
 
 let io: SocketIO.Server;
 
-export default class Websockets {
+class Websockets {
   public static initialize(server: any, session: express.RequestHandler) {
     io = SocketIO(server);
 
@@ -43,6 +44,7 @@ export default class Websockets {
         io.in('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(players));
 
         const status = await GameService.getStatus();
+
         socket.emit('status', status);
       });
 
@@ -68,3 +70,5 @@ export default class Websockets {
     return io;
   }
 }
+
+export default Websockets;
