@@ -10,21 +10,24 @@ import { ActivePlayersComponent } from './active-players/active-players.componen
 import { GameComponent } from './game.component';
 import { GameShellComponent } from './shell/shell.component';
 import { PlaylistsComponent } from '../playlists/playlists.component';
-import { PreviousSongComponent } from './previous-song/previous-song.component';
+import { PreviousTracksComponent } from './previous-tracks/previous-tracks.component';
 import { RoomsComponent } from '../rooms/rooms.component';
 import { RoomsCreateComponent } from '../rooms/create/create.component';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
+
+import { MoveTextDirective } from '../directives/moveText';
 
 @NgModule({
   declarations: [
     ActivePlayersComponent,
     GameComponent,
-    PreviousSongComponent,
-    PlaylistsComponent,
     GameShellComponent,
-    ToolbarComponent,
+    MoveTextDirective,
+    PlaylistsComponent,
+    PreviousTracksComponent,
     RoomsComponent,
     RoomsCreateComponent,
+    ToolbarComponent,
   ],
   imports: [
     CommonModule,

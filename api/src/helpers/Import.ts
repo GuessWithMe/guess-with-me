@@ -4,7 +4,7 @@ import { Album, Artist, Playlist, Song, User } from '@models';
 import { SpotifyPlaylist } from '@t/SpotifyPlaylist';
 import { Album as SpotifyAlbum } from '@t/SpotifySong';
 
-export class ImportHelper {
+class ImportHelper {
   public static async importSong(track: any): Promise<Song> {
     let song = await Song.findOne({ where: { spotifyId: track.id } });
 
@@ -110,3 +110,5 @@ export class ImportHelper {
     return album;
   }
 }
+
+export default ImportHelper;

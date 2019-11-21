@@ -1,22 +1,22 @@
-<table class="mat-elevation-z1" mat-table="" [dataSource]="activePlayers">
-  <ng-container matColumnDef="username">
-    <th mat-header-cell="" *matHeaderCellDef="">Username</th>
-    <td mat-cell="" *matCellDef="let element">{{ element.spotifyUsername }}</td>
-  </ng-container>
-  <ng-container matColumnDef="artistCorrect">
-    <th mat-header-cell="" *matHeaderCellDef="">Artist</th>
-    <td mat-cell="" *matCellDef="let element">
-      <mat-icon class="correct" *ngIf="element.artistCorrect">done</mat-icon>
-      <mat-icon class="wrong" *ngIf="!element.artistCorrect">clear</mat-icon>
-    </td>
-  </ng-container>
-  <ng-container matColumnDef="titleCorrect">
-    <th mat-header-cell="" *matHeaderCellDef="">Title</th>
-    <td mat-cell="" *matCellDef="let element">
-      <mat-icon class="correct" *ngIf="element.titleCorrect">done</mat-icon>
-      <mat-icon class="wrong" *ngIf="!element.titleCorrect">clear</mat-icon>
-    </td>
-  </ng-container>
-  <tr mat-header-row="" *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row="" *matRowDef="let row; columns: displayedColumns"></tr>
-</table>
+<div class="background"></div>
+<div class="head"></div>
+<div class="player header center-vert mb-1" *ngFor="let player of activePlayers">
+  <div></div>
+  <div></div>
+  <span class="text-center">Artist</span>
+  <span class="text-center">Title</span>
+  <span class="text-center">Points</span>
+</div>
+<div class="player center-vert mb-2" *ngFor="let player of activePlayers">
+  <img *ngIf="player.avatar" [src]="player.avatar" />
+  <b class="username">{{ player.spotifyUsername }}</b>
+  <div class="center">
+    <mat-icon class="correct" *ngIf="player.artistCorrect">done</mat-icon>
+    <mat-icon class="wrong" *ngIf="!player.artistCorrect">clear</mat-icon>
+  </div>
+  <div class="center">
+    <mat-icon class="correct" *ngIf="player.titleCorrect">done</mat-icon>
+    <mat-icon class="wrong" *ngIf="!player.titleCorrect">clear</mat-icon>
+  </div>
+  <div class="center"><span class="text-center">3</span></div>
+</div>

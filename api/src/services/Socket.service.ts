@@ -1,7 +1,7 @@
 import SocketIO from 'socket.io';
 
 import Websockets from '@config/websockets';
-import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
+import { ActivePlayerHelper } from '@helpers';
 import { Song } from '@models';
 
 export default class SocketService {

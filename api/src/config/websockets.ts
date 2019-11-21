@@ -2,14 +2,14 @@ import express from 'express';
 import sharedSession from 'express-socket.io-session';
 import SocketIO from 'socket.io';
 
-import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
-import GameService from '@services/Game.service';
-import { getStatus } from '@services/SongDistributer.service';
-import { worker } from 'src/worker';
+import { ActivePlayerHelper } from '@helpers';
+import { GameService } from '@services';
+
+import { worker } from './../../src/worker';
 
 let io: SocketIO.Server;
 
-export default class Websockets {
+class Websockets {
   public static initialize(server: any, session: express.RequestHandler) {
     io = SocketIO(server);
 
@@ -43,7 +43,8 @@ export default class Websockets {
 
         io.in('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(players));
 
-        const status = await getStatus();
+        const status = await GameService.getStatus();
+
         socket.emit('status', status);
       });
 
@@ -61,7 +62,13 @@ export default class Websockets {
     return server;
   }
 
+  public static close() {
+    io.close();
+  }
+
   public static getIo(): SocketIO.Server {
     return io;
   }
 }
+
+export default Websockets;

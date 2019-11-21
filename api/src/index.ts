@@ -1,6 +1,6 @@
 import { createTerminus } from '@godaddy/terminus';
 
-import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
+import { ActivePlayerHelper } from '@helpers';
 import app from './app';
 
 app.server.listen(3000, (err: Error) => {});

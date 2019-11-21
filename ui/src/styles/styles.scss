@@ -14,3 +14,23 @@
 body {
   background: linear-gradient(135deg, #1d263b 0, #323e63 100%) fixed;
 }
+
+.center-vert {
+  display: flex;
+  align-items: center;
+}
+
+.center-vert {
+  display: flex;
+  align-items: center;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text-center {
+  text-align: center;
+}

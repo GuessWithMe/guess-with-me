@@ -14,13 +14,42 @@
       text-transform: lowercase;
       display: inline-block;
       margin-right: 12px;
+      color: white;
+
+      &:last-child {
+        margin-right: 0px;
+      }
+
+      .empty-letter {
+        color: white;
+      }
     }
   }
 }
 
 .guess-input {
+  .mat-form-field-infix {
+    width: 280px;
+  }
+
   input {
-    text-align: center;
+    background: #ffffff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 5px;
+
+    font-size: 14px;
+    height: 35px;
+    border: 0px;
+    width: 300px;
+    padding: 0px 12px;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  ::ng-deep .mat-form-field-underline {
+    display: none;
   }
 }
 
@@ -49,9 +78,34 @@
 
 .timer {
   h3 {
-    font-size: 8.6rem;
+    font-size: 6rem;
     text-align: center;
-    font-weight: 400;
+    color: white;
+    font-weight: bold;
   }
+}
 
+.background {
+  position: absolute;
+  z-index: 0;
+
+  width: 704.99px;
+  height: 766px;
+
+  left: 0px;
+  top: 0px;
+  width: 100%;
+
+  background: #4673d0;
+  background: linear-gradient(66deg, #0054ff 20%, #2adac6 100%);
+
+  width: 704.99px;
+  height: 1066px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.previous-tracks {
+  position: relative;
+  z-index: 1;
 }

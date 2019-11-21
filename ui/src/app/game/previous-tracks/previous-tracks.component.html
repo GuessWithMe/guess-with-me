@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <div class="container">
+    <h3>Previous tracks</h3>
+  </div>
+  <div class="song-wrapper container" *ngIf="previousTracks">
+    <div class="song" appMoveText *ngFor="let song of getPreviousTracks()">
+      <div class="image" [style.backgroundImage]="'url(' + song.album.imageUrl + ')'"></div>
+      <div class="info-wrapper">
+        <div class="overflow-hidden">
+          <div class="info">
+            <p>
+              <b>{{ song.name }}</b>
+            </p>
+            <p>
+              by <b>{{ song.artists[0].name }}</b>
+            </p>
+            <p>{{ song.album.name }} ({{ song.album.releaseDate | date: 'yyyy' }})</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

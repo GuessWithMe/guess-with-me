@@ -9,7 +9,7 @@ export class SocketService {
 
   initiateSocket(): void {
     this.socket = socketIo(environment.apiUrl, {
-      transports: ['websocket']
+      transports: ['websocket'],
     });
   }
 

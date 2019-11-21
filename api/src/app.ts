@@ -14,7 +14,7 @@ import session from 'express-session';
 
 import Websockets from '@config/websockets';
 import Environment from '@env';
-import * as SongDistrubuter from '@services/SongDistributer.service';
+import { SongDistributer } from '@services';
 import { startWorker } from './worker';
 
 // Routes
@@ -26,7 +26,7 @@ import RoomRoutes from '@routes/Room';
 import UserRoutes from '@routes/User';
 
 import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from '@models';
-import { ActivePlayerHelper } from '@helpers/ActivePlayerHelper';
+import { ActivePlayerHelper } from '@helpers';
 
 class App {
   public app: Express;
@@ -162,7 +162,7 @@ class App {
   }
 
   private async startSongDistributer() {
-    SongDistrubuter.start();
+    SongDistributer.start();
   }
 
   private configureTerminus() {
@@ -172,7 +172,10 @@ class App {
       beforeShutdown: async () => {
         await ActivePlayerHelper.setActivePlayers({});
       },
-      onSignal: () => {},
+      onSignal: () => {
+        Websockets.close();
+        process.exit();
+      },
       onShutdown: () => {}
     };
 

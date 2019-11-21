@@ -13,8 +13,8 @@ interface RefreshAccessTokenResponse {
   };
 }
 
-export class SpotifyHelper {
-  public static async initializeSpotify(user: User): Promise<any> {
+class SpotifyHelper {
+  public static async initializeSpotify(user: User) {
     // Checking if token needs to be refreshed
     let spotifyApi = new SpotifyWebApi({
       accessToken: user.spotifyAccessToken,
@@ -30,10 +30,12 @@ export class SpotifyHelper {
     return spotifyApi;
   }
 
-  public static async refreshAccessToken(user: User, spotifyApi: any): Promise<any> {
+  private static async refreshAccessToken(user: User, spotifyApi: SpotifyWebApi) {
     const res: RefreshAccessTokenResponse = await spotifyApi.refreshAccessToken();
     spotifyApi.setAccessToken(res.body.access_token);
 
     return spotifyApi;
   }
 }
+
+export default SpotifyHelper;

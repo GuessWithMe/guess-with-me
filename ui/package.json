@@ -37,6 +37,7 @@
     "@angular/cli": "~9.0.0-rc.0",
     "@angular/compiler-cli": "~9.0.0-rc.0",
     "@angular/language-service": "~9.0.0-rc.0",
+    "@types/fuzzyset.js": "^0.0.2",
     "@types/howler": "^2.1.1",
     "@types/jasmine": "~3.4.0",
     "@types/jasminewd2": "~2.0.3",

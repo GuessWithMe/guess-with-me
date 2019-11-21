@@ -1,10 +1,9 @@
 import kue, { Job, Queue } from 'kue';
 
 import Environment from '@env';
-import { ImportHelper } from '@helpers/ImportHelper';
+import { ImportHelper } from '@helpers';
 import { User } from '@models';
-import SocketService from '@services/Socket.service';
-import SpotifyService from '@services/Spotify.service';
+import { SocketService, SpotifyService } from '@services';
 import { SpotifySong } from '@t/SpotifySong';
 
 export let worker: BackgroundWorker;

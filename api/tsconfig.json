@@ -15,13 +15,14 @@
     "baseUrl": "./",
     "paths": {
       "@config/*": ["./src/config/*"],
+      "@consts/*": ["./src/consts/*"],
       "@controllers/*": ["./src/controllers/*"],
       "@env": ["./src/config/environment"],
-      "@helpers/*": ["./src/helpers/*"],
+      "@helpers": ["./src/helpers"],
       "@middleware/*": ["./src/middleware/*"],
       "@models": ["./src/models"],
       "@routes/*": ["./src/routes/*"],
-      "@services/*": ["./src/services/*"],
+      "@services": ["./src/services"],
       "@t/*": ["./src/types/*"],
       "@types": ["./../types"]
     }

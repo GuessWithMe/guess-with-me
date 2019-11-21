@@ -1,0 +1,57 @@
+:host {
+  width: 100%;
+}
+
+.wrapper {
+  overflow: auto;
+}
+
+h3 {
+  font-size: 12px;
+  color: white;
+}
+
+.song-wrapper {
+  display: flex;
+  overflow: auto;
+}
+
+.song {
+  background: white;
+  width: 100px;
+  border-radius: 20px;
+  height: 174px;
+  margin-right: 10px;
+  box-shadow: 0px 4px 8px rgba(68, 119, 206, 0.16);
+  min-width: 160px;
+  margin-bottom: 15px;
+
+  .info-wrapper {
+    padding: 10px;
+
+    .overflow-hidden {
+      overflow: hidden;
+    }
+  }
+
+  .info {
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    line-height: 18px;
+    position: relative;
+    white-space: nowrap;
+    transition: transform 0.05s ease-in-out;
+
+    p {
+      margin: 0px;
+    }
+  }
+}
+
+.image {
+  width: 100%;
+  background-size: cover;
+  height: 100px;
+  border-radius: 20px 20px 0px 0px;
+  position: relative;
+}
