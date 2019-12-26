@@ -75,7 +75,7 @@ async function sendNextSong(): Promise<void> {
 const processSongEnding = async (): Promise<void> => {
   const previousTracks = await PreviousTracksHelper.get();
   previousTracks.unshift(currentSong);
-  await PreviousTracksHelper.set(previousTracks);
+  await PreviousTracksHelper.set(previousTracks.slice(0, 10));
 
   currentSong = undefined;
   isPaused = true;
