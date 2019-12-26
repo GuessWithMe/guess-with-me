@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Howl } from 'howler';
+import { isDevMode } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import FuzzySet from 'fuzzyset.js';
 
@@ -56,8 +57,6 @@ export class GameComponent implements OnInit, OnDestroy {
     this.socket.on(
       'status',
       (payload: { status: RoomStatus; previousTracks: Song[]; activePlayers: User[] }) => {
-        console.log(payload);
-
         this.previousTracks = payload.previousTracks;
 
         if (payload.status.isPaused) {
@@ -121,6 +120,11 @@ export class GameComponent implements OnInit, OnDestroy {
       };
       this.guess.title.push(guessWord);
     }
+
+    if (isDevMode()) {
+      console.log(JSON.stringify(this.guess.artist));
+      console.log(JSON.stringify(this.guess.title));
+    }
   }
 
   public processIncomingSong(song: Song, timeLeft = this.timeToGuess): void {
@@ -148,6 +152,10 @@ export class GameComponent implements OnInit, OnDestroy {
 
   public matchGuessInput() {
     const input = this.guessAttemptForm.value.currentGuess;
+    if (!input || this.isPause) {
+      return;
+    }
+
     const inputWords = input.split(' ');
     let somethingWasCorrect = false;
 

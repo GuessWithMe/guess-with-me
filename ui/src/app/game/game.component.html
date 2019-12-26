@@ -3,14 +3,17 @@
   <div class="row">
     <div class="col-md-6">
       <div class="timer">
+        <mat-icon class="wrong" [class.flashed]="flashRedBool == true">clear</mat-icon>
         <h3 class="m-0" *ngIf="timeLeft &lt;= 30">{{ timeLeft }}</h3>
+        <mat-icon class="correct" [class.flashed]="flashGreenBool == true"> done</mat-icon>
       </div>
+
       <div class="guess-container" *ngIf="guess" [ngClass]="isPause ? 'hidden' : ''">
         <div class="artist">
           <div class="word-container" *ngFor="let guessWord of guess.artist">
             <span *ngIf="guessWord.correct">{{ guessWord.word }}</span
             ><span *ngIf="!guessWord.correct"
-              ><span class="empty-letter" *ngFor="let char of guessWord.word.split('')"
+              ><span class="empty-letter" *ngFor="let char of guessWord?.word?.split('')"
                 >_</span
               ></span
             >
@@ -20,7 +23,7 @@
           <div class="word-container" *ngFor="let guessWord of guess.title">
             <span *ngIf="guessWord.correct">{{ guessWord.word }}</span
             ><span *ngIf="!guessWord.correct"
-              ><span class="empty-letter" *ngFor="let char of guessWord.word.split('')"
+              ><span class="empty-letter" *ngFor="let char of guessWord?.word?.split('')"
                 >_</span
               ></span
             >
@@ -36,10 +39,6 @@
           <input placeholder="Type here" formControlName="currentGuess" />
         </form>
       </div>
-      <!-- <div class="icon-container">
-        <mat-icon class="wrong" [class.flashed]="flashRedBool == true">clear</mat-icon>
-        <mat-icon class="correct" [class.flashed]="flashGreenBool == true"> done</mat-icon>
-      </div> -->
     </div>
     <div class="col-md-6 mt-3">
       <app-active-players [activePlayers]="activePlayers"></app-active-players>
