@@ -6,7 +6,7 @@
     "sourceMap": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "keyofStringsOnly": true,
+    "keyofStringsOnly": false,
 
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,

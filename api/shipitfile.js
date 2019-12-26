@@ -9,7 +9,8 @@ module.exports = shipit => {
       workspace: './dist',
       deployTo: '/home/ubuntu/api',
       ignores: ['.git', 'node_modules'],
-      key: '~/.ssh/guesswithme-aws.pem'
+      key: '~/.ssh/guesswithme-aws.pem',
+      shallowClone: false
     },
     // Set custom Variables
     production: {
@@ -31,7 +32,7 @@ module.exports = shipit => {
     await shipit.remote(`mkdir ${targetDir}`);
 
     // Copying new relase files
-    await shipit.copyToRemote(path.resolve('./dist/*'), targetDir + '/src');
+    await shipit.copyToRemote(path.resolve('./dist/api/src/*'), targetDir + '/src');
 
     // Copy package.json
     await shipit.copyToRemote(path.resolve('./') + '/package.json', targetDir);
@@ -79,9 +80,7 @@ module.exports = shipit => {
 
     if (Number(versionCount[0]['stdout']) > 5) {
       await shipit.remote(
-        `rm -R ${shipit.config.deployTo}/$(ls -lt ${
-          shipit.config.deployTo
-        } | grep '^d' | tail -1  | tr " " "\n" | tail -1)`
+        `rm -R ${shipit.config.deployTo}/$(ls -lt ${shipit.config.deployTo} | grep '^d' | tail -1  | tr " " "\n" | tail -1)`
       );
     }
   });

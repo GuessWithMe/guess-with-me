@@ -1,6 +1,7 @@
 import redis from '@config/redis';
 
 import { PREVIOUS_TRACKS } from '@consts/redis';
+import { Song } from '@models';
 
 const get = async () => {
   await redis.open();
