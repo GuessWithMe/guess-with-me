@@ -23,7 +23,7 @@ class ActivePlayerHelper {
    * @param {object} activePlayers
    * @returns object[]
    */
-  public static filterActivePlayerListForClient(activePlayers: Record<SocketIO.Socket['id'], ActivePlayer>) {
+  public static filterActivePlayerListForClient(activePlayers: object) {
     return Object.keys(activePlayers).map(key => {
       return {
         id: activePlayers[key].id,
