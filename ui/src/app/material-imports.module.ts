@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -28,12 +29,13 @@ import { NgModule } from '@angular/core';
     MatInputModule,
     MatListModule,
     MatMenuModule,
+    MatProgressBarModule,
     MatProgressSpinnerModule,
     MatRadioModule,
     MatSidenavModule,
     MatSnackBarModule,
     MatTableModule,
-    MatToolbarModule
-  ]
+    MatToolbarModule,
+  ],
 })
 export class MaterialImportsModule {}

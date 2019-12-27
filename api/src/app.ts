@@ -175,8 +175,7 @@ class App {
       onSignal: () => {
         Websockets.close();
         process.exit();
-      },
-      onShutdown: () => {}
+      }
     };
 
     createTerminus(this.server, options as any);

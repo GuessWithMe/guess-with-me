@@ -1,14 +1,14 @@
 import redis from '@config/redis';
-
 import { ACTIVE_PLAYERS } from '@consts/redis';
+import { ActivePlayer, User } from '@types';
 
 class ActivePlayerHelper {
-  public static async setActivePlayers(activePlayers: object): Promise<any> {
+  public static async setActivePlayers(activePlayers: object) {
     await redis.open();
     await redis.setAsync(`${ACTIVE_PLAYERS}`, JSON.stringify(activePlayers));
   }
 
-  public static async getActivePlayers(): Promise<any> {
+  public static async getActivePlayers() {
     await redis.open();
     const activePlayers = await redis.getAsync(`${ACTIVE_PLAYERS}`);
 
@@ -23,7 +23,7 @@ class ActivePlayerHelper {
    * @param {object} activePlayers
    * @returns object[]
    */
-  public static filterActivePlayerListForClient(activePlayers: object): object[] {
+  public static filterActivePlayerListForClient(activePlayers: Record<SocketIO.Socket['id'], ActivePlayer>) {
     return Object.keys(activePlayers).map(key => {
       return {
         id: activePlayers[key].id,

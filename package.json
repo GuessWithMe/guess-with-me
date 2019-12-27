@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0"
+  }
+}

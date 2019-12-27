@@ -1,4 +1,4 @@
-import { Word } from "./Word";
+import { Word } from './Word';
 
 export interface Guess {
   artist: Word[];

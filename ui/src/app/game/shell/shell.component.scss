@@ -1,9 +1,30 @@
+.background {
+  position: absolute;
+  z-index: 1;
+
+  width: 704.99px;
+  height: 766px;
+
+  left: 0px;
+  top: 0px;
+  width: 100%;
+
+  background: #4673d0;
+  background: linear-gradient(66deg, #0054ff 20%, #2adac6 100%);
+
+  width: 704.99px;
+  height: 1066px;
+  width: 100%;
+  overflow: hidden;
+}
+
 .sidenav-container {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
+  z-index: unset;
 }
 
 .mat-sidenav {
@@ -12,16 +33,10 @@
 
   .top {
     padding: 1.5rem 1.5rem;
-    // background: mat-color($app-primary);
-    background: linear-gradient(135deg, #1d263b 0, #323e63 100%);
-    // border-bottom: 1px solid mat-color($app-accent);
+    background: whitesmoke;
 
     h3 {
       font-family: 'Pacifico';
-    }
-
-    .username {
-      // color:
     }
 
     .close {
@@ -33,9 +48,14 @@
     img {
       width: 50px;
       height: 50px;
-      border-radius: 50%;
+      border-radius: 20%;
       border: 1px solid white;
       display: block;
+    }
+
+    .level {
+      font-size: 20px;
+      font-style: italic;
     }
   }
 

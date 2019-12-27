@@ -1,4 +1,4 @@
-import { Playlist } from "./Playlist";
+import { Playlist } from './Playlist';
 
 export interface Room {
   id: number;

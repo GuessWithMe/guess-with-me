@@ -1,5 +1,5 @@
 export interface EnvironmentType {
-  env: 'development'|'production'|'test';
+  env: 'development' | 'production' | 'test';
 
   spotifyClientId: string;
   spotifyClientSecret: string;
@@ -18,5 +18,5 @@ export interface EnvironmentType {
   redis: {
     host: string;
     port: number;
-  },
+  };
 }

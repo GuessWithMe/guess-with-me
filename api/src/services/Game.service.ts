@@ -1,5 +1,6 @@
-import { ActivePlayerHelper, PreviousTracksHelper } from '@helpers';
 import { SongDistributer, SocketService } from '@services';
+import { Guess, ActivePlayer } from '@types';
+import { ActivePlayerHelper, PreviousTracksHelper } from '@helpers';
 
 export default class GameService {
   public static async removeActiveUser(socketId: string) {
@@ -28,7 +29,7 @@ export default class GameService {
     };
   };
 
-  public static async updatePlayersGuessProgress(socketId: string, guessData: object) {
+  public static async updatePlayersGuessProgress(socketId: string, guessData: Guess) {
     let activePlayers = await ActivePlayerHelper.getActivePlayers();
 
     if (!activePlayers) {
@@ -37,14 +38,14 @@ export default class GameService {
 
     activePlayers[socketId] = {
       ...activePlayers[socketId],
-      titleCorrect: guessData['titleCorrect'] || false,
-      artistCorrect: guessData['artistCorrect'] || false
+      titleCorrect: guessData.titleCorrect || false,
+      artistCorrect: guessData.artistCorrect || false
     };
 
     if (GameService.areAllPlayersFinished(activePlayers)) {
       // Set all active player guess statuses as false.
       activePlayers = await GameService.resetGuessStatuses(activePlayers);
-      await SongDistributer.restartAfterPause();
+      SongDistributer.restartAfterPause();
       return;
     }
 
@@ -53,7 +54,7 @@ export default class GameService {
   }
 
   private static areAllPlayersFinished(activePlayers: object) {
-    for (let socketId in activePlayers) {
+    for (const socketId in activePlayers) {
       if (!activePlayers[socketId].titleCorrect || !activePlayers[socketId].artistCorrect) {
         return false;
       }
@@ -62,17 +63,21 @@ export default class GameService {
     return true;
   }
 
-  private static async resetGuessStatuses(activePlayers) {
+  private static async resetGuessStatuses(activePlayers: object) {
     const newActivePlayers = {};
-    for (let socketId in activePlayers) {
-      newActivePlayers[socketId] = {
-        ...activePlayers[socketId],
-        titleCorrect: false,
-        artistCorrect: false
-      };
+    for (const socketId in activePlayers) {
+      if (activePlayers[socketId]) {
+        newActivePlayers[socketId] = {
+          ...activePlayers[socketId],
+          titleCorrect: false,
+          artistCorrect: false
+        };
+      }
     }
 
     await ActivePlayerHelper.setActivePlayers(newActivePlayers);
     new SocketService().broadcastActivePlayerList(newActivePlayers);
+
+    return newActivePlayers;
   }
 }

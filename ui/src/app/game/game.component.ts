@@ -92,7 +92,7 @@ export class GameComponent implements OnInit, OnDestroy {
     this.socket.off('status');
   }
 
-  private prepareGuessArray(songData: object) {
+  private prepareGuessArray(song: Song) {
     this.guess = {
       artist: [],
       title: [],
@@ -100,7 +100,7 @@ export class GameComponent implements OnInit, OnDestroy {
       titleCorrect: false,
     };
 
-    const artistStripped = this.removeParentheses(songData['artists'][0]['name']);
+    const artistStripped = this.removeParentheses(song.artists[0].name);
     for (const word of artistStripped.split(' ')) {
       const cleanWord = this.cleanUpWord(word);
       const guessWord: Word = {
@@ -111,7 +111,7 @@ export class GameComponent implements OnInit, OnDestroy {
       this.guess.artist.push(guessWord);
     }
 
-    const titleStripped = this.removeParentheses(songData['name']);
+    const titleStripped = this.removeParentheses(song.name);
     for (const word of titleStripped.split(' ')) {
       const cleanWord = this.cleanUpWord(word);
       const guessWord: Word = {
@@ -122,8 +122,8 @@ export class GameComponent implements OnInit, OnDestroy {
     }
 
     if (isDevMode()) {
-      console.log(JSON.stringify(this.guess.artist));
-      console.log(JSON.stringify(this.guess.title));
+      console.warn(this.guess.title.map(({ word }) => word).join(' '));
+      console.warn(this.guess.artist.map(({ word }) => word).join(' '));
     }
   }
 
@@ -268,7 +268,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     if (this.guess.artistCorrect && this.guess.titleCorrect) {
       const successSound = new Howl({
-        src: ['src/assets/sounds/success.wav'],
+        src: ['assets/sounds/success.wav'],
       });
 
       successSound.play();

@@ -1,4 +1,4 @@
-import { EnvironmentType } from "@t/Environment";
+import { EnvironmentType } from '@t/Environment';
 
 function getConfig(): EnvironmentType {
   return {
@@ -15,15 +15,14 @@ function getConfig(): EnvironmentType {
       db: 'change',
       port: 13306,
       host: 'change',
-      pass: 'change',
+      pass: 'change'
     },
 
     redis: {
       host: 'change',
-      port: 16379,
-    },
+      port: 16379
+    }
   };
 }
-
 
 export default getConfig();

@@ -20,8 +20,6 @@ class Websockets {
     );
 
     io.on('connection', async (socket: any) => {
-      socket.on('event', data => {});
-
       socket.on('disconnect', async () => {
         await GameService.removeActiveUser(socket.id);
       });

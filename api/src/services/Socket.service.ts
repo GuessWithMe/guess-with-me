@@ -18,11 +18,9 @@ export default class SocketService {
   /**
    * Sends a pause event with the last song played for displaying the correct
    * answer
-   *
-   * @param song - song that just finished playing
    */
-  public sendPause(song: Song) {
-    this.socket.emit('pause', song);
+  public sendPause(previousTracks: Song[]) {
+    this.socket.emit('pause', previousTracks);
   }
 
   /**

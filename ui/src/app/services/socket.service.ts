@@ -7,19 +7,19 @@ import { environment } from '@environment';
 export class SocketService {
   socket: SocketIOClient.Socket;
 
-  initiateSocket(): void {
+  initiateSocket = () => {
     this.socket = socketIo(environment.apiUrl, {
       transports: ['websocket'],
     });
-  }
+  };
 
-  joinRoom(room: string): void {
+  joinRoom = (room: string) => {
     this.socket.emit('join', room);
-  }
+  };
 
-  leaveRoom(room: string): void {
+  leaveRoom = (room: string) => {
     this.socket.emit('leave', room);
-  }
+  };
 
   getSocket = () => {
     return this.socket;

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "ts-node-dev --no-notify --respawn --transpileOnly  -r tsconfig-paths/register src/index.ts",
     "test": "mocha",
-    "lint": "eslint src --ext ts",
+    "lint": "tslint 'src/**/*.ts'",
     "migrate": "npx sequelize-cli db:migrate",
     "generate:migration": "npx sequelize migration:generate",
     "rollback": "npx sequelize db:migrate:undo"
@@ -56,7 +56,7 @@
     "shipit-cli": "^5.1.0",
     "shipit-deploy": "^5.1.0",
     "ts-node-dev": "^1.0.0-pre.44",
-    "tslint": "^5.16.0",
+    "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0"
   }
 }

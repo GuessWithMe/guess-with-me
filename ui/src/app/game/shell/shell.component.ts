@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { MatProgressBar } from '@angular/material';
 
 import { UserService } from '@services';
 import { Subscription } from 'rxjs';
