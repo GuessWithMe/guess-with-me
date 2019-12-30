@@ -32,16 +32,19 @@ class RedisConfig {
     return get(key);
   };
 
+  // tslint:disable-next-line: no-any
   public setAsync = async (...args: any[]) => {
     const set = promisify(this.client.set).bind(this.client);
     return set(...args);
   };
 
+  // tslint:disable-next-line: no-any
   public setExAsync = async (...args: any[]) => {
     const set = promisify(this.client.setex).bind(this.client);
     return set(...args);
   };
 
+  // tslint:disable-next-line: no-any
   public del = async (...args: any[]) => {
     const del = promisify(this.client.del).bind(this.client);
     return del(...args);

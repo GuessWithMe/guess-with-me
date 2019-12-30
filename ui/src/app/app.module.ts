@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {
   AuthService,
-  GameService,
   //   Interceptor,
   PlaylistService,
   RoomService,
@@ -33,7 +32,6 @@ import {
       multi: true,
     },
     SocketService,
-    GameService,
     AuthService,
   ],
   bootstrap: [AppComponent],

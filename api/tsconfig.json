@@ -7,10 +7,13 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "keyofStringsOnly": false,
+    "typeRoots": ["./node_modules/@types", "./typings"],
 
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "moduleResolution": "node",
+    "isolatedModules": false,
+    "noImplicitAny": true,
 
     "baseUrl": "./",
     "paths": {

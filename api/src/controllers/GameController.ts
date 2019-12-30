@@ -9,10 +9,12 @@ import { GameService, SongDistributer } from '@services';
 export const getStatus: Handler = async (req, res): Promise<Response> => {
   try {
     const status = SongDistributer.getStatus();
-    let activePlayers = await ActivePlayerHelper.getActivePlayers();
-    activePlayers = ActivePlayerHelper.filterActivePlayerListForClient(activePlayers);
+    const activePlayers = await ActivePlayerHelper.getActivePlayers();
 
-    return res.json({ status, activePlayers });
+    return res.json({
+      status,
+      activePlayers: ActivePlayerHelper.filterActivePlayerListForClient(activePlayers)
+    });
   } catch (error) {
     return res.status(500).json(error.message);
   }

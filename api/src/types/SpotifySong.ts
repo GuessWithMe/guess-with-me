@@ -2,14 +2,13 @@ export interface SpotifySong {
   added_at: Date;
   added_by: AddedBy;
   is_local: boolean;
-  primary_color?: any;
   track: Track;
   video_thumbnail: VideoThumbnail;
 }
 
 export interface Track {
   album: Album;
-  artists: any[][];
+  artists: Artist[];
   available_markets: string[];
   disc_number: number;
   duration_ms: number;
@@ -43,8 +42,8 @@ export interface AddedBy {
 
 export interface Album {
   album_type: string;
-  artists: any[];
-  available_markets: any[];
+  artists: Artist[];
+  available_markets: string[];
   external_urls: ExternalUrls2;
   href: string;
   id: string;
@@ -66,11 +65,20 @@ export interface ExternalUrls2 {
 }
 
 export interface VideoThumbnail {
-  url?: any;
+  url?: string;
 }
 
 export interface Image {
   height: number;
   url: string;
   width: number;
+}
+
+interface Artist {
+  external_urls: ExternalUrls;
+  href: string;
+  id: string;
+  name: string;
+  type: string;
+  uri: string;
 }

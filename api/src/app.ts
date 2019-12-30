@@ -1,4 +1,4 @@
-import { createTerminus } from '@godaddy/terminus';
+import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import { Express } from 'express-serve-static-core';
 import { Sequelize } from 'sequelize-typescript';
 import { Strategy as SpotifyStrategy } from 'passport-spotify';
@@ -27,6 +27,8 @@ import UserRoutes from '@routes/User';
 
 import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from '@models';
 import { ActivePlayerHelper } from '@helpers';
+
+import { SpotifyProfile } from '@t/SpotifyProfile';
 
 class App {
   public app: Express;
@@ -124,7 +126,13 @@ class App {
           clientID: Environment.spotifyClientId,
           clientSecret: Environment.spotifyClientSecret
         },
-        async (accessToken: string, refreshToken: string, expiresIn: any, profile: any, done: any) => {
+        async (
+          accessToken: string,
+          refreshToken: string,
+          expiresIn: number,
+          profile: SpotifyProfile,
+          done: (err: Error, user: User) => void
+        ) => {
           const userData = {
             spotifyAccessToken: accessToken,
             spotifyDisplayName: profile.displayName,
@@ -166,19 +174,19 @@ class App {
   }
 
   private configureTerminus() {
-    const options = {
+    const options: TerminusOptions = {
       timeout: 1000,
       signals: ['SIGINT', 'SIGTERM'],
       beforeShutdown: async () => {
         await ActivePlayerHelper.setActivePlayers({});
       },
-      onSignal: () => {
+      onSignal: async () => {
         Websockets.close();
         process.exit();
       }
     };
 
-    createTerminus(this.server, options as any);
+    createTerminus(this.server, options);
   }
 }
 

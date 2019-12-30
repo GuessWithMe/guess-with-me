@@ -45,7 +45,8 @@
     "no-console": false,
     "interface-name": [true, "never-prefix"],
     "ordered-imports": false,
-    "object-literal-sort-keys": false
+    "object-literal-sort-keys": false,
+    "no-any": true
   },
   "rulesDirectory": []
 }

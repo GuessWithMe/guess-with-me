@@ -1,6 +1,7 @@
 import express from 'express';
 import sharedSession from 'express-socket.io-session';
 import SocketIO from 'socket.io';
+import http from 'http';
 
 import { ActivePlayerHelper } from '@helpers';
 import { GameService } from '@services';
@@ -10,7 +11,7 @@ import { worker } from './../../src/worker';
 let io: SocketIO.Server;
 
 class Websockets {
-  public static initialize(server: any, session: express.RequestHandler) {
+  public static initialize(server: http.Server, session: express.RequestHandler) {
     io = SocketIO(server);
 
     io.use(
@@ -19,7 +20,7 @@ class Websockets {
       })
     );
 
-    io.on('connection', async (socket: any) => {
+    io.on('connection', async socket => {
       socket.on('disconnect', async () => {
         await GameService.removeActiveUser(socket.id);
       });

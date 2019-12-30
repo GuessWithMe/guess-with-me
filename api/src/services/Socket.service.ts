@@ -3,6 +3,7 @@ import SocketIO from 'socket.io';
 import Websockets from '@config/websockets';
 import { ActivePlayerHelper } from '@helpers';
 import { Song } from '@models';
+import { ActivePlayers } from '@t/Game';
 
 export default class SocketService {
   private socket: SocketIO.Server;
@@ -28,17 +29,23 @@ export default class SocketService {
    *
    * @param activePlayers
    */
-  public broadcastActivePlayerList(activePlayers: object): void {
-    activePlayers = ActivePlayerHelper.filterActivePlayerListForClient(activePlayers);
-    this.socket.to('general').emit('players', activePlayers);
+  public broadcastActivePlayerList(activePlayers: ActivePlayers): void {
+    this.socket.to('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(activePlayers));
   }
 
   /**
    * Emits playlist import progress to the importer.
-   *
-   * @param progress
    */
-  public sendPlaylistImportProgress(socketId: string, progress: any): void {
+  public sendPlaylistImportProgress(
+    socketId: string,
+    progress: {
+      playlist: {
+        id: string;
+        name: string;
+      };
+      progress: number;
+    }
+  ): void {
     this.socket.sockets.connected[socketId].emit('playlistProgress', progress);
   }
 }

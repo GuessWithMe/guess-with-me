@@ -2,11 +2,10 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Howl } from 'howler';
 import { isDevMode } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import FuzzySet from 'fuzzyset.js';
 
-import { RoomStatus, Guess, User, Word, Song } from '@types';
-import { GameService, SocketService, UserService } from '@services';
+import { RoomStatus, Guess, User, Word, Song, PlayerOmitted } from '@types';
+import { SocketService, UserService } from '@services';
 
 @Component({
   selector: 'app-game',
@@ -15,7 +14,7 @@ import { GameService, SocketService, UserService } from '@services';
 })
 export class GameComponent implements OnInit, OnDestroy {
   private timeToGuess = 30;
-  public activePlayers = [];
+  public players: PlayerOmitted[] = [];
   public currentGuess = '';
   public flashGreenBool = false;
   public flashRedBool = false;
@@ -31,12 +30,7 @@ export class GameComponent implements OnInit, OnDestroy {
     currentGuess: new FormControl(''),
   });
 
-  constructor(
-    private gameService: GameService,
-    private userService: UserService,
-    private socketService: SocketService,
-    private snackBar: MatSnackBar,
-  ) {}
+  constructor(private userService: UserService, private socketService: SocketService) {}
 
   async ngOnInit() {
     this.userService.user.subscribe(user => {
@@ -46,8 +40,8 @@ export class GameComponent implements OnInit, OnDestroy {
     this.socket = this.socketService.getSocket();
     this.socketService.joinRoom('general');
 
-    this.socket.on('players', (players: User[]) => {
-      this.activePlayers = players;
+    this.socket.on('players', (players: PlayerOmitted[]) => {
+      this.players = players;
     });
 
     this.socket.on('song', (song: Song) => {
@@ -56,7 +50,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.socket.on(
       'status',
-      (payload: { status: RoomStatus; previousTracks: Song[]; activePlayers: User[] }) => {
+      (payload: { status: RoomStatus; previousTracks: Song[]; players: PlayerOmitted[] }) => {
         this.previousTracks = payload.previousTracks;
 
         if (payload.status.isPaused) {
@@ -70,7 +64,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.socket.on('pause', (previousTracks: Song[]) => {
       this.previousTracks = previousTracks;
-      this.gameService.setCurrentSong(null);
       this.setPause();
       this.timeLeft = 0;
     });
@@ -224,7 +217,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
   public timesUp() {}
 
-  public cleanUpWord(word): string {
+  public cleanUpWord(word: string) {
     // Turn accented chars into normal chars.
     word = word.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 

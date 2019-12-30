@@ -10,4 +10,4 @@ export * from './SpotifyPlaylists';
 export * from './User';
 export * from './Word';
 
-export * from './Game/ActivePlayer';
+export * from './Game/Player';

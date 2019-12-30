@@ -1,3 +1,5 @@
+import { Track } from './SpotifySong';
+
 export interface SpotifyPlaylist {
   collaborative: boolean;
   description: string;
@@ -5,10 +7,11 @@ export interface SpotifyPlaylist {
   followers: Followers;
   href: string;
   id: string;
-  images: any[][];
+  images: {
+    url: string;
+  };
   name: string;
   owner: Owner;
-  primary_color?: any;
   public: boolean;
   snapshot_id: string;
   tracks: Tracks;
@@ -21,13 +24,13 @@ interface ExternalUrls {
 }
 
 interface Followers {
-  href?: any;
+  href?: string;
   total: number;
 }
 
 interface Owner {
   display_name: string;
-  external_urls: any[];
+  external_urls: string[];
   href: string;
   id: string;
   type: string;
@@ -36,10 +39,15 @@ interface Owner {
 
 interface Tracks {
   href: string;
-  items: any[];
+  items: Array<{
+    added_at: string;
+    added_by: string;
+    is_local: string;
+    track: Track;
+  }>;
   limit: number;
-  next?: any;
+  next?: string;
   offset: number;
-  previous?: any;
+  previous?: string;
   total: number;
 }

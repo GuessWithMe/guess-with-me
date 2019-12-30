@@ -12,7 +12,7 @@ import { Playlist, PlaylistItem } from '@types';
 export class PlaylistsComponent implements OnInit, OnDestroy {
   public spotifyPlaylists: PlaylistItem[];
   public playlists: Playlist[];
-  public progress = {};
+  public progress: Record<Playlist['spotifyId'], number> = {};
   private socket: SocketIOClient.Socket;
 
   constructor(
@@ -61,9 +61,9 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
     this.socket = this.socketService.getSocket();
     this.socket.on(
       'playlistProgress',
-      (data: { progress: number; playlist: { id: string; name: string } }) => {
-        this.progress[data.playlist.id] = data.progress * 100;
-        if (this.progress[data.playlist.id] === 100) {
+      (data: { progress: number; playlist: { spotifyId: string; name: string } }) => {
+        this.progress[data.playlist.spotifyId] = data.progress * 100;
+        if (this.progress[data.playlist.spotifyId] === 100) {
           this.snackBar.open(`Finished importing "${data.playlist.name}"`, 'Dismiss', {
             duration: 5000,
           });

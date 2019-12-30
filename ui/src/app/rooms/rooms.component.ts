@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RoomService } from '@services';
+import { Room } from '@types';
 
 interface GameRoom {
   title: string;
@@ -23,7 +24,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   ];
   filteredGameRooms = this.gameRooms;
 
-  playerRooms = [];
+  playerRooms: Room[] = [];
   filteredPlayerRooms = this.playerRooms;
 
   constructor(private roomService: RoomService) {

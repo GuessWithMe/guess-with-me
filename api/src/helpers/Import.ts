@@ -1,11 +1,9 @@
 import moment from 'moment';
 
 import { Album, Artist, Playlist, Song, User } from '@models';
-import { SpotifyPlaylist } from '@t/SpotifyPlaylist';
-import { Album as SpotifyAlbum } from '@t/SpotifySong';
 
 class ImportHelper {
-  public static async importSong(track: any): Promise<Song> {
+  public static async importSong(track: SpotifyApi.TrackObjectFull) {
     let song = await Song.findOne({ where: { spotifyId: track.id } });
 
     const songObject = {
@@ -20,7 +18,7 @@ class ImportHelper {
     return song;
   }
 
-  public static async importArtist(spotifyArtist: any): Promise<Artist> {
+  public static async importArtist(spotifyArtist: SpotifyApi.ArtistObjectSimplified) {
     let artist = await Artist.findOne({
       where: {
         spotifyId: spotifyArtist.id
@@ -39,7 +37,7 @@ class ImportHelper {
 
   public static async createOrUpdatePlaylist(
     user: User,
-    spotifyPlaylist: SpotifyPlaylist,
+    spotifyPlaylist: SpotifyApi.SinglePlaylistResponse,
     eligibleTracks: number
   ): Promise<Playlist> {
     let playlist = await Playlist.findOne({
@@ -70,7 +68,7 @@ class ImportHelper {
    * @returns Promise<Album>
    * @memberof ImportHelper
    */
-  public static async importAlbum(spotifyAlbum: SpotifyAlbum): Promise<Album> {
+  public static async importAlbum(spotifyAlbum: SpotifyApi.AlbumObjectSimplified) {
     let album = await Album.findOne({
       where: {
         spotifyId: spotifyAlbum.id

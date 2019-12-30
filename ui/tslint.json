@@ -47,7 +47,8 @@
     "template-no-negated-async": true,
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
-    "semicolon": [true, "always", "strict-bound-class-methods"]
+    "semicolon": [true, "always", "strict-bound-class-methods"],
+    "no-any": true
   },
   "rulesDirectory": ["codelyzer"]
 }

@@ -1,6 +1,8 @@
 import { SongDistributer, SocketService } from '@services';
-import { Guess, ActivePlayer } from '@types';
 import { ActivePlayerHelper, PreviousTracksHelper } from '@helpers';
+
+import { Guess } from '@types';
+import { ActivePlayers } from '@t/Game';
 
 export default class GameService {
   public static async removeActiveUser(socketId: string) {
@@ -16,15 +18,15 @@ export default class GameService {
   }
 
   public static getStatus = async () => {
-    const status = await SongDistributer.getStatus();
-    let activePlayers = await ActivePlayerHelper.getActivePlayers();
-    activePlayers = ActivePlayerHelper.filterActivePlayerListForClient(activePlayers);
-
-    const previousTracks = await PreviousTracksHelper.get();
+    const [status, activePlayers, previousTracks] = await Promise.all([
+      SongDistributer.getStatus(),
+      ActivePlayerHelper.getActivePlayers(),
+      PreviousTracksHelper.get()
+    ]);
 
     return {
       status,
-      activePlayers,
+      activePlayers: ActivePlayerHelper.filterActivePlayerListForClient(activePlayers),
       previousTracks
     };
   };
@@ -53,7 +55,7 @@ export default class GameService {
     new SocketService().broadcastActivePlayerList(activePlayers);
   }
 
-  private static areAllPlayersFinished(activePlayers: object) {
+  private static areAllPlayersFinished(activePlayers: ActivePlayers) {
     for (const socketId in activePlayers) {
       if (!activePlayers[socketId].titleCorrect || !activePlayers[socketId].artistCorrect) {
         return false;
@@ -63,8 +65,8 @@ export default class GameService {
     return true;
   }
 
-  private static async resetGuessStatuses(activePlayers: object) {
-    const newActivePlayers = {};
+  private static async resetGuessStatuses(activePlayers: ActivePlayers) {
+    const newActivePlayers: ActivePlayers = {};
     for (const socketId in activePlayers) {
       if (activePlayers[socketId]) {
         newActivePlayers[socketId] = {

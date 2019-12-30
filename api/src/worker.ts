@@ -4,7 +4,6 @@ import Environment from '@env';
 import { ImportHelper } from '@helpers';
 import { User } from '@models';
 import { SocketService, SpotifyService } from '@services';
-import { SpotifySong } from '@t/SpotifySong';
 
 export let worker: BackgroundWorker;
 
@@ -19,7 +18,7 @@ class BackgroundWorker {
       }
     });
 
-    this.queue.process('importPlaylist', async (job: Job, done: any) => {
+    this.queue.process('importPlaylist', async (job: Job, done: (error?: Error) => void) => {
       try {
         let songsProcessed = 0;
 
@@ -27,7 +26,7 @@ class BackgroundWorker {
         const eligibleTracks = playlist.tracks.items.filter(s => !s.is_local);
         const dbPlaylist = await ImportHelper.createOrUpdatePlaylist(job.data.user, playlist, eligibleTracks.length);
 
-        for (const s of eligibleTracks as SpotifySong[]) {
+        for (const s of eligibleTracks) {
           const songArtists = [];
           for (const spotifyArtist of s.track.artists) {
             job.log(JSON.stringify(spotifyArtist));
@@ -47,7 +46,7 @@ class BackgroundWorker {
           const progress = songsProcessed / eligibleTracks.length;
           new SocketService().sendPlaylistImportProgress(job.data.socketId, {
             playlist: {
-              id: playlist.id,
+              spotifyId: playlist.id,
               name: playlist.name
             },
             progress
