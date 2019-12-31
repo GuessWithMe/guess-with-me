@@ -21,14 +21,16 @@
               </p>
             </div>
             <button
-              class="flex-center"
+              class="center"
               mat-flat-button="mat-flat-button"
               color="primary"
               (click)="importPlaylist(spotifyPlaylist)"
               [disabled]="progress[spotifyPlaylist.id]"
             >
-              <span *ngIf="!progress[spotifyPlaylist.id] &amp;&amp; !playlists[spotifyPlaylist.id]">Import</span
-              ><span *ngIf="!progress[spotifyPlaylist.id] &amp;&amp; playlists[spotifyPlaylist.id]">Reimport</span
+              <span *ngIf="!progress[spotifyPlaylist.id] &amp;&amp; !playlists[spotifyPlaylist.id]"
+                >Import</span
+              ><span *ngIf="!progress[spotifyPlaylist.id] &amp;&amp; playlists[spotifyPlaylist.id]"
+                >Reimport</span
               ><mat-progress-spinner
                 *ngIf="progress[spotifyPlaylist.id]"
                 [mode]="'determinate'"
