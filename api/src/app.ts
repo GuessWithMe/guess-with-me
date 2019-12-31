@@ -1,18 +1,18 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import { Express } from 'express-serve-static-core';
 import { Sequelize } from 'sequelize-typescript';
-import { Strategy as SpotifyStrategy } from 'passport-spotify';
+
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import http from 'http';
-import moment from 'moment';
 import morgan from 'morgan';
-import passport, { PassportStatic } from 'passport';
 import session from 'express-session';
 
+import setupPassport from '@config/passport';
 import Websockets from '@config/websockets';
+
 import Environment from '@env';
 import { SongDistributer } from '@services';
 import { startWorker } from './worker';
@@ -28,11 +28,8 @@ import UserRoutes from '@routes/User';
 import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from '@models';
 import { ActivePlayerHelper } from '@helpers';
 
-import { SpotifyProfile } from '@t/SpotifyProfile';
-
 class App {
   public app: Express;
-  public spotifyStrategy = SpotifyStrategy;
   public server: http.Server;
   private session: express.RequestHandler;
 
@@ -44,7 +41,7 @@ class App {
     this.configureCors();
     this.configureExpressSession();
     this.configureWebSockets();
-    this.setupPassport(passport);
+    setupPassport(this.app);
     this.configureMorgan();
     this.mountRoutes();
     this.startSongDistributer();
@@ -107,58 +104,6 @@ class App {
     });
 
     this.app.use(this.session);
-  }
-
-  // tslint:disable-next-line: no-shadowed-variable
-  private setupPassport(passport: PassportStatic): void {
-    passport.serializeUser((user, done) => {
-      done(undefined, user);
-    });
-
-    passport.deserializeUser((user, done) => {
-      done(undefined, user);
-    });
-
-    passport.use(
-      new SpotifyStrategy(
-        {
-          callbackURL: `${Environment.apiUrl}/auth/spotify/callback`,
-          clientID: Environment.spotifyClientId,
-          clientSecret: Environment.spotifyClientSecret
-        },
-        async (
-          accessToken: string,
-          refreshToken: string,
-          expiresIn: number,
-          profile: SpotifyProfile,
-          done: (err: Error, user: User) => void
-        ) => {
-          const userData = {
-            spotifyAccessToken: accessToken,
-            spotifyDisplayName: profile.displayName,
-            spotifyId: profile.id,
-            spotifyImageUrl: profile.photos[0] || undefined,
-            spotifyRefreshToken: refreshToken,
-            spotifyUsername: profile.username,
-            tokenExpiresAt: moment()
-              .add(expiresIn, 'seconds')
-              .toDate()
-          };
-
-          let user = await User.findOne({
-            where: {
-              spotifyId: profile.id
-            }
-          });
-
-          user = user ? await user.update(userData) : await User.create(userData);
-          return done(undefined, user);
-        }
-      )
-    );
-
-    this.app.use(passport.initialize());
-    this.app.use(passport.session());
   }
 
   private configureMorgan() {
