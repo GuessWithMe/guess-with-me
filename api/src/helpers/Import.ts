@@ -68,7 +68,13 @@ class ImportHelper {
    * @returns Promise<Album>
    * @memberof ImportHelper
    */
-  public static async importAlbum(spotifyAlbum: SpotifyApi.AlbumObjectSimplified) {
+  public static async importAlbum(
+    spotifyAlbum: SpotifyApi.AlbumObjectSimplified & {
+      // TODO: update this once https://github.com/DefinitelyTyped/DefinitelyTyped/pull/41309 is merged
+      release_date_precision: string;
+      release_date: string;
+    }
+  ) {
     let album = await Album.findOne({
       where: {
         spotifyId: spotifyAlbum.id

@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss']
+  styleUrls: ['./toolbar.component.scss'],
 })
 export class ToolbarComponent implements OnInit, OnDestroy {
   @Output() toggleNav: EventEmitter<any> = new EventEmitter();
@@ -21,7 +21,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
       await this.authService.logOut();
       this.router.navigate(['/']);
       this.snackBar.open('Come back soon! :)', null, {
-        duration: 5000
+        duration: 5000,
       });
     } catch (httpError) {
       console.log(httpError);

@@ -14,11 +14,10 @@ export class UserService {
 
   /**
    * Retrieves the currently authenticated user.
-   * @returns Promise<User>
    */
-  public getUser(): Promise<User> {
+  public getUser() {
     const url = `${environment.apiUrl}/users/current`;
-    return this.http.get(url).toPromise() as Promise<User>;
+    return this.http.get<User>(url).toPromise();
   }
 
   public setUser(user: User) {

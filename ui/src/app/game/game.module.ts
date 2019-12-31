@@ -14,6 +14,7 @@ import { PreviousTracksComponent } from './previous-tracks/previous-tracks.compo
 import { RoomsComponent } from '../rooms/rooms.component';
 import { RoomsCreateComponent } from '../rooms/create/create.component';
 import { ToolbarComponent } from '../toolbar/toolbar.component';
+import { GameSidenavComponent } from './sidenav/sidenav.component';
 
 import { MoveTextDirective } from '../directives/moveText';
 
@@ -28,6 +29,7 @@ import { MoveTextDirective } from '../directives/moveText';
     RoomsComponent,
     RoomsCreateComponent,
     ToolbarComponent,
+    GameSidenavComponent,
   ],
   imports: [
     CommonModule,

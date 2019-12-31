@@ -1,0 +1,57 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    id="sidenav"
+    mode="push"
+    (keydown.escape)="close('escape')"
+    [autoFocus]="false"
+  >
+    <div class="top justify-content-between align-items-center" *ngIf="user">
+      <div><img [src]="user.spotifyImageUrl" /></div>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <h3 class="mb-0">{{ user.spotifyDisplayName }}</h3>
+          <span class="username">{{ user.spotifyUsername }}</span>
+        </div>
+        <span class="level">Lv. 14</span>
+      </div>
+
+      <mat-progress-bar class="mt-3" mode="determinate" value="40"></mat-progress-bar>
+
+      <button class="close" mat-button="" (click)="close('toggle button')">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+    </div>
+    <div class="nav">
+      <div class="link-container">
+        <button
+          class="mb-1"
+          mat-button="mat-button"
+          routerLink="/game/rooms"
+          routerLinkActive="active"
+        >
+          <mat-icon class="mr-4">meeting_room</mat-icon>Rooms
+        </button>
+      </div>
+      <div class="link-container">
+        <button
+          class="mb-1"
+          mat-button="mat-button"
+          routerLink="/game/playlists"
+          routerLinkActive="active"
+        >
+          <mat-icon class="mr-4">queue_music</mat-icon>Playlists
+        </button>
+      </div>
+      <div class="link-container">
+        <button class="mb-1" mat-button="mat-button" (click)="logOut()">
+          <mat-icon class="mr-4">power_settings_new</mat-icon>Sign out
+        </button>
+      </div>
+    </div>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <app-toolbar (toggleNav)="toggleNav()"></app-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

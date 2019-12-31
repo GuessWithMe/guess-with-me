@@ -37,7 +37,13 @@ class BackgroundWorker {
           const song = await ImportHelper.importSong(s.track);
           await song.$set('artists', songArtists);
 
-          const album = await ImportHelper.importAlbum(s.track.album);
+          const album = await ImportHelper.importAlbum(
+            s.track.album as SpotifyApi.AlbumObjectSimplified & {
+              // TODO: update this once https://github.com/DefinitelyTyped/DefinitelyTyped/pull/41309 is merged
+              release_date_precision: string;
+              release_date: string;
+            }
+          );
           await song.$set('album', album);
 
           await song.$add('playlist', dbPlaylist);

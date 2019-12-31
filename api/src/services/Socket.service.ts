@@ -40,7 +40,7 @@ export default class SocketService {
     socketId: string,
     progress: {
       playlist: {
-        id: string;
+        spotifyId: string;
         name: string;
       };
       progress: number;
