@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 
 import { environment } from '@environment';
 import { Playlist, Room } from '@types';
@@ -13,6 +14,9 @@ interface CreateBody {
 
 @Injectable()
 export class RoomService {
+  public roomSource = new BehaviorSubject(null);
+  room = this.roomSource.asObservable();
+
   constructor(private http: HttpClient) {}
 
   public create(body: CreateBody) {

@@ -53,3 +53,20 @@
     display: none;
   }
 }
+
+.menu-toggle {
+  &.absolute {
+    position: absolute;
+    left: 0px;
+  }
+}
+
+.wrapper {
+  width: 100%;
+  position: relative;
+}
+
+.room-title {
+  font-weight: bold;
+  font-size: 14px;
+}

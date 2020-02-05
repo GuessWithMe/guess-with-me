@@ -43,6 +43,7 @@ export class GameComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     const slug = this.route.snapshot.params.slug;
     this.room = await this.roomService.get(slug);
+    this.roomService.roomSource.next(this.room);
 
     this.userService.user.subscribe(user => {
       this.user = user;
