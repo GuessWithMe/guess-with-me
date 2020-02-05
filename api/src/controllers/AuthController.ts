@@ -1,6 +1,6 @@
 import { Handler } from 'express';
 
-import Environment from '@env';
+import Environment from 'config/environment';
 
 export const loginWithSpotify: Handler = (req, res) => {
   return res.redirect(`${Environment.angularUrl}/game`);

@@ -1,4 +1,4 @@
-import { Album, Artist, Playlist, Song, SongArtist, SongPlaylist } from '@models';
+import { Album, Artist, Playlist, Song, SongArtist, SongPlaylist } from 'models';
 import { Handler, Response } from 'express';
 
 export const truncateDatabase: Handler = async (req, res): Promise<Response> => {

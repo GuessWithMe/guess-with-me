@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-import { Album, Artist, Playlist, Song, User } from '@models';
+import { Album, Artist, Playlist, Song, User } from 'models';
 
 class ImportHelper {
   public static async importSong(track: SpotifyApi.TrackObjectFull) {

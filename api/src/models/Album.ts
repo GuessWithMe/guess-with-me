@@ -1,4 +1,4 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { Column, Model, Table, Default } from 'sequelize-typescript';
 
 @Table({ tableName: 'albums' })
 export class Album extends Model<Album> {
@@ -16,4 +16,12 @@ export class Album extends Model<Album> {
 
   @Column
   public spotifyUrl: string;
+
+  @Default(new Date())
+  @Column
+  public createdAt: Date;
+
+  @Default(new Date())
+  @Column
+  public updatedAt: Date;
 }

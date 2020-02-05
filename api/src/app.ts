@@ -10,28 +10,33 @@ import http from 'http';
 import morgan from 'morgan';
 import session from 'express-session';
 
-import setupPassport from '@config/passport';
-import Websockets from '@config/websockets';
+import setupPassport from 'config/passport';
 
-import Environment from '@env';
-import { SongDistributer } from '@services';
-import { startWorker } from './worker';
+import Environment from 'config/environment';
+import { SongDistributer, GameService } from 'services';
 
 // Routes
-import AdminRoutes from '@routes/Admin';
-import AuthRoutes from '@routes/Auth';
-import GameRoutes from '@routes/Game';
-import PlaylistRoutes from '@routes/Playlist';
-import RoomRoutes from '@routes/Room';
-import UserRoutes from '@routes/User';
+import AdminRoutes from 'routes/Admin';
+import AuthRoutes from 'routes/Auth';
+import GameRoutes from 'routes/Game';
+import PlaylistRoutes from 'routes/Playlist';
+import RoomRoutes from 'routes/Room';
+import UserRoutes from 'routes/User';
 
-import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from '@models';
-import { ActivePlayerHelper } from '@helpers';
+import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from 'models';
+import { ActivePlayerHelper } from 'helpers';
+import SocketWrapper from 'lib/SocketWrapper';
+import redis from 'config/redis';
+
+import playlistsEvents from 'sockets/playlists';
+import roomsEvents from './sockets/rooms';
+import { startWorker } from './worker';
 
 class App {
   public app: Express;
   public server: http.Server;
   private session: express.RequestHandler;
+  private socket!: SocketIO.Server;
 
   constructor() {
     this.app = express();
@@ -40,15 +45,19 @@ class App {
     this.configureSequelize();
     this.configureCors();
     this.configureExpressSession();
-    this.configureWebSockets();
+    this.socket = this.configureWebSockets();
     setupPassport(this.app);
     this.configureMorgan();
     this.mountRoutes();
-    this.startSongDistributer();
     this.configureTerminus();
+
     startWorker();
 
+    redis.open();
+
     console.log('----------------- Server started -----------------');
+
+    this.init();
   }
 
   private mountRoutes(): void {
@@ -62,7 +71,7 @@ class App {
     this.app.use('/', router);
   }
 
-  private configureCors(): void {
+  private configureCors() {
     const corsOptions = {
       credentials: true,
       origin: [Environment.angularUrl, 'https://accounts.spotify.com']
@@ -71,7 +80,7 @@ class App {
     this.app.use(cors(corsOptions));
   }
 
-  private configureSequelize(): void {
+  private configureSequelize() {
     const sequelize = new Sequelize({
       database: Environment.maria.db,
       dialect: 'mysql',
@@ -84,6 +93,7 @@ class App {
     });
 
     sequelize.addModels([Album, Artist, Playlist, Song, SongArtist, SongPlaylist, Room, RoomPlaylist, User]);
+    // sequelize.sync({ force: true });
   }
 
   private configureExpressSession() {
@@ -111,7 +121,10 @@ class App {
   }
 
   private configureWebSockets() {
-    Websockets.initialize(this.server, this.session);
+    const server = SocketWrapper.init(this.server, this.session);
+    SocketWrapper.namespaces.rooms.on('connection', roomsEvents);
+    SocketWrapper.namespaces.playlists.on('connection', playlistsEvents);
+    return server;
   }
 
   private async startSongDistributer() {
@@ -123,16 +136,27 @@ class App {
       timeout: 1000,
       signals: ['SIGINT', 'SIGTERM'],
       beforeShutdown: async () => {
-        await ActivePlayerHelper.setActivePlayers({});
+        // await ActivePlayerHelper.setActivePlayers({});
       },
       onSignal: async () => {
-        Websockets.close();
+        // Websockets.close();
         process.exit();
       }
     };
 
     createTerminus(this.server, options);
   }
+
+  private closeSocket = () => {
+    return new Promise(resolve => {
+      this.socket.close(() => resolve());
+    });
+  };
+
+  private init = async () => {
+    await GameService.initRoomStatuses();
+    this.startSongDistributer();
+  };
 }
 
 export default new App();

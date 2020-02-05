@@ -1,73 +1,112 @@
-import express from 'express';
-import sharedSession from 'express-socket.io-session';
-import SocketIO from 'socket.io';
-import http from 'http';
+// import express from 'express';
+// import sharedSession from 'express-socket.io-session';
+// import SocketIO from 'socket.io';
+// import http from 'http';
 
-import { ActivePlayerHelper } from '@helpers';
-import { GameService } from '@services';
+// import { ActivePlayerHelper } from 'helpers';
+// import { GameService } from 'services';
 
-import { worker } from './../../src/worker';
+// import { worker } from './../../src/worker';
+// import { Room } from '@types';
 
-let io: SocketIO.Server;
+// let io: SocketIO.Server;
 
-class Websockets {
-  public static initialize(server: http.Server, session: express.RequestHandler) {
-    io = SocketIO(server);
+// class Websockets {
+//   public static initialize(server: http.Server, session: express.RequestHandler) {
+//     io = SocketIO(server);
 
-    io.use(
-      sharedSession(session, {
-        autoSave: true
-      })
-    );
+//     io.use(
+//       sharedSession(session, {
+//         autoSave: true
+//       })
+//     );
 
-    io.on('connection', async socket => {
-      socket.on('disconnect', async () => {
-        await GameService.removeActiveUser(socket.id);
-      });
+//     io.of('/rooms')
+//       .use(
+//         sharedSession(session, {
+//           autoSave: true
+//         })
+//       )
+//       .on('connection', socket => {
+//         socket.on('join', (data: { roomId: Room['id'] }) => {
+//           console.log(socket.handshake.session);
 
-      socket.on('importPlaylist', async ({ playlist }) => {
-        worker.importPlaylist(socket.handshake.session.passport.user, playlist.id, socket.id);
-      });
+//           console.log(data);
+//         });
+//         // socket.on('leave', data => {
+//         //   console.log(data);
+//         // });
+//       });
 
-      socket.on('guessProgressUpdate', async guessData => {
-        await GameService.updatePlayersGuessProgress(socket.id, guessData);
-      });
+//     // io.on('connection', async socket => {
+//     //   console.log('standart connection');
 
-      socket.on('join', async data => {
-        socket.join('general');
+//     // socket.on('message',);
+//     // socket.on('disconnect', async () => {
+//     //   await GameService.removeActiveUser(socket.id);
+//     // });
+//     // socket.on('importPlaylist', async ({ playlist }) => {
+//     //   worker.importPlaylist(socket.handshake.session.passport.user, playlist.id, socket.id);
+//     // });
+//     // socket.on('guessProgressUpdate', async guessData => {
+//     //   await GameService.updatePlayersGuessProgress(socket.id, guessData);
+//     // });
+//     // socket.on('join', async roomId => {
+//     //   console.log(roomId);
+//     //   socket.join(roomId);
+//     //   const players = await ActivePlayerHelper.getActivePlayers(roomId);
+//     //   players[socket.id] = socket.handshake.session.passport.user;
+//     //   await ActivePlayerHelper.setActivePlayers(roomId, players);
+//     //   io.in('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(players));
+//     //   const status = await GameService.getStatus();
+//     //   socket.emit('status', status);
+//     // });
+//     // socket.on('leave', async roomId => {
+//     //   socket.leave(roomId);
+//     //   const players = await ActivePlayerHelper.getActivePlayers(roomId);
+//     //   delete players[socket.id];
+//     //   await ActivePlayerHelper.setActivePlayers(roomId, players);
+//     //   io.in('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(players));
+//     // });
+//     // });
 
-        const players = await ActivePlayerHelper.getActivePlayers();
-        players[socket.id] = socket.handshake.session.passport.user;
-        await ActivePlayerHelper.setActivePlayers(players);
+//     return server;
+//   }
 
-        io.in('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(players));
+//   private namespaces = {};
 
-        const status = await GameService.getStatus();
+//   public static close() {
+//     io.close();
+//   }
 
-        socket.emit('status', status);
-      });
+//   public static getIo(): SocketIO.Server {
+//     return io;
+//   }
+// }
 
-      socket.on('leave', async data => {
-        socket.leave('general');
+// export default Websockets;
 
-        const players = await ActivePlayerHelper.getActivePlayers();
-        delete players[socket.id];
-        await ActivePlayerHelper.setActivePlayers(players);
+// import http from 'http';
+// import SocketIO from 'socket.io';
+// import { RequestHandler } from 'express';
+// import SocketIOSession from 'express-socket.io-session';
+// import { Namespaces } from 'src/lib/SocketWrapper/types';
 
-        io.in('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(players));
-      });
-    });
+// class SocketWrapper {
+//   public server!: SocketIO.Server;
+//   public namespaces!: Record<Namespaces, SocketIO.Namespace>;
 
-    return server;
-  }
+//   public init = (httpServer: http.Server, expressSession: RequestHandler) => {
+//     const session = SocketIOSession(expressSession, { autoSave: true });
+//     this.server = SocketIO(httpServer, { transports: ['websocket'] });
+//     this.server.use(session);
 
-  public static close() {
-    io.close();
-  }
+//     this.namespaces = {
+//       rooms: this.server.of('/rooms').use(session)
+//     };
 
-  public static getIo(): SocketIO.Server {
-    return io;
-  }
-}
+//     return this.server;
+//   };
+// }
 
-export default Websockets;
+// export default new SocketWrapper();

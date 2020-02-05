@@ -1,6 +1,18 @@
 import { Handler, Response } from 'express';
 
-import { Playlist, Room } from '@models';
+import { Playlist, Room } from 'models';
+
+/**
+ * Retrieves a single room
+ */
+const get: Handler = async (req, res): Promise<Response> => {
+  try {
+    const room = await Room.findOne({ where: { slug: req.params.slug } });
+    return res.json(room);
+  } catch (error) {
+    return res.status(500).json(error.message);
+  }
+};
 
 /**
  * Creates a room
@@ -30,4 +42,4 @@ const all: Handler = async (req, res): Promise<Response> => {
   }
 };
 
-export default { all, create };
+export default { all, create, get };

@@ -1,6 +1,7 @@
-import SocketService from './Socket.service';
 import GameService from './Game.service';
-import SpotifyService from './Spotify.service';
+import RoomService from './Room.service';
+import SocketService from './Socket.service';
 import SongDistributer from './SongDistributer.service';
+import SpotifyService from './Spotify.service';
 
-export { SocketService, GameService, SpotifyService, SongDistributer };
+export { SocketService, GameService, SpotifyService, SongDistributer, RoomService };

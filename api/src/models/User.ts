@@ -1,6 +1,6 @@
-import { Column, HasMany, Model, Table } from 'sequelize-typescript';
+import { Column, HasMany, Model, Table, Default, DataType } from 'sequelize-typescript';
 
-import { Playlist } from '@models';
+import { Playlist } from 'models';
 
 @Table({ tableName: 'users' })
 export class User extends Model<User> {
@@ -19,7 +19,7 @@ export class User extends Model<User> {
   @Column
   public spotifyDisplayName: string;
 
-  @Column
+  @Column(DataType.TEXT)
   public spotifyImageUrl: string;
 
   @Column
@@ -27,4 +27,12 @@ export class User extends Model<User> {
 
   @HasMany(() => Playlist, 'userId')
   public playlists: Playlist[];
+
+  @Default(new Date())
+  @Column
+  public createdAt: Date;
+
+  @Default(new Date())
+  @Column
+  public updatedAt: Date;
 }

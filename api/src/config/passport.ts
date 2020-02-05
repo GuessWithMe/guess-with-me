@@ -3,9 +3,9 @@ import { Strategy as SpotifyStrategy } from 'passport-spotify';
 import passport from 'passport';
 import moment from 'moment';
 
-import { SpotifyProfile } from '@t/SpotifyProfile';
-import { User } from '@models';
-import Environment from '@env';
+import { User } from 'models';
+import Environment from 'config/environment';
+import { SpotifyProfile } from 'types/SpotifyProfile';
 
 const strategy = new SpotifyStrategy(
   {

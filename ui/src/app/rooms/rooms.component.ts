@@ -16,12 +16,7 @@ interface GameRoom {
 export class RoomsComponent implements OnInit, OnDestroy {
   filterValue = '';
 
-  gameRooms: GameRoom[] = [
-    {
-      title: 'GuessWith.me selection',
-      value: 'general',
-    },
-  ];
+  gameRooms: GameRoom[] = [];
   filteredGameRooms = this.gameRooms;
 
   playerRooms: Room[] = [];
@@ -35,16 +30,12 @@ export class RoomsComponent implements OnInit, OnDestroy {
   }
 
   async ngOnInit() {
-    try {
-      const res = await this.roomService.all();
-      this.playerRooms = res.rooms.map(room => {
-        room.color = this.getRandomColor();
-        return room;
-      });
-      this.filteredPlayerRooms = this.playerRooms;
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await this.roomService.all();
+    this.playerRooms = res.rooms.map(room => {
+      room.color = this.getRandomColor();
+      return room;
+    });
+    this.filteredPlayerRooms = this.playerRooms;
   }
 
   ngOnDestroy() {}

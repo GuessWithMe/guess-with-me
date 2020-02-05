@@ -1,4 +1,4 @@
-import { EnvironmentType } from '@t/Environment';
+import { EnvironmentType } from 'types/Environment';
 
 import DevelopmentEnv from './env/development';
 import ProductionEnv from './env/production';

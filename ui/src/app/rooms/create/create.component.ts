@@ -22,12 +22,8 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
   constructor(private playlistService: PlaylistService, private roomService: RoomService) {}
 
   async ngOnInit() {
-    try {
-      const res = await this.playlistService.getImportedPlaylists();
-      this.playlists = res.playlists;
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await this.playlistService.getImportedPlaylists();
+    this.playlists = res.playlists;
   }
 
   ngOnDestroy() {}
@@ -45,13 +41,9 @@ export class RoomsCreateComponent implements OnInit, OnDestroy {
   };
 
   createRoom = async () => {
-    try {
-      await this.roomService.create({
-        ...this.roomForm.value,
-        playlists: this.selectedPlaylists,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await this.roomService.create({
+      ...this.roomForm.value,
+      playlists: this.selectedPlaylists,
+    });
   };
 }

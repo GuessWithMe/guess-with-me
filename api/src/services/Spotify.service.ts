@@ -1,7 +1,7 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 
-import { SpotifyHelper } from '@helpers';
-import { User } from '@models';
+import { SpotifyHelper } from 'helpers';
+import { User } from 'models';
 
 class SpotifyService {
   public spotify: SpotifyWebApi;

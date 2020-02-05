@@ -1,4 +1,4 @@
-import * as socketIo from 'socket.io-client';
+import io from 'socket.io-client';
 
 import { Injectable } from '@angular/core';
 import { environment } from '@environment';
@@ -6,19 +6,23 @@ import { environment } from '@environment';
 @Injectable()
 export class SocketService {
   socket: SocketIOClient.Socket;
+  roomsNamespace: SocketIOClient.Socket;
 
   initiateSocket = () => {
-    this.socket = socketIo(environment.apiUrl, {
+    this.socket = io(`${environment.apiUrl}/`, {
       transports: ['websocket'],
     });
   };
 
-  joinRoom = (room: string) => {
-    this.socket.emit('join', room);
+  joinRoom = (roomId: string) => {
+    // this.socket.of('rooms').emit('join', {
+    //   roomId,
+    // });
+    // this.socket = io(`${environment.apiUrl}/rooms`);
   };
 
   leaveRoom = (room: string) => {
-    this.socket.emit('leave', room);
+    // this.socket.emit('leave', room);
   };
 
   getSocket = () => {

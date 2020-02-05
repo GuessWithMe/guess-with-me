@@ -1,7 +1,5 @@
-import {
-  Table, Model, Column, BelongsTo, PrimaryKey, AutoIncrement, ForeignKey
-} from 'sequelize-typescript';
-import { Artist, Song } from '@models';
+import { Table, Model, Column, BelongsTo, PrimaryKey, AutoIncrement, ForeignKey, Default } from 'sequelize-typescript';
+import { Artist, Song } from 'models';
 
 @Table({ tableName: 'songArtists' })
 export class SongArtist extends Model<SongArtist> {
@@ -23,4 +21,12 @@ export class SongArtist extends Model<SongArtist> {
   @ForeignKey(() => Artist)
   @Column
   public artistId: number;
+
+  @Default(new Date())
+  @Column
+  public createdAt: Date;
+
+  @Default(new Date())
+  @Column
+  public updatedAt: Date;
 }

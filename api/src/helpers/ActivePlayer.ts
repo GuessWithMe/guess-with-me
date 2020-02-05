@@ -1,17 +1,20 @@
-import redis from '@config/redis';
-import { ACTIVE_PLAYERS } from '@consts/redis';
-import { User } from '@types';
-import { ActivePlayers } from '@t/Game';
+import { PLAYERS } from 'consts/redis';
+import { ActivePlayers } from 'types/Game';
+import redis from 'config/redis';
+import redisHelper from './Redis';
+import { Room } from 'models';
 
 class ActivePlayerHelper {
-  public static async setActivePlayers(activePlayers: object) {
+  public static async setActivePlayers(roomId: Room['id']) {
     await redis.open();
-    await redis.setAsync(`${ACTIVE_PLAYERS}`, JSON.stringify(activePlayers));
+    const key = redisHelper.buildKey(['rooms', roomId.toString(), PLAYERS]);
+    // await redis.setAsync(key, JSON.stringify(activePlayers));
   }
 
-  public static async getActivePlayers() {
+  public static async getActivePlayers(roomId: Room['id']) {
     await redis.open();
-    const activePlayers = await redis.getAsync(`${ACTIVE_PLAYERS}`);
+    const key = redisHelper.buildKey(['rooms', roomId.toString(), PLAYERS]);
+    const activePlayers = await redis.get(key);
 
     if (activePlayers) {
       return JSON.parse(activePlayers) as ActivePlayers;

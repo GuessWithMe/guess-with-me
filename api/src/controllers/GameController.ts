@@ -1,20 +1,19 @@
 import { Handler, Response } from 'express';
 
-import { ActivePlayerHelper } from '@helpers';
-import { GameService, SongDistributer } from '@services';
+import { ActivePlayerHelper } from 'helpers';
+import { GameService, SongDistributer } from 'services';
 
 /**
  * Retrives the active song, time left and active player list.
  */
 export const getStatus: Handler = async (req, res): Promise<Response> => {
   try {
-    const status = SongDistributer.getStatus();
-    const activePlayers = await ActivePlayerHelper.getActivePlayers();
-
-    return res.json({
-      status,
-      activePlayers: ActivePlayerHelper.filterActivePlayerListForClient(activePlayers)
-    });
+    // const status = SongDistributer.getStatus();
+    // const activePlayers = await ActivePlayerHelper.getActivePlayers();
+    // return res.json({
+    //   status,
+    //   activePlayers: ActivePlayerHelper.filterActivePlayerListForClient(activePlayers)
+    // });
   } catch (error) {
     return res.status(500).json(error.message);
   }

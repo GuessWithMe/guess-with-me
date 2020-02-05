@@ -13,7 +13,8 @@ img {
   padding: 6px 11px;
 
   display: grid;
-  grid-template-columns: 30px 1fr 50px 50px 50px;
+  // grid-template-columns: 30px 1fr 50px 50px 50px;
+  grid-template-columns: 30px 1fr 50px 50px;
 
   &.header {
     background: none;
@@ -25,6 +26,9 @@ img {
 
   .username {
     font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 

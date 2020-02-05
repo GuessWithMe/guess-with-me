@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { Player } from '@types';
 
 @Component({
   selector: 'app-active-players',
@@ -6,5 +7,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./active-players.component.scss'],
 })
 export class ActivePlayersComponent {
-  @Input() activePlayers: any;
+  @Input() activePlayers: Player[];
 }

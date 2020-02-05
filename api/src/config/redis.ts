@@ -1,10 +1,13 @@
-import Environment from '@env';
+import Environment from 'config/environment';
 
 import { promisify } from 'util';
 import redis, { RedisClient } from 'redis';
+import rejson from 'redis-rejson';
 
-class RedisConfig {
-  private client!: RedisClient;
+rejson(redis);
+
+class Redis {
+  public client!: RedisClient;
 
   public open = async () => {
     if (!this.client) {
@@ -12,6 +15,7 @@ class RedisConfig {
 
       this.client.on('error', error => {
         console.log('Redis error');
+        console.log(error);
       });
     }
 
@@ -27,27 +31,18 @@ class RedisConfig {
     });
   };
 
-  public getAsync = async (key: string) => {
-    const get = promisify(this.client.get).bind(this.client);
-    return get(key);
+  // tslint:disable-next-line: no-any
+  public set = async (...args: any[]) => {
+    const object = args.pop();
+    // @ts-ignore
+    const setPromisified = promisify(this.client.json_set).bind(this.client);
+    return setPromisified(...args, JSON.stringify(object));
   };
 
-  // tslint:disable-next-line: no-any
-  public setAsync = async (...args: any[]) => {
-    const set = promisify(this.client.set).bind(this.client);
-    return set(...args);
-  };
-
-  // tslint:disable-next-line: no-any
-  public setExAsync = async (...args: any[]) => {
-    const set = promisify(this.client.setex).bind(this.client);
-    return set(...args);
-  };
-
-  // tslint:disable-next-line: no-any
-  public del = async (...args: any[]) => {
-    const del = promisify(this.client.del).bind(this.client);
-    return del(...args);
+  public get = async (...args: any[]) => {
+    // @ts-ignore
+    const getPromisified = promisify(this.client.json_get).bind(this.client);
+    return getPromisified(...args);
   };
 }
-export default new RedisConfig();
+export default new Redis();

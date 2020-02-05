@@ -1,19 +1,19 @@
 import SocketIO from 'socket.io';
 
-import Websockets from '@config/websockets';
-import { ActivePlayerHelper } from '@helpers';
-import { Song } from '@models';
-import { ActivePlayers } from '@t/Game';
+// import Websockets from 'config/websockets';
+import { ActivePlayerHelper } from 'helpers';
+import { Song } from 'models';
+import { ActivePlayers } from 'types/Game';
 
 export default class SocketService {
   private socket: SocketIO.Server;
 
   constructor() {
-    this.socket = Websockets.getIo();
+    // this.socket = Websockets.getIo();
   }
 
   public sendNextSong(song: Song) {
-    this.socket.in('general').emit('song', song);
+    // this.socket.in('general').emit('song', song);
   }
 
   /**
@@ -21,7 +21,7 @@ export default class SocketService {
    * answer
    */
   public sendPause(previousTracks: Song[]) {
-    this.socket.emit('pause', previousTracks);
+    // this.socket.emit('pause', previousTracks);
   }
 
   /**
@@ -30,7 +30,7 @@ export default class SocketService {
    * @param activePlayers
    */
   public broadcastActivePlayerList(activePlayers: ActivePlayers): void {
-    this.socket.to('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(activePlayers));
+    // this.socket.to('general').emit('players', ActivePlayerHelper.filterActivePlayerListForClient(activePlayers));
   }
 
   /**
@@ -46,6 +46,6 @@ export default class SocketService {
       progress: number;
     }
   ): void {
-    this.socket.sockets.connected[socketId].emit('playlistProgress', progress);
+    // this.socket.sockets.connected[socketId].emit('playlistProgress', progress);
   }
 }

@@ -1,2 +1,2 @@
-export const ACTIVE_PLAYERS = 'activePlayers';
+export const PLAYERS = 'players';
 export const PREVIOUS_TRACKS = 'previousTracks';

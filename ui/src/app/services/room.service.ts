@@ -17,11 +17,16 @@ export class RoomService {
 
   public create(body: CreateBody) {
     const url = `${environment.apiUrl}/rooms`;
-    return this.http.post(url, body).toPromise();
+    return this.http.post<Room>(url, body).toPromise();
   }
 
   public all() {
     const url = `${environment.apiUrl}/rooms`;
     return this.http.get(url).toPromise() as Promise<{ rooms: Room[] }>;
+  }
+
+  public get(slug: Room['slug']) {
+    const url = `${environment.apiUrl}/rooms/${slug}`;
+    return this.http.get(url).toPromise() as Promise<Room>;
   }
 }

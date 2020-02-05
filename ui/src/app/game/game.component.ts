@@ -1,11 +1,14 @@
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { differenceInSeconds, parseISO } from 'date-fns';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Howl } from 'howler';
 import { isDevMode } from '@angular/core';
 import FuzzySet from 'fuzzyset.js';
 
-import { RoomStatus, Guess, User, Word, Song, PlayerOmitted } from '@types';
-import { SocketService, UserService } from '@services';
+import { Guess, User, Word, Song, PlayerOmitted, RoomStatusResponse, Room } from '@types';
+import { UserService, RoomService } from '@services';
+import RoomSocket from '../sockets/room';
 
 @Component({
   selector: 'app-game',
@@ -13,7 +16,6 @@ import { SocketService, UserService } from '@services';
   styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit, OnDestroy {
-  private timeToGuess = 30;
   public players: PlayerOmitted[] = [];
   public currentGuess = '';
   public flashGreenBool = false;
@@ -21,53 +23,72 @@ export class GameComponent implements OnInit, OnDestroy {
   public guess: Guess;
   public socket: SocketIOClient.Socket;
   public sound: Howl;
-  public timeLeft = this.timeToGuess;
+  public timeLeft: number;
   public user: User;
   public previousTracks: Song[];
   public isPause = false;
+  public room: Room;
+  private roomSocket: RoomSocket;
 
   public guessAttemptForm = new FormGroup({
     currentGuess: new FormControl(''),
   });
 
-  constructor(private userService: UserService, private socketService: SocketService) {}
+  constructor(
+    private roomService: RoomService,
+    private route: ActivatedRoute,
+    private userService: UserService,
+  ) {}
 
   async ngOnInit() {
+    const slug = this.route.snapshot.params.slug;
+    this.room = await this.roomService.get(slug);
+
     this.userService.user.subscribe(user => {
       this.user = user;
     });
 
-    this.socket = this.socketService.getSocket();
-    this.socketService.joinRoom('general');
-
-    this.socket.on('players', (players: PlayerOmitted[]) => {
+    this.roomSocket = new RoomSocket();
+    this.roomSocket.join(slug);
+    this.roomSocket.namespace.on('players', (players: PlayerOmitted[]) => {
       this.players = players;
     });
+    this.roomSocket.namespace.on('song', (status: { song: Song; startTime: Date }) => {
+      console.log('song');
 
-    this.socket.on('song', (song: Song) => {
-      this.processIncomingSong(song);
+      this.processIncomingSong(
+        status.song,
+        30 - differenceInSeconds(new Date(), new Date(status.startTime)),
+      );
     });
 
-    this.socket.on(
-      'status',
-      (payload: { status: RoomStatus; previousTracks: Song[]; players: PlayerOmitted[] }) => {
-        this.previousTracks = payload.previousTracks;
+    this.roomSocket.namespace.on('status', (status: RoomStatusResponse) => {
+      console.log(status);
 
-        if (payload.status.isPaused) {
-          this.timeLeft = 0;
-          this.setPause();
-        }
+      // this.previousTracks = status.previousTracks;
+      // if (payload.isPaused) {
+      //   this.timeLeft = 0;
+      //   this.setPause();
+      // }
 
-        this.processIncomingSong(payload.status.currentSong, payload.status.timeLeft);
-      },
-    );
+      this.players = Object.values(status.players);
 
-    this.socket.on('pause', (previousTracks: Song[]) => {
-      this.previousTracks = previousTracks;
-      this.setPause();
-      this.timeLeft = 0;
+      this.processIncomingSong(
+        status.song,
+        // 30,
+        30 - differenceInSeconds(new Date(), new Date(status.startTime)),
+      );
     });
 
+    this.roomSocket.namespace.on('disconnect', () => {
+      console.log('disconnect');
+    });
+
+    // this.socket.on('pause', (previousTracks: Song[]) => {
+    //   this.previousTracks = previousTracks;
+    //   this.setPause();
+    //   this.timeLeft = 0;
+    // });
     setInterval(() => {
       if (this.timeLeft > 0) {
         this.timeLeft = this.timeLeft - 1;
@@ -80,9 +101,11 @@ export class GameComponent implements OnInit, OnDestroy {
       this.sound.stop();
     }
 
-    this.socketService.leaveRoom('general');
-    this.socket.off('song');
-    this.socket.off('status');
+    this.roomSocket.leave(this.route.snapshot.params.slug);
+
+    // Perhaps this is still needed for stopping the sound
+    // this.socket.off('song');
+    // this.socket.off('status');
   }
 
   private prepareGuessArray(song: Song) {
@@ -120,7 +143,7 @@ export class GameComponent implements OnInit, OnDestroy {
     }
   }
 
-  public processIncomingSong(song: Song, timeLeft = this.timeToGuess): void {
+  public processIncomingSong(song: Song, timeLeft: number): void {
     if (this.sound) {
       this.sound.stop();
     }
@@ -139,7 +162,6 @@ export class GameComponent implements OnInit, OnDestroy {
     });
 
     this.timeLeft = timeLeft;
-
     this.sound.play();
   }
 
@@ -273,12 +295,12 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private sendProgressUpdateToOtherPlayers() {
-    this.socket.emit('guessProgressUpdate', {
-      userId: this.user.id,
-      spotifyUsername: this.user.spotifyUsername,
-      titleCorrect: this.guess.titleCorrect,
-      artistCorrect: this.guess.artistCorrect,
-    });
+    // this.roomSocket.emit('guessProgressUpdate', {
+    //   userId: this.user.id,
+    //   spotifyUsername: this.user.spotifyUsername,
+    //   titleCorrect: this.guess.titleCorrect,
+    //   artistCorrect: this.guess.artistCorrect,
+    // });
   }
 
   /**

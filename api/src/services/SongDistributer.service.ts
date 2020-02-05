@@ -2,15 +2,17 @@ import moment from 'moment';
 import { Op } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 
-import { Album, Artist, Song } from '@models';
-import { PreviousTracksHelper } from '@helpers';
+import { Album, Artist, Song, Room } from 'models';
+import { PreviousTracksHelper } from 'helpers';
 import { RoomStatus } from '@types';
-import { SocketService } from '@services';
+import { SocketService } from 'services';
+import SocketWrapper from 'lib/SocketWrapper';
+import redis from 'config/redis';
 
 const PAUSE_LENGTH = 5000;
 const GUESS_TIME = 30000;
 
-let currentSong: Song;
+// let currentSong: Song;
 let isPaused = false;
 let timer: NodeJS.Timer;
 let leftCountdown: NodeJS.Timer;
@@ -19,6 +21,7 @@ let startingTime = moment();
 async function start(): Promise<void> {
   clearInterval(timer);
   startingTime = moment();
+
   await sendNextSong();
 
   timer = setInterval(async () => {
@@ -36,14 +39,6 @@ async function start(): Promise<void> {
   }, GUESS_TIME + PAUSE_LENGTH);
 }
 
-async function getStatus(): Promise<RoomStatus> {
-  return {
-    currentSong,
-    isPaused,
-    timeLeft: GUESS_TIME / 1000 - moment().diff(startingTime, 'seconds')
-  };
-}
-
 const getRandomSong = async (): Promise<Song> => {
   const song = await Song.findOne({
     include: [Artist, Album],
@@ -58,16 +53,35 @@ const getRandomSong = async (): Promise<Song> => {
 };
 
 async function sendNextSong(): Promise<void> {
-  const song = await getRandomSong();
-  currentSong = song;
+  await redis.open();
+  let rooms: Record<Room['slug'], RoomStatus> = JSON.parse(await redis.get('rooms'));
+  const songs = await Promise.all(Object.keys(rooms || {}).map(id => getRandomSong()));
   isPaused = false;
-  new SocketService().sendNextSong(song);
+
+  rooms = Object.entries(rooms).reduce((sum, [slug, status], idx) => {
+    return {
+      ...sum,
+      [slug]: {
+        ...status,
+        song: songs[idx]
+      }
+    };
+  }, {} as Record<Room['slug'], RoomStatus>);
+
+  await redis.set('rooms', '.', rooms);
+
+  const startTime = new Date();
+  Object.entries(rooms || {}).forEach(([slug, room], idx) => {
+    SocketWrapper.namespaces.rooms.in(slug).emit('song', {
+      song: room.song,
+      startTime
+    });
+  });
 }
 
 const processSongEnding = async (): Promise<void> => {
   const previousTracks = await updatePreviousTracks();
 
-  currentSong = undefined;
   isPaused = true;
   new SocketService().sendPause(previousTracks);
 };
@@ -80,25 +94,31 @@ const restartAfterPause = async () => {
   const previousTracks = await updatePreviousTracks();
   new SocketService().sendPause(previousTracks);
   // Start a new after a pause.
-  setTimeout(async () => {
-    await start();
-  }, PAUSE_LENGTH);
+  // setTimeout(async () => {
+  //   await start();
+  // }, PAUSE_LENGTH);
 };
 
 const updatePreviousTracks = async () => {
-  let previousTracks = await PreviousTracksHelper.get();
-  previousTracks.unshift(currentSong);
-  previousTracks = previousTracks.slice(0, 10);
-  await PreviousTracksHelper.set(previousTracks);
+  // let previousTracks = await PreviousTracksHelper.get();
+  // // previousTracks.unshift(currentSong);
+  // previousTracks = previousTracks.slice(0, 10);
+  // await PreviousTracksHelper.set(previousTracks);
 
-  return previousTracks;
+  // return previousTracks;
+
+  return [] as any;
+};
+
+const getCurrentStartTime = () => {
+  return startingTime.toDate();
 };
 
 export default {
   start,
-  getStatus,
   getRandomSong,
   sendNextSong,
   processSongEnding,
-  restartAfterPause
+  restartAfterPause,
+  getCurrentStartTime
 };

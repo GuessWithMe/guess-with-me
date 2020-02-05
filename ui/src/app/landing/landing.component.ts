@@ -22,7 +22,7 @@ export class LandingComponent implements OnInit {
     const user = await this.userService.getUser();
 
     if (user) {
-      this.router.navigate(['/game']);
+      this.router.navigate(['/game/rooms']);
     }
   }
 }

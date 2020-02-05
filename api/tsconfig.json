@@ -15,19 +15,9 @@
     "isolatedModules": false,
     "noImplicitAny": true,
 
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "@config/*": ["./src/config/*"],
-      "@consts/*": ["./src/consts/*"],
-      "@controllers/*": ["./src/controllers/*"],
-      "@env": ["./src/config/environment"],
-      "@helpers": ["./src/helpers"],
-      "@middleware/*": ["./src/middleware/*"],
-      "@models": ["./src/models"],
-      "@routes/*": ["./src/routes/*"],
-      "@services": ["./src/services"],
-      "@t/*": ["./src/types/*"],
-      "@types": ["./../types"]
+      "@types": ["./../../types"]
     }
   },
   "include": ["src/**/*.ts", "bin/**/*"],

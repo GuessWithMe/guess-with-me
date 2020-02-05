@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import passport from 'passport';
 
-import * as AuthController from '@controllers/AuthController';
+import * as AuthController from 'controllers/AuthController';
 
-import { isAuthenticated } from '@middleware/AuthMiddleware';
+import { isAuthenticated } from 'middleware/AuthMiddleware';
 
 const router = Router();
 

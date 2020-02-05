@@ -4,10 +4,11 @@
   <div></div>
   <span class="text-center">Artist</span>
   <span class="text-center">Title</span>
-  <span class="text-center">Points</span>
+  <!-- <span class="text-center">Points</span> -->
 </div>
 <div class="player center-vert mb-2" *ngFor="let player of activePlayers">
   <img *ngIf="player.avatar" [src]="player.avatar" />
+  <img *ngIf="!player.avatar" src="/assets/images/avatar-placeholder.png" />
   <b class="username">{{ player.spotifyUsername }}</b>
   <div class="center">
     <mat-icon class="correct" *ngIf="player.artistCorrect">done</mat-icon>
@@ -17,5 +18,5 @@
     <mat-icon class="correct" *ngIf="player.titleCorrect">done</mat-icon>
     <mat-icon class="wrong" *ngIf="!player.titleCorrect">clear</mat-icon>
   </div>
-  <div class="center"><span class="text-center">3</span></div>
+  <!-- <div class="center"><span class="text-center">3</span></div> -->
 </div>

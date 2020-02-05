@@ -5,19 +5,17 @@ volumes:
     driver: local
 
 services:
-  redis:
-    image: redis:3.2.10
+  # redis:
+  #   image: redis:3.2.10
+  #   ports:
+  #     - "16379:6379"
+  #   logging:
+  #     driver: none
+
+  redisJson:
+    image: redislabs/rejson:latest
     ports:
       - "16379:6379"
-    logging:
-      driver: none
-
-  redis-commander:
-    image: rediscommander/redis-commander:latest
-    environment:
-      - REDIS_HOSTS=local:redis:6379
-    ports:
-      - "3002:8081"
     logging:
       driver: none
 

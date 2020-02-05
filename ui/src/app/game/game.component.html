@@ -1,9 +1,10 @@
+<p class="room-title" *ngIf="room">{{ room.title }}</p>
 <div class="container">
   <div class="row">
     <div class="col-md-6">
       <div class="timer">
         <mat-icon class="wrong" [class.flashed]="flashRedBool == true">clear</mat-icon>
-        <h3 class="m-0" *ngIf="timeLeft &lt;= 30">{{ timeLeft }}</h3>
+        <h3 class="m-0">{{ timeLeft || '   ' }}</h3>
         <mat-icon class="correct" [class.flashed]="flashGreenBool == true"> done</mat-icon>
       </div>
 

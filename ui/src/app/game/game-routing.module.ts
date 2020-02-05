@@ -27,11 +27,15 @@ const routes: Routes = [
             path: 'create',
             component: RoomsCreateComponent,
           },
+          {
+            path: ':slug',
+            component: GameComponent,
+          },
         ],
       },
       {
-        path: '',
-        component: GameComponent,
+        path: '**',
+        redirectTo: '/game/rooms',
       },
     ],
   },

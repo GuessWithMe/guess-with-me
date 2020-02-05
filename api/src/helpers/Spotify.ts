@@ -1,8 +1,8 @@
 import moment from 'moment';
 import SpotifyWebApi from 'spotify-web-api-node';
 
-import environment from '@env';
-import { User } from '@models';
+import environment from 'config/environment';
+import { User } from 'models';
 
 interface RefreshAccessTokenResponse {
   body: {

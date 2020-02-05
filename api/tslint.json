@@ -38,7 +38,7 @@
     ],
     "no-internal-module": true,
     "no-trailing-whitespace": true,
-    "no-null-keyword": true,
+    "no-null-keyword": false,
     "no-implicit-dependencies": [false],
     "prefer-const": true,
     "jsdoc-format": true,
@@ -46,7 +46,8 @@
     "interface-name": [true, "never-prefix"],
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "no-any": true
+    "no-any": true,
+    "no-submodule-imports": false
   },
   "rulesDirectory": []
 }

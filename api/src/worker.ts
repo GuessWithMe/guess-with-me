@@ -1,9 +1,10 @@
 import kue, { Job, Queue } from 'kue';
 
-import Environment from '@env';
-import { ImportHelper } from '@helpers';
-import { User } from '@models';
-import { SocketService, SpotifyService } from '@services';
+import Environment from 'config/environment';
+import { ImportHelper } from 'helpers';
+import { User } from 'models';
+import { SocketService, SpotifyService } from 'services';
+import { PlaylistSocketService } from 'socketServices';
 
 export let worker: BackgroundWorker;
 
@@ -19,6 +20,8 @@ class BackgroundWorker {
     });
 
     this.queue.process('importPlaylist', async (job: Job, done: (error?: Error) => void) => {
+      console.log('started playlist import job');
+
       try {
         let songsProcessed = 0;
 
@@ -50,7 +53,7 @@ class BackgroundWorker {
 
           songsProcessed += 1;
           const progress = songsProcessed / eligibleTracks.length;
-          new SocketService().sendPlaylistImportProgress(job.data.socketId, {
+          new PlaylistSocketService().sendPlaylistImportProgress(job.data.socketId, {
             playlist: {
               spotifyId: playlist.id,
               name: playlist.name

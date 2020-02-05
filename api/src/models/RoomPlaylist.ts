@@ -1,6 +1,6 @@
-import { AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Default } from 'sequelize-typescript';
 
-import { Playlist, Room, Song } from '@models';
+import { Playlist, Room, Song } from 'models';
 
 @Table({ tableName: 'roomPlaylists' })
 export class RoomPlaylist extends Model<RoomPlaylist> {
@@ -22,4 +22,12 @@ export class RoomPlaylist extends Model<RoomPlaylist> {
   @ForeignKey(() => Playlist)
   @Column
   public playlistId: number;
+
+  @Default(new Date())
+  @Column
+  public createdAt: Date;
+
+  @Default(new Date())
+  @Column
+  public updatedAt: Date;
 }

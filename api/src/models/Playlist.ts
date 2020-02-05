@@ -1,10 +1,13 @@
-import { BelongsTo, BelongsToMany, Column, Model, Table } from 'sequelize-typescript';
+import { BelongsTo, BelongsToMany, Column, Model, Table, Default } from 'sequelize-typescript';
 
-import { Room, RoomPlaylist, User } from '@models';
+import { Room, RoomPlaylist, User } from 'models';
 
 @Table({ tableName: 'playlists' })
 export class Playlist extends Model<Playlist> {
-  @BelongsToMany(() => Room, () => RoomPlaylist)
+  @BelongsToMany(
+    () => Room,
+    () => RoomPlaylist
+  )
   public rooms: Room[];
 
   @BelongsTo(() => User, 'userId')
@@ -24,4 +27,12 @@ export class Playlist extends Model<Playlist> {
 
   @Column
   public title: string;
+
+  @Default(new Date())
+  @Column
+  public createdAt: Date;
+
+  @Default(new Date())
+  @Column
+  public updatedAt: Date;
 }

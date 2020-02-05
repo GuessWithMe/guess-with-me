@@ -1,4 +1,4 @@
-import { EnvironmentType } from '@t/Environment';
+import { EnvironmentType } from 'types/Environment';
 
 function getConfig(): EnvironmentType {
   return {

@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { PlaylistService, SocketService } from '@services';
 import { Playlist, PlaylistItem } from '@types';
+import PlaylistSocket from '../sockets/playlist';
 
 @Component({
   selector: 'app-playlists',
@@ -13,7 +14,7 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
   public spotifyPlaylists: PlaylistItem[];
   public playlists: Playlist[];
   public progress: Record<Playlist['spotifyId'], number> = {};
-  private socket: SocketIOClient.Socket;
+  private socket: PlaylistSocket;
 
   constructor(
     private playlistService: PlaylistService,
@@ -22,7 +23,20 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
   ) {}
 
   async ngOnInit() {
-    this.initiateSockets();
+    this.socket = new PlaylistSocket();
+    this.socket.join();
+
+    this.socket.namespace.on(
+      'playlistProgress',
+      (data: { progress: number; playlist: { spotifyId: string; name: string } }) => {
+        this.progress[data.playlist.spotifyId] = data.progress * 100;
+        if (this.progress[data.playlist.spotifyId] === 100) {
+          this.snackBar.open(`Finished importing "${data.playlist.name}"`, 'Dismiss', {
+            duration: 5000,
+          });
+        }
+      },
+    );
 
     try {
       const res = await this.playlistService.getPlaylists();
@@ -46,29 +60,11 @@ export class PlaylistsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.socket = null;
+    this.socket.leave();
   }
 
   public async importPlaylist(playlist: Playlist) {
     this.socketService.getSocket();
-
-    this.socket.emit('importPlaylist', {
-      playlist,
-    });
-  }
-
-  private initiateSockets(): void {
-    this.socket = this.socketService.getSocket();
-    this.socket.on(
-      'playlistProgress',
-      (data: { progress: number; playlist: { spotifyId: string; name: string } }) => {
-        this.progress[data.playlist.spotifyId] = data.progress * 100;
-        if (this.progress[data.playlist.spotifyId] === 100) {
-          this.snackBar.open(`Finished importing "${data.playlist.name}"`, 'Dismiss', {
-            duration: 5000,
-          });
-        }
-      },
-    );
+    this.socket.namespace.emit('importPlaylist', playlist.id);
   }
 }

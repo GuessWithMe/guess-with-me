@@ -55,3 +55,22 @@
     }
   }
 }
+
+.username,
+.display-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.username {
+  display: block;
+}
+
+.display-name {
+  flex: 1;
+}
+
+.mat-sidenav-content {
+  z-index: 1;
+}
