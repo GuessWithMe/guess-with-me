@@ -2,30 +2,29 @@ import { Socket } from 'socket.io';
 import { Room } from 'models/Room';
 
 import { RoomSocketService } from 'socketServices';
-import { SongDistributer, GameService } from 'services';
 import { RoomStatus, RoomStatusResponse } from '../../../types/RoomStatus';
 import redis from 'config/redis';
-import { ActivePlayerHelper } from 'helpers';
+
 import SocketWrapper from 'lib/SocketWrapper';
+import SongDistributer from 'lib/SongDistributer';
 
 const roomsEvents = (socket: Socket) => {
-  socket.on('join', async ({ roomId }: { roomId: Room['slug'] }) => {
-    const slug = roomId;
+  socket.on('join', async ({ slug }: { slug: Room['slug'] }) => {
     const room = new RoomSocketService(slug);
-
     socket.join(slug.toString());
 
-    const status: Partial<RoomStatus> = await room.status();
+    const status = await room.status();
     const socketRooms = JSON.parse(await redis.get('socketRooms'));
 
     status.players[socket.id] = socket.handshake.session.passport.user;
     socketRooms[socket.id] = room.slug;
 
-    await redis.set('rooms', `["${slug}"].players`, status.players);
-    await redis.set('socketRooms', '.', socketRooms);
+    await Promise.all([
+      redis.set('rooms', `["${slug}"].players`, status.players),
+      redis.set('socketRooms', '.', socketRooms)
+    ]);
 
     (status as RoomStatusResponse).startTime = SongDistributer.getCurrentStartTime();
-
     SocketWrapper.namespaces.rooms.in(room.slug).emit('status', status);
   });
 
@@ -70,7 +69,7 @@ const roomsEvents = (socket: Socket) => {
   });
 
   socket.on('progressUpdate', async guessData => {
-    await GameService.updatePlayersGuessProgress(socket.id, guessData);
+    await new RoomSocketService(guessData.room).updateProgress(socket.id, guessData);
   });
 };
 

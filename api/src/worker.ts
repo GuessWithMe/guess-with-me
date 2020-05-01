@@ -3,7 +3,7 @@ import kue, { Job, Queue } from 'kue';
 import Environment from 'config/environment';
 import { ImportHelper } from 'helpers';
 import { User } from 'models';
-import { SocketService, SpotifyService } from 'services';
+import { SpotifyService } from 'services';
 import { PlaylistSocketService } from 'socketServices';
 
 export let worker: BackgroundWorker;

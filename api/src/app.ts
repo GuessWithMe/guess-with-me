@@ -10,10 +10,12 @@ import http from 'http';
 import morgan from 'morgan';
 import session from 'express-session';
 
+import Environment from 'config/environment';
 import setupPassport from 'config/passport';
 
-import Environment from 'config/environment';
-import { SongDistributer, GameService } from 'services';
+import SongDistributer from 'lib/SongDistributer';
+
+import { GameService } from 'services';
 
 // Routes
 import AdminRoutes from 'routes/Admin';
@@ -24,7 +26,6 @@ import RoomRoutes from 'routes/Room';
 import UserRoutes from 'routes/User';
 
 import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from 'models';
-import { ActivePlayerHelper } from 'helpers';
 import SocketWrapper from 'lib/SocketWrapper';
 import redis from 'config/redis';
 

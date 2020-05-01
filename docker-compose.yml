@@ -13,11 +13,13 @@ services:
   #     driver: none
 
   redisJson:
-    image: redislabs/rejson:latest
+    image: redislabs/rejson:edge
     ports:
       - "16379:6379"
-    logging:
-      driver: none
+    sysctls:
+      - net.core.somaxconn=1024
+    # logging:
+    #   driver:
 
   maria_db:
     image: library/mariadb:10.2.6
@@ -27,6 +29,15 @@ services:
       - "mariadb_data:/var/lib/mysql"
     environment:
       - MYSQL_ROOT_PASSWORD=option123
+    logging:
+      driver: none
+
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOSTS=local:redis:6379
+    ports:
+      - "3002:8081"
     logging:
       driver: none
   # ui:

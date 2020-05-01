@@ -10,9 +10,9 @@ class RoomSocket {
     this.namespace = io(`${environment.apiUrl}/rooms`);
   }
 
-  join(roomId: Room['id']) {
+  join(slug: Room['slug']) {
     this.namespace.emit('join', {
-      roomId,
+      slug,
     });
   }
 

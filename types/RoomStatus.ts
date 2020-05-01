@@ -3,7 +3,7 @@ import { Song } from './Song';
 
 export interface RoomStatus {
   song: Song;
-  previousTracks: Song[];
+  prevSongs: Song[];
   players: Record<string, PlayerOmitted>;
 }
 

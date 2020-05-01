@@ -11,6 +11,7 @@ export class SocketService {
   initiateSocket = () => {
     this.socket = io(`${environment.apiUrl}/`, {
       transports: ['websocket'],
+      upgrade: false
     });
   };
 

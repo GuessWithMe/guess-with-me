@@ -1,4 +1,4 @@
-import { Track } from './SpotifySong';
+// import { Track } from './SpotifySong';
 
 export interface SpotifyPlaylist {
   collaborative: boolean;
@@ -43,7 +43,7 @@ interface Tracks {
     added_at: string;
     added_by: string;
     is_local: string;
-    track: Track;
+    track: any;
   }>;
   limit: number;
   next?: string;

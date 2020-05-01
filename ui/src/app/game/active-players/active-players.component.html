@@ -7,8 +7,8 @@
   <!-- <span class="text-center">Points</span> -->
 </div>
 <div class="player center-vert mb-2" *ngFor="let player of activePlayers">
-  <img *ngIf="player.avatar" [src]="player.avatar" />
-  <img *ngIf="!player.avatar" src="/assets/images/avatar-placeholder.png" />
+  <img *ngIf="player.spotifyImageUrl" [src]="player.spotifyImageUrl" />
+  <img *ngIf="!player.spotifyImageUrl" src="/assets/images/avatar-placeholder.png" />
   <b class="username">{{ player.spotifyUsername }}</b>
   <div class="center">
     <mat-icon class="correct" *ngIf="player.artistCorrect">done</mat-icon>

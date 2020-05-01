@@ -60,14 +60,6 @@ class ImportHelper {
     return playlist;
   }
 
-  /**
-   * Imports an album and it's properties.
-   *
-   * @static
-   * @param {SpotifyAlbum} spotifyAlbum
-   * @returns Promise<Album>
-   * @memberof ImportHelper
-   */
   public static async importAlbum(
     spotifyAlbum: SpotifyApi.AlbumObjectSimplified & {
       // TODO: update this once https://github.com/DefinitelyTyped/DefinitelyTyped/pull/41309 is merged

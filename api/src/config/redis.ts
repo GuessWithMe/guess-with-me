@@ -44,5 +44,6 @@ class Redis {
     const getPromisified = promisify(this.client.json_get).bind(this.client);
     return getPromisified(...args);
   };
+
 }
 export default new Redis();
