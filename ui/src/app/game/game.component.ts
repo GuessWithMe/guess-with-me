@@ -87,9 +87,9 @@ export class GameComponent implements OnInit, OnDestroy {
       );
     });
 
-    this.roomSocket.namespace.on('disconnect', () => {
-      console.log('disconnect');
-    });
+    // this.roomSocket.namespace.on('disconnect', () => {
+    //   console.log('disconnect');
+    // });
 
     this.roomSocket.namespace.on('pause', (previousTracks: Song[]) => {
       console.warn('ON pause');

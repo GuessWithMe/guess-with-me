@@ -1,4 +1,4 @@
 export interface Word {
   word: string;
-  correct: boolean;
+  correct?: boolean;
 }
