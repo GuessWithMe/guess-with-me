@@ -11,6 +11,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
 
+import { ExitToApp } from "@material-ui/icons";
+
 const useStyles = makeStyles({
   list: {
     width: 250,
@@ -35,7 +37,11 @@ const Header = () => {
       onKeyDown={() => toggleDrawer(false)}
     >
       <List>
-        {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
+        <span>Username</span>
+      </List>
+      <Divider />
+      <List>
+        {["Rooms", "Playlists"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -46,20 +52,19 @@ const Header = () => {
       </List>
       <Divider />
       <List>
-        {["All mail", "Trash", "Spam"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
+        <ListItem button key={"Sign out"}>
+          <ListItemIcon>
+            <ExitToApp />
+          </ListItemIcon>
+          <ListItemText primary={"Sign out"} />
+        </ListItem>
       </List>
     </div>
   );
 
   return (
     <>
+      <Button onClick={() => toggleDrawer(true)}>Open</Button>
       <Drawer anchor={"left"} open={drawer} onClose={() => toggleDrawer(false)}>
         {list()}
       </Drawer>
