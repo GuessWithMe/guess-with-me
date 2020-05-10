@@ -1,12 +1,14 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import config from "../../config";
 
 const Landing = () => {
+  console.log(config.apiUrl);
+
   return (
     <div>
       <h1>Landing</h1>
       <p>
-        <Link to="/room/show">Room show</Link>
+        <a href={`${config.apiUrl}/auth/spotify`}>Sign in</a>
       </p>
     </div>
   );

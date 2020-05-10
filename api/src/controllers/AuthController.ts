@@ -3,7 +3,7 @@ import { Handler } from 'express';
 import Environment from 'config/environment';
 
 export const loginWithSpotify: Handler = (req, res) => {
-  return res.redirect(`${Environment.angularUrl}/game`);
+  return res.redirect(`${Environment.uiUrl}/rooms`);
 };
 
 export const checkIfAuthed: Handler = (req, res) => {

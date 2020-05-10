@@ -75,7 +75,7 @@ class App {
   private configureCors() {
     const corsOptions = {
       credentials: true,
-      origin: [Environment.angularUrl, 'https://accounts.spotify.com']
+      origin: [Environment.uiUrl, 'https://accounts.spotify.com']
     };
 
     this.app.use(cors(corsOptions));
