@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
@@ -10,68 +10,86 @@ import {
   ListItemIcon,
   ListItemText,
   IconButton,
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
 } from "@material-ui/core";
 
-import {
-  ExitToApp,
-  PhotoCamera,
-  ArtTrack,
-  MeetingRoom,
-  Menu,
-} from "@material-ui/icons";
+import { ExitToApp, ArtTrack, MeetingRoom, Menu } from "@material-ui/icons";
 
 import { State } from "redux/store/types";
 import userActions from "redux/actions/user";
 
 import useStyles from "./styles";
+import AppTitle from "components/AppTitle";
 
 const Header = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const styles = useStyles();
+
+  const location = useLocation();
+
   const [drawer, toggleDrawer] = useState(false);
   const user = useSelector((store: State) => store.user);
+  const [title, setTitle] = useState("Playlists");
 
-  const links = [
-    {
-      uri: "/rooms",
-      label: "Rooms",
-      icon: <MeetingRoom />,
-    },
-    {
-      uri: "/playlists",
-      label: "Playlists",
-      icon: <ArtTrack />,
-    },
-  ] as const;
+  useEffect(() => {
+    toggleDrawer(false);
+  }, [location]);
 
   const onSignOut = useCallback(() => {
     dispatch(userActions.signOut());
     history.push("/");
   }, [dispatch]);
 
+  const links = useMemo(
+    () => [
+      {
+        uri: "/rooms",
+        label: "Rooms",
+        icon: <MeetingRoom />,
+      },
+      {
+        uri: "/playlists",
+        label: "Playlists",
+        icon: <ArtTrack />,
+      },
+    ],
+    []
+  );
+
   if (!user) {
     return null;
   }
 
   return (
-    <div>
-      <IconButton
-        onClick={() => toggleDrawer(true)}
-        color="primary"
-        aria-label="menu"
-        component="span"
-      >
-        <Menu />
-      </IconButton>
-      {/* <Button onClick={() => toggleDrawer(true)}>
-        <Icon></Icon>>
-      </Button> */}
+    <>
+      <AppBar position="static">
+        <Toolbar>
+          <IconButton
+            edge="start"
+            className={styles.menuButton}
+            color="inherit"
+            aria-label="menu"
+            onClick={() => toggleDrawer(true)}
+          >
+            <Menu />
+          </IconButton>
+          <AppTitle />
+        </Toolbar>
+      </AppBar>
+
       <Drawer anchor={"left"} open={drawer} onClose={() => toggleDrawer(false)}>
         <div className={styles.list}>
           <List component="nav">
             <ListItem>
-              <img src={user.spotifyImageUrl} alt="avatar" />
+              <img
+                className={styles.avatar}
+                src={user.spotifyImageUrl}
+                alt="avatar"
+              />
               {user.spotifyUsername}
             </ListItem>
             <Divider />
@@ -91,7 +109,7 @@ const Header = () => {
           </List>
         </div>
       </Drawer>
-    </div>
+    </>
   );
 };
 

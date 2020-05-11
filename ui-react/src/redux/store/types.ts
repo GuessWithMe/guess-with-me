@@ -1,4 +1,4 @@
-import { User } from "../../../../types";
+import { User, Room } from "../../../../types";
 
 export interface GameState {
   song: {
@@ -9,7 +9,17 @@ export interface GameState {
 
 export type UserState = User | null;
 
+export type AppState = {
+  title: string;
+};
+
+export type RoomsState = {
+  list: Room[];
+};
+
 export interface State {
   game: GameState;
   user: UserState;
+  app: AppState;
+  rooms: RoomsState;
 }

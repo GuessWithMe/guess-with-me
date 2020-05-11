@@ -1,24 +1,26 @@
-import React, { useEffect, useState, memo } from "react";
-import config from "../../../config";
-import http from "../../../lib/api";
+import React, { useEffect, memo, FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const RoomsList = memo(() => {
-  // const [rooms, setRooms] = useState<object[]>([]);
+import { State } from "redux/store/types";
+import appActions from "redux/actions/app";
+import roomActions from "redux/actions/room";
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const response = await fetch(`${config.apiUrl}/rooms`, {
-  //       credentials: "include",
-  //     });
-  //     const body: object[] = await response.json();
+const RoomsList: FC<{}> = memo(() => {
+  const dispatch = useDispatch();
+  const rooms = useSelector((state: State) => state.rooms.list);
 
-  //     setRooms(body);
-  //   };
+  useEffect(() => {
+    dispatch(appActions.setTitle("Rooms"));
+    dispatch(roomActions.list());
+  }, []);
 
-  //   fetchData();
-  // }, []);
-
-  return <>RoomsList</>;
+  return (
+    <>
+      {rooms.map((room) => {
+        return <>{room.title}</>;
+      })}
+    </>
+  );
 });
 
 export default RoomsList;
