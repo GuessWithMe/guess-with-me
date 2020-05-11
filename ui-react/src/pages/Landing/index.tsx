@@ -2,8 +2,6 @@ import React from "react";
 import config from "../../config";
 
 const Landing = () => {
-  console.log(config.apiUrl);
-
   return (
     <div>
       <h1>Landing</h1>

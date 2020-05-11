@@ -1,15 +1,15 @@
 import { User } from "../../../../types";
 
-export interface GameStore {
+export interface GameState {
   song: {
     artist: string;
     title: string;
   };
 }
 
-export type UserStore = User;
+export type UserState = User | null;
 
-export interface Store {
-  game: GameStore;
-  user: UserStore;
+export interface State {
+  game: GameState;
+  user: UserState;
 }

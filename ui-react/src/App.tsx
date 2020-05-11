@@ -1,48 +1,52 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Router } from "react-router-dom";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { State } from "redux/store/types";
+import userActions from "redux/actions/user";
 
-import Landing from "./pages/Landing";
-import RoomShow from "./pages/Rooms/Show";
-import RoomsList from "./pages/Rooms/List";
+import history from "lib/history";
 
-import { Store } from "./redux/store/types";
-import userActions from "./redux/actions/user";
+import { Switch, Route } from "react-router-dom";
+import Landing from "pages/Landing";
+import RoomShow from "pages/Rooms/Show";
+import RoomsList from "pages/Rooms/List";
+import PlaylistsList from "pages/Playlists/List";
+
+import RoutePrivate from "components/RoutePrivate";
+
+import Header from "sections/Header";
 
 import "./App.css";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector((store: Store) => store.user);
+  const user = useSelector((state: State) => state.user);
 
   useEffect(() => {
     dispatch(userActions.get());
   }, []);
 
-  const game = useSelector((store: Store) => store.game);
+  if (!user) {
+    return (
+      <Router history={history}>
+        <Route exact path="/" component={Landing} />
+      </Router>
+    );
+  }
 
   return (
-    <>
-      <Router>
-        <Switch>
-          <Route exact path="/" component={Landing} />
-          {user && (
-            <>
-              <Route exact path="/rooms/show" component={RoomShow} />
-            </>
-          )}
-          <Route exact path="/rooms" component={RoomsList} />
-
-          <Redirect to="/" />
-        </Switch>
-      </Router>
-    </>
+    <Router history={history}>
+      <Switch>
+        <Route exact path="/" component={Landing} />
+        <>
+          <Header />
+          <RoutePrivate exact path="/rooms/:id" component={RoomShow} />
+          <RoutePrivate exact path="/rooms" component={RoomsList} />
+          <RoutePrivate exact path="/playlists" component={PlaylistsList} />
+        </>
+      </Switch>
+    </Router>
   );
 }
 

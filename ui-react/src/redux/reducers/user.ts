@@ -1,9 +1,15 @@
-const initialState = {};
+import { UserState } from "redux/store/types";
+import UserActionTypes from "redux/actions/user/types";
 
-const user = (state = initialState, action: any) => {
+const initialState = null;
+
+const user = (state: UserState = initialState, action: UserActionTypes) => {
   switch (action.type) {
     case "USER_GET_SUCCESS": {
       return action.payload;
+    }
+    case "USER_SIGN_OUT_SUCCESS": {
+      return null;
     }
     default: {
       return state;

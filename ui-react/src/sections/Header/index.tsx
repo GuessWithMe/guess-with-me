@@ -1,74 +1,97 @@
-import React from "react";
-import clsx from "clsx";
-import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Button from "@material-ui/core/Button";
-import List from "@material-ui/core/List";
-import Divider from "@material-ui/core/Divider";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
+import React, { useState, useCallback } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-import { ExitToApp } from "@material-ui/icons";
+import {
+  Drawer,
+  List,
+  Divider,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  IconButton,
+} from "@material-ui/core";
 
-const useStyles = makeStyles({
-  list: {
-    width: 250,
-  },
-  fullList: {
-    width: "auto",
-  },
-});
+import {
+  ExitToApp,
+  PhotoCamera,
+  ArtTrack,
+  MeetingRoom,
+  Menu,
+} from "@material-ui/icons";
+
+import { State } from "redux/store/types";
+import userActions from "redux/actions/user";
+
+import useStyles from "./styles";
 
 const Header = () => {
-  const classes = useStyles();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const styles = useStyles();
+  const [drawer, toggleDrawer] = useState(false);
+  const user = useSelector((store: State) => store.user);
 
-  const [drawer, toggleDrawer] = React.useState(false);
+  const links = [
+    {
+      uri: "/rooms",
+      label: "Rooms",
+      icon: <MeetingRoom />,
+    },
+    {
+      uri: "/playlists",
+      label: "Playlists",
+      icon: <ArtTrack />,
+    },
+  ] as const;
 
-  const list = () => (
-    <div
-      className={clsx(classes.list, {
-        // [classes.fullList]: anchor === "top" || anchor === "bottom",
-      })}
-      role="presentation"
-      onClick={() => toggleDrawer(false)}
-      onKeyDown={() => toggleDrawer(false)}
-    >
-      <List>
-        <span>Username</span>
-      </List>
-      <Divider />
-      <List>
-        {["Rooms", "Playlists"].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        <ListItem button key={"Sign out"}>
-          <ListItemIcon>
-            <ExitToApp />
-          </ListItemIcon>
-          <ListItemText primary={"Sign out"} />
-        </ListItem>
-      </List>
-    </div>
-  );
+  const onSignOut = useCallback(() => {
+    dispatch(userActions.signOut());
+    history.push("/");
+  }, [dispatch]);
+
+  if (!user) {
+    return null;
+  }
 
   return (
-    <>
-      <Button onClick={() => toggleDrawer(true)}>Open</Button>
+    <div>
+      <IconButton
+        onClick={() => toggleDrawer(true)}
+        color="primary"
+        aria-label="menu"
+        component="span"
+      >
+        <Menu />
+      </IconButton>
+      {/* <Button onClick={() => toggleDrawer(true)}>
+        <Icon></Icon>>
+      </Button> */}
       <Drawer anchor={"left"} open={drawer} onClose={() => toggleDrawer(false)}>
-        {list()}
+        <div className={styles.list}>
+          <List component="nav">
+            <ListItem>
+              <img src={user.spotifyImageUrl} alt="avatar" />
+              {user.spotifyUsername}
+            </ListItem>
+            <Divider />
+            {links.map(({ uri, label, icon }) => (
+              <ListItem button component={Link} to={uri} key={label}>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText primary={label} />
+              </ListItem>
+            ))}
+            <Divider />
+            <ListItem button onClick={onSignOut} key={"Sign out"}>
+              <ListItemIcon>
+                <ExitToApp />
+              </ListItemIcon>
+              <ListItemText primary={"Sign out"} />
+            </ListItem>
+          </List>
+        </div>
       </Drawer>
-    </>
+    </div>
   );
 };
 
