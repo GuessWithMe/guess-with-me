@@ -1,5 +1,4 @@
 import React, { FC, useCallback } from "react";
-import { useSelector } from "react-redux";
 import { Route, Redirect, RouteComponentProps } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
