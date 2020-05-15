@@ -70,10 +70,10 @@ async function sendNextSong(): Promise<void> {
 
   const startTime = new Date();
   Object.entries(rooms || {}).forEach(([slug, room], idx) => {
-    SocketWrapper.namespaces.rooms.in(slug).emit('song', {
-      song: room.song,
-      startTime
-    });
+    // SocketWrapper.namespaces.rooms.in(slug).emit('song', {
+    //   song: room.song,
+    //   startTime
+    // });
   });
 }
 
@@ -84,7 +84,7 @@ const processSongEnding = async (): Promise<void> => {
 
   const roomPrevSongs = await updatePreviousTracks();
   Object.entries(roomPrevSongs || {}).forEach(([slug, prevSongs], idx) => {
-    SocketWrapper.namespaces.rooms.in(slug).emit('prevSongs', prevSongs);
+    // SocketWrapper.namespaces.rooms.in(slug).emit('prevSongs', prevSongs);
   });
 };
 

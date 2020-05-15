@@ -10,12 +10,12 @@ function getConfig(): EnvironmentType {
     uiUrl: 'http://localhost:4200',
     apiUrl: 'http://localhost:3000',
 
-    maria: {
-      db: 'guess-dev',
+    postgres: {
+      database: 'guess-dev',
       host: 'localhost',
-      pass: 'option123',
-      port: 13306,
-      user: 'root'
+      password: 'postgres',
+      port: 5432,
+      username: 'postgres'
     },
 
     redis: {

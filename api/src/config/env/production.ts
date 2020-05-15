@@ -10,12 +10,12 @@ function getConfig(): EnvironmentType {
     uiUrl: 'https://guesswith.me',
     apiUrl: 'https://api.guesswith.me',
 
-    maria: {
-      user: 'eduards',
-      db: 'guesswithme_production',
-      port: 3306,
+    postgres: {
+      database: 'guesswithme_production',
       host: 'guesswithme-production.cibxy7qppg0h.us-east-2.rds.amazonaws.com',
-      pass: 'p*L4u^mhebDJYqzkIvkS%wyF46WYh7'
+      password: 'p*L4u^mhebDJYqzkIvkS%wyF46WYh7',
+      port: 3306,
+      username: 'eduards'
     },
 
     redis: {

@@ -5,10 +5,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     width: 250,
   },
   avatar: {
-    borderRadius: "50%",
-    width: 30,
-    height: 30,
-    marginRight: 25,
+    marginRight: theme.spacing(2),
   },
   menuButton: {
     marginRight: theme.spacing(2),

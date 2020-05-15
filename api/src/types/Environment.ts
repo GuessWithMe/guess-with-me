@@ -7,12 +7,12 @@ export interface EnvironmentType {
   uiUrl: string;
   apiUrl: string;
 
-  maria: {
+  postgres: {
+    database: string;
     host: string;
+    password: string;
     port: number;
-    user: string;
-    pass: string;
-    db: string;
+    username: string;
   };
 
   redis: {

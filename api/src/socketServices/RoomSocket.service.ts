@@ -9,8 +9,6 @@ import redis from 'config/redis';
 import SongDistributer from 'lib/SongDistributer';
 import SocketWrapper from 'lib/SocketWrapper';
 
-
-
 class RoomSocketService {
   public static allRooms = async () => {
     const rooms: Record<Room['slug'], RoomStatus> = JSON.parse(await redis.get('rooms'));
@@ -43,17 +41,14 @@ class RoomSocketService {
 
   public async updateProgress(socketId: string, guessData: Guess) {
     console.log(guessData);
-    
 
     const players = JSON.parse(await redis.get('rooms', `["${guessData.room}"].players`));
-
 
     players[socketId] = {
       ...players[socketId],
       titleCorrect: guessData.titleCorrect || false,
       artistCorrect: guessData.artistCorrect || false
     };
-
 
     if (
       roomHelper.allPlayersFinished(
@@ -80,7 +75,7 @@ class RoomSocketService {
       await redis.set('rooms', `["${guessData.room}"].players`, players);
     }
 
-    SocketWrapper.namespaces.rooms.in(guessData.room).emit('players', Object.values(players));
+    // SocketWrapper.namespaces.rooms.in(guessData.room).emit('players', Object.values(players));
   }
 }
 

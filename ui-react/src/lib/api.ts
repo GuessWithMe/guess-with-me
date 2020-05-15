@@ -5,15 +5,12 @@ const defaultOptions: Partial<RequestInit> = {
 };
 
 // Implementation code where T is the returned data shape
-async function http<T>(
-  url: string,
-  options?: RequestInit
-): Promise<T | undefined> {
+async function http<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, { ...defaultOptions, ...options });
 
   if (response.status === 401) {
     history.push("/");
-    return;
+    return undefined as any;
   }
 
   if (!response.ok) {

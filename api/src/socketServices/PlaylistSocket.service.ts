@@ -21,7 +21,7 @@ class PlaylistSocketService {
       progress: number;
     }
   ): void {
-    SocketWrapper.namespaces.playlists.to(`${socketId}`).emit('playlistProgress', progress);
+    // SocketWrapper.namespaces.playlists.to(`${socketId}`).emit('playlistProgress', progress);
   }
 }
 

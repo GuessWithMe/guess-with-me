@@ -2,9 +2,6 @@ import Environment from 'config/environment';
 
 import { promisify } from 'util';
 import redis, { RedisClient } from 'redis';
-import rejson from 'redis-rejson';
-
-rejson(redis);
 
 class Redis {
   public client!: RedisClient;
@@ -44,6 +41,5 @@ class Redis {
     const getPromisified = promisify(this.client.json_get).bind(this.client);
     return getPromisified(...args);
   };
-
 }
 export default new Redis();

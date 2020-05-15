@@ -1,6 +1,8 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import { Express } from 'express-serve-static-core';
-import { Sequelize } from 'sequelize-typescript';
+import ws from 'ws';
+
+import sequelize from 'config/sequelize';
 
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
@@ -13,10 +15,6 @@ import session from 'express-session';
 import Environment from 'config/environment';
 import setupPassport from 'config/passport';
 
-import SongDistributer from 'lib/SongDistributer';
-
-import { GameService } from 'services';
-
 // Routes
 import AdminRoutes from 'routes/Admin';
 import AuthRoutes from 'routes/Auth';
@@ -25,8 +23,9 @@ import PlaylistRoutes from 'routes/Playlist';
 import RoomRoutes from 'routes/Room';
 import UserRoutes from 'routes/User';
 
-import { Album, Artist, Playlist, Room, RoomPlaylist, Song, SongArtist, SongPlaylist, User } from 'models';
 import SocketWrapper from 'lib/SocketWrapper';
+import WebsocketClient from 'lib/Websocket';
+
 import redis from 'config/redis';
 
 import playlistsEvents from 'sockets/playlists';
@@ -43,7 +42,8 @@ class App {
     this.app = express();
     this.server = http.createServer(this.app);
 
-    this.configureSequelize();
+    // WebsocketClient.open(this.app);
+    sequelize.open();
     this.configureCors();
     this.configureExpressSession();
     this.socket = this.configureWebSockets();
@@ -56,6 +56,14 @@ class App {
 
     redis.open();
 
+    const wss = new ws.Server({
+      server: this.server
+    });
+
+    wss.on('connection', socket => {
+      console.log(socket);
+    });
+
     console.log('----------------- Server started -----------------');
 
     this.init();
@@ -63,6 +71,9 @@ class App {
 
   private mountRoutes(): void {
     const router = express.Router();
+    this.app.use('/test', (req, res, next) => {
+      res.json({ test: 3 });
+    });
     this.app.use('/auth', AuthRoutes);
     this.app.use('/game', GameRoutes);
     this.app.use('/playlists', PlaylistRoutes);
@@ -79,22 +90,6 @@ class App {
     };
 
     this.app.use(cors(corsOptions));
-  }
-
-  private configureSequelize() {
-    const sequelize = new Sequelize({
-      database: Environment.maria.db,
-      dialect: 'mysql',
-      host: Environment.maria.host,
-      logging: false,
-      password: Environment.maria.pass,
-      port: Environment.maria.port,
-      storage: ':memory:',
-      username: Environment.maria.user
-    });
-
-    sequelize.addModels([Album, Artist, Playlist, Song, SongArtist, SongPlaylist, Room, RoomPlaylist, User]);
-    // sequelize.sync({ force: true });
   }
 
   private configureExpressSession() {
@@ -129,7 +124,7 @@ class App {
   }
 
   private async startSongDistributer() {
-    SongDistributer.start();
+    // SongDistributer.start();
   }
 
   private configureTerminus() {
@@ -155,7 +150,7 @@ class App {
   };
 
   private init = async () => {
-    await GameService.initRoomStatuses();
+    // await GameService.initRoomStatuses();
     this.startSongDistributer();
   };
 }

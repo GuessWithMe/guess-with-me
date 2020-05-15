@@ -25,7 +25,7 @@ const roomsEvents = (socket: Socket) => {
     ]);
 
     (status as RoomStatusResponse).startTime = SongDistributer.getCurrentStartTime();
-    SocketWrapper.namespaces.rooms.in(room.slug).emit('status', status);
+    // SocketWrapper.namespaces.rooms.in(room.slug).emit('status', status);
   });
 
   socket.on('leave', async ({ roomId }: { roomId: Room['slug'] }) => {
@@ -42,7 +42,7 @@ const roomsEvents = (socket: Socket) => {
     // @ts-ignore
     await redis.client.json_del('socketRooms', `['${socket.id}']`);
 
-    SocketWrapper.namespaces.rooms.in(slug).emit('players', Object.values(roomPlayers));
+    // SocketWrapper.namespaces.rooms.in(slug).emit('players', Object.values(roomPlayers));
     socket.leave(slug);
   });
 
@@ -64,7 +64,7 @@ const roomsEvents = (socket: Socket) => {
 
     await redis.set('rooms', `["${slug}"].players`, roomPlayers);
 
-    SocketWrapper.namespaces.rooms.in(slug).emit('players', Object.values(roomPlayers));
+    // SocketWrapper.namespaces.rooms.in(slug).emit('players', Object.values(roomPlayers));
     socket.leave(slug);
   });
 

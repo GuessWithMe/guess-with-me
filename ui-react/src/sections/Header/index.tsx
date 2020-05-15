@@ -1,48 +1,47 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useRecoilValue } from "recoil";
 
 import {
-  Drawer,
-  List,
+  AppBar,
+  Avatar,
   Divider,
+  Drawer,
+  IconButton,
+  List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  IconButton,
-  AppBar,
   Toolbar,
-  Typography,
-  Button,
 } from "@material-ui/core";
 
 import { ExitToApp, ArtTrack, MeetingRoom, Menu } from "@material-ui/icons";
 
-import { State } from "redux/store/types";
-import userActions from "redux/actions/user";
+import userAtoms from "recoil/atoms/user";
+
+import AppTitle from "components/AppTitle";
 
 import useStyles from "./styles";
-import AppTitle from "components/AppTitle";
+import services from "services";
 
 const Header = () => {
   const history = useHistory();
-  const dispatch = useDispatch();
   const styles = useStyles();
 
   const location = useLocation();
 
   const [drawer, toggleDrawer] = useState(false);
-  const user = useSelector((store: State) => store.user);
-  const [title, setTitle] = useState("Playlists");
+  const me = useRecoilValue(userAtoms.me);
 
   useEffect(() => {
     toggleDrawer(false);
   }, [location]);
 
-  const onSignOut = useCallback(() => {
-    dispatch(userActions.signOut());
+  const onSignOut = useCallback(async () => {
+    await services.user.signOut();
     history.push("/");
-  }, [dispatch]);
+  }, []);
 
   const links = useMemo(
     () => [
@@ -60,7 +59,7 @@ const Header = () => {
     []
   );
 
-  if (!user) {
+  if (!me) {
     return null;
   }
 
@@ -85,12 +84,13 @@ const Header = () => {
         <div className={styles.list}>
           <List component="nav">
             <ListItem>
-              <img
-                className={styles.avatar}
-                src={user.spotifyImageUrl}
+              <Avatar
                 alt="avatar"
+                src={me.spotifyImageUrl}
+                className={styles.avatar}
               />
-              {user.spotifyUsername}
+
+              {me.spotifyUsername}
             </ListItem>
             <Divider />
             {links.map(({ uri, label, icon }) => (

@@ -1,14 +1,8 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-
-import appActions from "redux/actions/app";
+import React from "react";
+import useTitle from "hooks/useTitle";
 
 const PlaylistsList = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(appActions.setTitle("Playlists"));
-  }, []);
+  useTitle("Playlists");
 
   return <>Playlists lists</>;
 };

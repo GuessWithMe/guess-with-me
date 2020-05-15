@@ -1,14 +1,15 @@
 import React from "react";
-
 import { Typography } from "@material-ui/core";
+import { useRecoilValue } from "recoil";
+
+import appTitleAtom from "recoil/atoms/app/title";
 
 import useStyles from "./styles";
-import { State } from "redux/store/types";
-import { useSelector } from "react-redux";
 
 const AppTitle = () => {
   const styles = useStyles();
-  const title = useSelector((state: State) => state.app.title);
+
+  const title = useRecoilValue(appTitleAtom);
 
   return (
     <Typography variant="h6" className={styles.title}>

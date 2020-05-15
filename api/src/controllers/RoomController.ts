@@ -8,7 +8,9 @@ import { Playlist, Room } from 'models';
 const get: Handler = async (req, res): Promise<Response> => {
   try {
     const room = await Room.findOne({ where: { slug: req.params.slug } });
-    return res.json(room);
+    return res.json({
+      room
+    });
   } catch (error) {
     return res.status(500).json(error.message);
   }
