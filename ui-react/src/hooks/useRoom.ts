@@ -6,6 +6,7 @@ import appAtoms from "recoil/atoms/app";
 import roomAtoms from "recoil/atoms/room";
 
 import services from "services";
+import config from "config";
 
 const useRoom = () => {
   const { slug } = useParams();
@@ -19,6 +20,8 @@ const useRoom = () => {
       setAppTitle(room.title);
     };
     get();
+
+    const ws = new WebSocket(config.wsUrl);
   }, [slug]);
 };
 

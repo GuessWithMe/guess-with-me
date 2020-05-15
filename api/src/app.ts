@@ -61,7 +61,9 @@ class App {
     });
 
     wss.on('connection', socket => {
-      console.log(socket);
+      socket.on('message', event => {
+        console.log(event);
+      });
     });
 
     console.log('----------------- Server started -----------------');
