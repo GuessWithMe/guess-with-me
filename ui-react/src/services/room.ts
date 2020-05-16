@@ -2,7 +2,7 @@ import config from "config";
 
 import { Room } from "commonTypes";
 
-import http from "lib/api";
+import http from "lib/http";
 
 class RoomService {
   public get = async (slug: Room["slug"]) => {

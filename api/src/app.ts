@@ -1,19 +1,18 @@
 import { createTerminus, TerminusOptions } from '@godaddy/terminus';
 import { Express } from 'express-serve-static-core';
-import ws from 'ws';
-
-import sequelize from 'config/sequelize';
-
 import bodyParser from 'body-parser';
+import cookie from 'cookie';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import http from 'http';
 import morgan from 'morgan';
-import session from 'express-session';
+import WebSocket from 'ws';
 
-import Environment from 'config/environment';
+import environment from 'config/environment';
+import sequelize from 'config/sequelize';
 import setupPassport from 'config/passport';
+import SessionConfig from 'config/session';
 
 // Routes
 import AdminRoutes from 'routes/Admin';
@@ -24,13 +23,14 @@ import RoomRoutes from 'routes/Room';
 import UserRoutes from 'routes/User';
 
 import SocketWrapper from 'lib/SocketWrapper';
-import WebsocketClient from 'lib/Websocket';
+import wsClient from 'lib/Websocket';
 
 import redis from 'config/redis';
 
 import playlistsEvents from 'sockets/playlists';
 import roomsEvents from './sockets/rooms';
 import { startWorker } from './worker';
+import state from 'state';
 
 class App {
   public app: Express;
@@ -42,10 +42,15 @@ class App {
     this.app = express();
     this.server = http.createServer(this.app);
 
-    // WebsocketClient.open(this.app);
     sequelize.open();
     this.configureCors();
-    this.configureExpressSession();
+
+    this.app.use(bodyParser.json());
+    this.app.use(bodyParser.urlencoded({ extended: false }));
+    this.app.use(cookieParser());
+
+    this.app.use(SessionConfig.session);
+
     this.socket = this.configureWebSockets();
     setupPassport(this.app);
     this.configureMorgan();
@@ -56,15 +61,7 @@ class App {
 
     redis.open();
 
-    const wss = new ws.Server({
-      server: this.server
-    });
-
-    wss.on('connection', socket => {
-      socket.on('message', event => {
-        console.log(event);
-      });
-    });
+    wsClient.open(this.server);
 
     console.log('----------------- Server started -----------------');
 
@@ -88,30 +85,10 @@ class App {
   private configureCors() {
     const corsOptions = {
       credentials: true,
-      origin: [Environment.uiUrl, 'https://accounts.spotify.com']
+      origin: [environment.uiUrl, 'https://accounts.spotify.com']
     };
 
     this.app.use(cors(corsOptions));
-  }
-
-  private configureExpressSession() {
-    this.app.use(bodyParser.json());
-    this.app.use(bodyParser.urlencoded({ extended: false }));
-    this.app.use(cookieParser());
-
-    const RedisStore = require('connect-redis')(session);
-    this.session = session({
-      cookie: { secure: false },
-      resave: false,
-      saveUninitialized: true,
-      secret: 'keyboard cat',
-      store: new RedisStore({
-        host: Environment.redis.host,
-        port: Environment.redis.port
-      })
-    });
-
-    this.app.use(this.session);
   }
 
   private configureMorgan() {

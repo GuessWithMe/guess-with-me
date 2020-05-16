@@ -21,7 +21,9 @@ function getConfig(): EnvironmentType {
     redis: {
       host: 'guesswith-me.yobdbg.0001.use2.cache.amazonaws.com',
       port: 6379
-    }
+    },
+
+    sessionSecret: 'asdf'
   };
 }
 

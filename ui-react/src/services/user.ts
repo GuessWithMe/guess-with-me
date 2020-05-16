@@ -1,6 +1,6 @@
 import { User } from "commonTypes";
 import config from "config";
-import http from "lib/api";
+import http from "lib/http";
 
 class UserService {
   public me = async () => {

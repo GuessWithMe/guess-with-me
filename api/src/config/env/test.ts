@@ -21,7 +21,9 @@ function getConfig(): EnvironmentType {
     redis: {
       host: 'change',
       port: 16379
-    }
+    },
+
+    sessionSecret: 'asdf'
   };
 }
 

@@ -21,7 +21,9 @@ function getConfig(): EnvironmentType {
     redis: {
       host: 'localhost',
       port: 16379
-    }
+    },
+
+    sessionSecret: 'keyboard cat'
   };
 }
 

@@ -1,27 +1,25 @@
-export default {};
-// import WebSocket from 'ws';
-// import { Express } from 'express-serve-static-core';
+import http from 'http';
+import WebSocket from 'ws';
 
-// class WebsocketClient {
-//   public ws: WebSocket.Server;
+import sessionStore from 'config/session';
 
-//   public open = (express: any) => {
-//     if (!this.ws) {
-//       this.ws = new WebSocket.Server({ server: express });
+class WebsocketClient {
+  public ws: WebSocket.Server;
 
-//       this.ws.on('connection', function connection(ws) {
-//         console.log('onConnection');
+  public open = (express: http.Server) => {
+    if (!this.ws) {
+      this.ws = new WebSocket.Server({ server: express });
 
-//         // ws.on('message', function incoming(message) {
-//         //   console.log('received: %s', message);
-//         // });
+      this.ws.on('connection', (ws: WebSocket, req: http.IncomingMessage) => {
+        ws.on('message', async data => {
+          const session = await sessionStore.get(req);
+          console.log(data);
+        });
+      });
+    }
 
-//         ws.send('something');
-//       });
-//     }
+    return this.ws;
+  };
+}
 
-//     return this.ws;
-//   };
-// }
-
-// export default new WebsocketClient();
+export default new WebsocketClient();

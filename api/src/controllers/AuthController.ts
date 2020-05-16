@@ -15,6 +15,6 @@ export const checkIfAuthed: Handler = (req, res) => {
  */
 export const logOut: Handler = (req, res) => {
   req.session.destroy(() => {
-    return res.status(204).json();
+    return res.json({});
   });
 };

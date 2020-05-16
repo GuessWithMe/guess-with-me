@@ -11,17 +11,12 @@ const useRoomSocket = () => {
     const ws = services.socket.getClient();
 
     if (room) {
-      ws.send(
-        JSON.stringify({
-          action: "JOIN_ROOM",
-          payload: { slug: room.slug },
-        })
-      );
-
-      ws.onmessage = (event) => {
-        console.log(event.data);
-      };
+      services.roomSocket.joinRoom(room.slug);
     }
+
+    ws.onmessage = (event) => {
+      console.log(event.data);
+    };
   }, [room]);
 };
 export default useRoomSocket;

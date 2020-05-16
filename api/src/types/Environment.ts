@@ -19,4 +19,6 @@ export interface EnvironmentType {
     host: string;
     port: number;
   };
+
+  sessionSecret: string;
 }
