@@ -1,4 +1,5 @@
 import { User, Artist } from '@types';
+import { Song } from 'models';
 
 enum RoomStatus {
   PAUSE,
@@ -13,15 +14,20 @@ interface Player {
   points: number;
 }
 
+interface Guess {
+  artists: Partial<Artist>[];
+  name: string;
+}
+
 class Room {
   public players: Player[] = [];
 
   private timeLeft: number;
   private timer: NodeJS.Timeout;
   private status: RoomStatus;
-  private guess: {
-    artists: Artist[];
-    name: string;
+  private guess: Guess = {
+    artists: [{ name: 'Linkin Park' }],
+    name: 'Shadow of the day'
   };
 
   constructor() {
@@ -57,10 +63,12 @@ class Room {
 
   public removePlayer = (user: User) => {
     const index = this.players.findIndex(player => player.username === user.spotifyUsername);
-    console.log(index);
-
     this.players.splice(index, 1);
     return this.getStatus();
+  };
+
+  public nextSong = () => {
+    return Song.findOne({ where: {} });
   };
 
   public getStatus = () => {

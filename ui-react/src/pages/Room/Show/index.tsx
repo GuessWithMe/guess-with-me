@@ -53,6 +53,8 @@ const RoomShow = memo(() => {
   }, []);
 
   const prepareGuessArray = useCallback((song: Song) => {
+    console.log(song);
+
     const artist = splitIntoGuessWords(song.artists[0].name);
     const name = splitIntoGuessWords(song.name);
 

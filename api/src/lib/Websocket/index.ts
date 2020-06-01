@@ -59,24 +59,7 @@ class WebsocketClient {
               break;
             }
             case 'LEAVE_ROOM': {
-              console.log('leave room');
-
               const { slug } = data.payload;
-              console.log(slug);
-
-              // const roomSockets = state.roomSockets.onSocketJoin(data.payload.slug, ws);
-              // const room = state.rooms.onPlayerJoin(slug, session);
-
-              // roomSockets.forEach(socket => {
-              //   socket.send(
-              //     JSON.stringify({
-              //       type: 'JOIN_ROOM_SOCKET',
-              //       payload: {
-              //         room
-              //       }
-              //     })
-              //   );
-              // });
               break;
             }
           }
@@ -91,8 +74,8 @@ class WebsocketClient {
             if (socket) {
               const status = state.rooms.onPlayerLeave(slug, user);
 
-              state.roomSockets.state[slug].forEach(socket => {
-                socket.send(
+              state.roomSockets.state[slug].forEach(roomSocket => {
+                roomSocket.send(
                   JSON.stringify({
                     type: 'JOIN_ROOM_SOCKET',
                     payload: {

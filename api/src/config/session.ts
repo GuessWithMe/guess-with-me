@@ -1,4 +1,5 @@
 import connectRedis from 'connect-redis';
+import redis from 'redis';
 import cookie from 'cookie';
 import cookieParser from 'cookie-parser';
 import express from 'express';
@@ -17,13 +18,14 @@ class SessionConfig {
     const { host, port } = environment.redis;
 
     const redisStore = connectRedis(expressSession);
-    this.store = new redisStore({ host, port });
+    const redisClient = redis.createClient({ host, port });
+    this.store = new redisStore({ client: redisClient as any });
     this.session = expressSession({
       cookie: { secure: false },
       resave: false,
       saveUninitialized: true,
       secret: environment.sessionSecret,
-      store: this.store
+      store: this.store,
     });
   }
 
