@@ -25,7 +25,6 @@ async function http<T>(
     return response.json();
   } catch (error) {
     console.error(error);
-    // return this.error();
   }
 }
 

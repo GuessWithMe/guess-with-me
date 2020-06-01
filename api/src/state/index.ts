@@ -1,4 +1,5 @@
 import rooms from './rooms';
+import roomSockets from './roomSockets';
 
-const states = { rooms };
-export default states;
+const state = { rooms, roomSockets };
+export default state;

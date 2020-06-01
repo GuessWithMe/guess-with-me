@@ -51,7 +51,7 @@ class App {
 
     this.app.use(SessionConfig.session);
 
-    this.socket = this.configureWebSockets();
+    // this.socket = this.configureWebSockets();
     setupPassport(this.app);
     this.configureMorgan();
     this.mountRoutes();
@@ -95,12 +95,12 @@ class App {
     this.app.use(morgan('tiny'));
   }
 
-  private configureWebSockets() {
-    const server = SocketWrapper.init(this.server, this.session);
-    SocketWrapper.namespaces.rooms.on('connection', roomsEvents);
-    SocketWrapper.namespaces.playlists.on('connection', playlistsEvents);
-    return server;
-  }
+  // private configureWebSockets() {
+  //   const server = SocketWrapper.init(this.server, this.session);
+  //   SocketWrapper.namespaces.rooms.on('connection', roomsEvents);
+  //   SocketWrapper.namespaces.playlists.on('connection', playlistsEvents);
+  //   return server;
+  // }
 
   private async startSongDistributer() {
     // SongDistributer.start();

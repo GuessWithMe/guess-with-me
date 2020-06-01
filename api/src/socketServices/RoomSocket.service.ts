@@ -46,7 +46,7 @@ class RoomSocketService {
 
     players[socketId] = {
       ...players[socketId],
-      titleCorrect: guessData.titleCorrect || false,
+      titleCorrect: guessData.nameCorrect || false,
       artistCorrect: guessData.artistCorrect || false
     };
 

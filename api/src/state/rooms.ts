@@ -1,5 +1,6 @@
-import { Room } from 'models';
-import { User } from '@types';
+// import { Room } from 'models';
+import { User, Artist, Room } from '@types';
+import RoomLib from 'lib/Room';
 
 interface Player {
   avatar: string;
@@ -12,37 +13,26 @@ interface Player {
 interface RoomState {
   players: Player[];
   guess: {
-    artist: string;
-    title: string;
+    artists: Artist[];
+    name: string;
   };
 }
 
 class RoomsState {
-  public rooms: Record<Room['slug'], RoomState> = {
-    selection: {
-      players: [],
-      guess: {
-        artist: 'Linkin Park',
-        title: 'Shadow of the Day'
-      }
-    }
-  };
+  public rooms: Record<Room['slug'], RoomLib> = {};
 
   public onPlayerJoin = (slug: Room['slug'], user: User) => {
-    const room = { ...this.rooms[slug] };
+    if (!this.rooms[slug]) {
+      this.rooms[slug] = new RoomLib();
+    }
 
-    room.players.push({
-      avatar: user.spotifyImageUrl,
-      username: user.spotifyUsername,
-      artistCorrect: false,
-      titleCorrect: false,
-      points: 0
-    });
+    this.rooms[slug].addPlayer(user);
+    return this.rooms[slug].getStatus();
+  };
 
-    this.rooms = {
-      ...this.rooms,
-      slug: room
-    };
+  public onPlayerLeave = (slug: Room['slug'], user: User) => {
+    this.rooms[slug].removePlayer(user);
+    return this.rooms[slug].getStatus();
   };
 }
 

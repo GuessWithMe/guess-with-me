@@ -3,11 +3,14 @@ import config from "config";
 class SocketService {
   public ws!: WebSocket;
 
-  getClient = () => {
+  open = () => {
     if (!this.ws) {
       this.ws = new WebSocket(config.wsUrl);
     }
+    return this.ws;
+  };
 
+  get = () => {
     return this.ws;
   };
 }

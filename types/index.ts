@@ -11,3 +11,4 @@ export * from './User';
 export * from './Word';
 
 export * from './Game/Player';
+export * from './Game/RoomState';

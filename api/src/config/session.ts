@@ -5,6 +5,8 @@ import express from 'express';
 import expressSession from 'express-session';
 import http from 'http';
 
+import { User } from '@types';
+
 import environment from './environment';
 
 class SessionConfig {
@@ -25,7 +27,7 @@ class SessionConfig {
     });
   }
 
-  public get = (req: http.IncomingMessage) => {
+  public get = (req: http.IncomingMessage): Promise<User> => {
     return new Promise((resolve, reject) => {
       const cookies = cookie.parse(req.headers.cookie);
       const sid = cookieParser.signedCookie(cookies['connect.sid'], environment.sessionSecret);
@@ -38,7 +40,7 @@ class SessionConfig {
         if (err) {
           return reject(err);
         }
-        return resolve(session);
+        return resolve((session.passport.user as unknown) as User);
       });
     });
   };

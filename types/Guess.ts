@@ -1,10 +1,10 @@
 import { Room } from './Room';
-// import { Word } from '@types';
+import { Word } from './Word';
 
 export interface Guess {
-  // artist: Word[];
-  // title: Word[];
+  artist: Word[];
+  name: Word[];
   artistCorrect: boolean;
-  titleCorrect: boolean;
+  nameCorrect: boolean;
   room?: Room['slug'];
 }

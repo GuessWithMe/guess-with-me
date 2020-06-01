@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Router, Switch, Route } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
@@ -16,6 +16,8 @@ import Header from "sections/Header";
 import userAtoms from "recoil/atoms/user";
 
 import useMe from "hooks/useMe";
+
+import services from "services";
 
 import "./App.css";
 
@@ -38,8 +40,8 @@ function App() {
         <>
           <Header />
           <RoutePrivate exact path="/rooms/:slug" component={RoomShow} />
-          <RoutePrivate exact path="/rooms" component={RoomsList} />
-          <RoutePrivate exact path="/playlists" component={PlaylistsList} />
+          <Route exact path="/rooms" component={RoomsList} />
+          <Route exact path="/playlists" component={PlaylistsList} />
         </>
       </Switch>
     </Router>
