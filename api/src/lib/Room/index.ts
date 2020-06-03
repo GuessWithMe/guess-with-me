@@ -3,7 +3,7 @@ import { Song } from 'models';
 
 enum RoomStatus {
   PAUSE,
-  SONG_PLAYING
+  SONG_PLAYING,
 }
 
 interface Player {
@@ -27,7 +27,7 @@ class Room {
   private status: RoomStatus;
   private guess: Guess = {
     artists: [{ name: 'Linkin Park' }],
-    name: 'Shadow of the day'
+    name: 'Shadow of the day',
   };
 
   constructor() {
@@ -57,12 +57,12 @@ class Room {
       username: user.spotifyUsername,
       artistCorrect: false,
       titleCorrect: false,
-      points: 0
+      points: 0,
     });
   };
 
   public removePlayer = (user: User) => {
-    const index = this.players.findIndex(player => player.username === user.spotifyUsername);
+    const index = this.players.findIndex((player) => player.username === user.spotifyUsername);
     this.players.splice(index, 1);
     return this.getStatus();
   };
@@ -75,7 +75,7 @@ class Room {
     return {
       players: this.players,
       guess: this.guess,
-      bla: true
+      timeLeft: this.timeLeft,
     };
   };
 }

@@ -53,8 +53,6 @@ const RoomShow = memo(() => {
   }, []);
 
   const prepareGuessArray = useCallback((song: Song) => {
-    console.log(song);
-
     const artist = splitIntoGuessWords(song.artists[0].name);
     const name = splitIntoGuessWords(song.name);
 
@@ -66,6 +64,8 @@ const RoomShow = memo(() => {
 
   useEffect(() => {
     if (room && room.guess) {
+      console.log(room);
+
       setGuess(prepareGuessArray(room.guess));
     }
   }, [room]);
@@ -156,7 +156,7 @@ const RoomShow = memo(() => {
           className={clsx(styles.guessMarker, flash.red && "flash", "red")}
         />
         <Typography variant="h1" className={styles.timer}>
-          <Timer />
+          <Timer timeLeft={room.timeLeft} />
         </Typography>
         <Check
           className={clsx(styles.guessMarker, flash.green && "flash", "green")}
