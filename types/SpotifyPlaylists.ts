@@ -1,8 +1,8 @@
-import { Tracks } from './SpotifyPlaylist';
+import { SpotifyPlaylist } from './SpotifyPlaylist';
 
 export interface SpotifyPlaylists {
   href: string;
-  items: PlaylistItem[];
+  items: SpotifyPlaylist[];
   limit: number;
   next: string;
   offset: number;
@@ -29,22 +29,6 @@ interface Owner {
   external_urls: ExternalUrls2;
   href: string;
   id: string;
-  type: string;
-  uri: string;
-}
-
-export interface PlaylistItem {
-  collaborative: boolean;
-  external_urls: ExternalUrls;
-  href: string;
-  id: string;
-  images: Image[];
-  name: string;
-  owner: Owner;
-  primary_color?: any;
-  public: boolean;
-  snapshot_id: string;
-  tracks: Tracks;
   type: string;
   uri: string;
 }

@@ -12,6 +12,7 @@ export interface SpotifyPlaylist {
   tracks: Tracks;
   type: string;
   uri: string;
+  description: string;
 }
 
 export interface ExternalUrls {

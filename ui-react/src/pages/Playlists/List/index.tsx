@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 
 import services from "services";
-import { Playlist, SpotifyPlaylists, PlaylistItem } from "commonTypes";
+import { Playlist, SpotifyPlaylists, SpotifyPlaylist } from "commonTypes";
+
+import PlaylistItem from "sections/PlaylistItem";
 
 import useTitle from "hooks/useTitle";
-import { Box } from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
 
 const PlaylistsList = () => {
   useTitle("Playlists");
-  const [playlists, setPlaylists] = useState<PlaylistItem[]>([]);
+  const [playlists, setPlaylists] = useState<SpotifyPlaylist[]>([]);
 
   useEffect(() => {
     const getPlaylists = async () => {
@@ -23,11 +25,11 @@ const PlaylistsList = () => {
   }, []);
 
   return (
-    <>
-      {playlists.map(({ name }) => (
-        <Box>{name}</Box>
+    <Container maxWidth="xs">
+      {playlists.map((playlist) => (
+        <PlaylistItem key={playlist.id} playlist={playlist} />
       ))}
-    </>
+    </Container>
   );
 };
 
