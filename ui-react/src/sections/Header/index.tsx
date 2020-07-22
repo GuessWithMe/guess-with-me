@@ -1,7 +1,8 @@
 import React, { useState, useCallback, useEffect, useMemo } from "react";
+
+import { ExitToApp, ArtTrack, MeetingRoom, Menu } from "@material-ui/icons";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-
 import {
   AppBar,
   Avatar,
@@ -15,14 +16,13 @@ import {
   Toolbar,
 } from "@material-ui/core";
 
-import { ExitToApp, ArtTrack, MeetingRoom, Menu } from "@material-ui/icons";
+import services from "services";
 
 import userAtoms from "recoil/atoms/user";
 
 import AppTitle from "components/AppTitle";
 
 import useStyles from "./styles";
-import services from "services";
 
 const Header = () => {
   const history = useHistory();

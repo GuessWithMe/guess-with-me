@@ -13,7 +13,7 @@ const useRoomList = () => {
       setRooms(rooms);
     };
     get();
-  }, []);
+  }, [setRooms]);
 };
 
 export default useRoomList;

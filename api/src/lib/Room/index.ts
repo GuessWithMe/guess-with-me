@@ -68,7 +68,7 @@ class Room {
   };
 
   public nextSong = () => {
-    return Song.findOne({ where: {} });
+    const song = Song.findOne({ where: {} });
   };
 
   public getStatus = () => {

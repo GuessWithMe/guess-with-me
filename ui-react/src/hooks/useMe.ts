@@ -13,7 +13,7 @@ const useMe = () => {
       setMe(me);
     };
     get();
-  }, []);
+  }, [setMe]);
 };
 
 export default useMe;

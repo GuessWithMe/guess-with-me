@@ -7,7 +7,6 @@ import { RoomStatus, Guess } from '@types';
 import redis from 'config/redis';
 
 import SongDistributer from 'lib/SongDistributer';
-import SocketWrapper from 'lib/SocketWrapper';
 
 class RoomSocketService {
   public static allRooms = async () => {
@@ -23,7 +22,6 @@ class RoomSocketService {
 
   public join = async () => {
     const rooms: Record<Room['slug'], RoomStatus> = JSON.parse(await redis.get('rooms'));
-
     return rooms[this.slug];
   };
 
@@ -47,7 +45,7 @@ class RoomSocketService {
     players[socketId] = {
       ...players[socketId],
       titleCorrect: guessData.nameCorrect || false,
-      artistCorrect: guessData.artistCorrect || false
+      artistCorrect: guessData.artistCorrect || false,
     };
 
     if (
@@ -64,8 +62,8 @@ class RoomSocketService {
           [key]: {
             ...(player as any),
             titleCorrect: false,
-            artistCorrect: false
-          }
+            artistCorrect: false,
+          },
         };
       }, {});
 
@@ -74,7 +72,6 @@ class RoomSocketService {
     } else {
       await redis.set('rooms', `["${guessData.room}"].players`, players);
     }
-
     // SocketWrapper.namespaces.rooms.in(guessData.room).emit('players', Object.values(players));
   }
 }

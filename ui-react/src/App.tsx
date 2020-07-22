@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Router, Switch, Route } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 
@@ -16,8 +16,6 @@ import Header from "sections/Header";
 import userAtoms from "recoil/atoms/user";
 
 import useMe from "hooks/useMe";
-
-import services from "services";
 
 import "./App.css";
 

@@ -10,14 +10,6 @@ interface Player {
   points: number;
 }
 
-interface RoomState {
-  players: Player[];
-  guess: {
-    artists: Artist[];
-    name: string;
-  };
-}
-
 class RoomsState {
   public rooms: Record<Room['slug'], RoomLib> = {};
 

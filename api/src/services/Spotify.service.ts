@@ -2,7 +2,7 @@ import SpotifyWebApi from 'spotify-web-api-node';
 
 import { SpotifyHelper } from 'helpers';
 import { User } from 'models';
-import { PlaylistItem } from '../../../types/SpotifyPlaylists';
+import { SpotifyPlaylist } from 'types/SpotifyPlaylist';
 
 const PAGE_SIZE = 20;
 
@@ -11,13 +11,13 @@ class SpotifyService {
 
   public async getUserPlaylists(user: User) {
     this.spotify = await SpotifyHelper.initializeSpotify(user);
-    let spotifyPlaylists: PlaylistItem[] = [];
+    let spotifyPlaylists: SpotifyPlaylist[] = [];
     let next;
     let offset = 0;
 
     do {
       const res = await this.spotify.getUserPlaylists(user.spotifyUsername, { offset });
-      spotifyPlaylists = [...spotifyPlaylists, ...(res.body.items as PlaylistItem[])];
+      spotifyPlaylists = [...spotifyPlaylists, ...((res.body.items as unknown) as SpotifyPlaylist[])];
       next = res.body.next;
       offset += PAGE_SIZE;
     } while (next);

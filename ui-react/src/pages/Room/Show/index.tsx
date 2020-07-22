@@ -32,7 +32,7 @@ interface Guess {
 const RoomShow = memo(() => {
   useRoom();
   const styles = useStyles();
-  const [room, setRoom] = useRecoilState(roomAtoms.current);
+  const [room] = useRecoilState(roomAtoms.current);
   const [input, setInput] = useState("");
   const [guess, setGuess] = useState<Guess>({
     artist: [],

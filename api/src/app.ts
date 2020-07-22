@@ -22,15 +22,14 @@ import PlaylistRoutes from 'routes/Playlist';
 import RoomRoutes from 'routes/Room';
 import UserRoutes from 'routes/User';
 
-import SocketWrapper from 'lib/SocketWrapper';
 import wsClient from 'lib/Websocket';
 
 import redis from 'config/redis';
 
-import playlistsEvents from 'sockets/playlists';
-import roomsEvents from './sockets/rooms';
+// import playlistsEvents from 'sockets/playlists';
+// import roomsEvents from './sockets/rooms';
 import { startWorker } from './worker';
-import state from 'state';
+// import state from 'state';
 
 class App {
   public app: Express;
@@ -85,7 +84,7 @@ class App {
   private configureCors() {
     const corsOptions = {
       credentials: true,
-      origin: [environment.uiUrl, 'https://accounts.spotify.com']
+      origin: [environment.uiUrl, 'https://accounts.spotify.com'],
     };
 
     this.app.use(cors(corsOptions));
@@ -116,14 +115,14 @@ class App {
       onSignal: async () => {
         // Websockets.close();
         process.exit();
-      }
+      },
     };
 
     createTerminus(this.server, options);
   }
 
   private closeSocket = () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.socket.close(() => resolve());
     });
   };

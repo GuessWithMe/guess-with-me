@@ -5,11 +5,13 @@ import * as AuthController from 'controllers/AuthController';
 
 import { isAuthenticated } from 'middleware/AuthMiddleware';
 
+import environment from 'config/environment';
+
 const router = Router();
 
 router.get(
   '/spotify/callback',
-  passport.authenticate('spotify', { failureRedirect: '/auth/login' }),
+  passport.authenticate('spotify', { failureRedirect: `${environment.uiUrl}/auth/login` }),
   AuthController.loginWithSpotify
 );
 

@@ -4,7 +4,6 @@ import { Sequelize } from 'sequelize-typescript';
 
 import { Album, Artist, Song, Room } from 'models';
 import { RoomStatus } from '@types';
-import SocketWrapper from 'lib/SocketWrapper';
 import redis from 'config/redis';
 
 const PAUSE_LENGTH = 5000;
@@ -43,8 +42,8 @@ const getRandomSong = async (): Promise<Song> => {
     order: [Sequelize.fn('RAND')],
     where: {
       // tslint:disable-next-line: no-null-keyword
-      previewUrl: { [Op.ne]: null }
-    }
+      previewUrl: { [Op.ne]: null },
+    },
   });
 
   return song;
@@ -53,7 +52,7 @@ const getRandomSong = async (): Promise<Song> => {
 async function sendNextSong(): Promise<void> {
   await redis.open();
   let rooms: Record<Room['slug'], RoomStatus> = JSON.parse(await redis.get('rooms'));
-  const songs = await Promise.all(Object.keys(rooms || {}).map(id => getRandomSong()));
+  const songs = await Promise.all(Object.keys(rooms || {}).map((id) => getRandomSong()));
   isPaused = false;
 
   rooms = Object.entries(rooms).reduce((sum, [slug, status], idx) => {
@@ -61,8 +60,8 @@ async function sendNextSong(): Promise<void> {
       ...sum,
       [slug]: {
         ...status,
-        song: songs[idx]
-      }
+        song: songs[idx],
+      },
     };
   }, {} as Record<Room['slug'], RoomStatus>);
 
@@ -140,5 +139,5 @@ export default {
   sendNextSong,
   processSongEnding,
   restartAfterPause,
-  getCurrentStartTime
+  getCurrentStartTime,
 };

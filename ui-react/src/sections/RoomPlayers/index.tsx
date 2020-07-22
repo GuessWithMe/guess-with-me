@@ -17,7 +17,7 @@ const RoomPlayers: FC<{}> = memo(() => {
     return room.players.map(
       ({ avatar, username, artistCorrect, titleCorrect }) => (
         <Box className={styles.player}>
-          <img className={styles.avatar} src={avatar}></img>
+          <img className={styles.avatar} alt="avatar" src={avatar}></img>
           <span className={styles.username}>{username}</span>
           <Box className={styles.gridItemWrapper}>
             {artistCorrect ? <Check /> : <Close />}
@@ -29,7 +29,13 @@ const RoomPlayers: FC<{}> = memo(() => {
         </Box>
       )
     );
-  }, [room.players]);
+  }, [
+    room.players,
+    styles.avatar,
+    styles.player,
+    styles.username,
+    styles.gridItemWrapper,
+  ]);
 
   return (
     <Box className={styles.wrapper}>

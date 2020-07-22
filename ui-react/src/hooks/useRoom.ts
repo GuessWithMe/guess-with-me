@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import roomAtoms from "recoil/atoms/room";

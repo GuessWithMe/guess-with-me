@@ -1,5 +1,4 @@
 import { Socket } from 'socket.io';
-import SocketWrapper from 'lib/SocketWrapper';
 
 class PlaylistSocketService {
   private socket: Socket;
