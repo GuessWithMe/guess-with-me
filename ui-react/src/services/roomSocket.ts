@@ -5,7 +5,7 @@ class RoomSocketService {
   public join = (ws: WebSocket, slug: Room["slug"]) => {
     ws.send(
       JSON.stringify({
-        action: "JOIN_ROOM",
+        type: "JOIN_ROOM",
         payload: { slug },
       })
     );
@@ -15,7 +15,7 @@ class RoomSocketService {
     const ws = services.socket.open();
     ws.send(
       JSON.stringify({
-        action: "LEAVE_ROOM",
+        type: "LEAVE_ROOM",
         payload: { slug },
       })
     );

@@ -1,10 +1,11 @@
 import kue, { Job, Queue } from 'kue';
+import WebSocket from 'ws';
 
-import Environment from 'config/environment';
 import { ImportHelper } from 'helpers';
-import { User } from 'models';
-import { SpotifyService } from 'services';
 import { PlaylistSocketService } from 'socketServices';
+import { SpotifyService } from 'services';
+import { User } from '@types';
+import Environment from 'config/environment';
 
 export let worker: BackgroundWorker;
 
@@ -15,8 +16,8 @@ class BackgroundWorker {
     this.queue = kue.createQueue({
       redis: {
         host: Environment.redis.host,
-        port: Environment.redis.port
-      }
+        port: Environment.redis.port,
+      },
     });
 
     this.queue.process('importPlaylist', async (job: Job, done: (error?: Error) => void) => {
@@ -26,7 +27,7 @@ class BackgroundWorker {
         let songsProcessed = 0;
 
         const playlist = await new SpotifyService().getPlaylist(job.data.user, job.data.playlistId);
-        const eligibleTracks = playlist.tracks.items.filter(s => !s.is_local);
+        const eligibleTracks = playlist.tracks.items.filter((s) => !s.is_local);
         const dbPlaylist = await ImportHelper.createOrUpdatePlaylist(job.data.user, playlist, eligibleTracks.length);
 
         for (const s of eligibleTracks) {
@@ -56,9 +57,9 @@ class BackgroundWorker {
           new PlaylistSocketService().sendPlaylistImportProgress(job.data.socketId, {
             playlist: {
               spotifyId: playlist.id,
-              name: playlist.name
+              name: playlist.name,
             },
-            progress
+            progress,
           });
         }
 
@@ -69,17 +70,17 @@ class BackgroundWorker {
     });
   }
 
-  public importPlaylist(user: User, playlistId: string, socketId: string) {
-    const job = this.queue.create('importPlaylist', { user, playlistId, socketId }).save();
+  public importPlaylist(user: User, playlistId: string, ws: WebSocket) {
+    const job = this.queue.create('importPlaylist', { user, playlistId, ws }).save();
 
     job
-      .on('complete', result => {
+      .on('complete', (result) => {
         console.log('Job completed with data ', result);
       })
       .on('failed attempt', (errorMessage, doneAttempts) => {
         console.log('Job failed', errorMessage);
       })
-      .on('failed', errorMessage => {
+      .on('failed', (errorMessage) => {
         console.log('Job failed');
       })
       .on('progress', (progress, data) => {

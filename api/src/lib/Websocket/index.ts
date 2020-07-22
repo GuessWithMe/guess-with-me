@@ -27,7 +27,7 @@ class WebsocketClient {
     const user = await sessionStore.get(req);
     const data: SocketData = JSON.parse(json);
 
-    switch (data.action) {
+    switch (data.type) {
       case 'JOIN_ROOM': {
         new RoomService().onJoin(ws, data.payload.slug, user);
         break;
