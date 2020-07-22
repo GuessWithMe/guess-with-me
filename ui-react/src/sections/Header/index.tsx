@@ -40,7 +40,7 @@ const Header = () => {
   const onSignOut = useCallback(async () => {
     await services.user.signOut();
     history.push("/");
-  }, []);
+  }, [history]);
 
   const links = useMemo(
     () => [

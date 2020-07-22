@@ -59,6 +59,6 @@ const useRoom = () => {
       console.log("CLOSE HERE ?");
       ws.close();
     };
-  }, [slug]);
+  }, [slug, setAppTitle, setRoom]);
 };
 export default useRoom;

@@ -8,6 +8,7 @@ import FuzzySet from "fuzzyset.js";
 import roomAtoms from "recoil/atoms/room";
 
 import RoomPlayers from "sections/RoomPlayers";
+
 import Timer from "components/Timer";
 
 import useRoom from "hooks/useRoom";
@@ -52,15 +53,18 @@ const RoomShow = memo(() => {
     });
   }, []);
 
-  const prepareGuessArray = useCallback((song: Song) => {
-    const artist = splitIntoGuessWords(song.artists[0].name);
-    const name = splitIntoGuessWords(song.name);
+  const prepareGuessArray = useCallback(
+    (song: Song) => {
+      const artist = splitIntoGuessWords(song.artists[0].name);
+      const name = splitIntoGuessWords(song.name);
 
-    return {
-      artist,
-      name,
-    };
-  }, []);
+      return {
+        artist,
+        name,
+      };
+    },
+    [splitIntoGuessWords]
+  );
 
   useEffect(() => {
     if (room && room.guess) {
@@ -68,7 +72,7 @@ const RoomShow = memo(() => {
 
       setGuess(prepareGuessArray(room.guess));
     }
-  }, [room]);
+  }, [room, prepareGuessArray]);
 
   const fuzzyMatch = useCallback((input, wordToMatch) => {
     const fuzzyset = FuzzySet();
@@ -100,6 +104,7 @@ const RoomShow = memo(() => {
       const guessCopy = { ...guess };
 
       for (const inputWord of inputWords) {
+        // eslint-disable-next-line no-loop-func
         guessCopy.artist = guessCopy.artist.map((guessWord) => {
           // No need to check if word already guessed
           if (!guessWord.correct) {
@@ -111,6 +116,7 @@ const RoomShow = memo(() => {
           return guessWord;
         });
 
+        // eslint-disable-next-line no-loop-func
         guessCopy.name = guessCopy.name.map((guessWord) => {
           // No need to check if word already guessed
           if (!guessWord.correct) {
@@ -133,7 +139,7 @@ const RoomShow = memo(() => {
       setGuess(guessCopy);
       // this.checkIfTitleOrArtistDone();
     },
-    [input]
+    [input, doFlash, fuzzyMatch]
   );
 
   const onSubmit = useCallback(
@@ -142,7 +148,7 @@ const RoomShow = memo(() => {
       matchGuessInput(guess);
       setInput("");
     },
-    [input]
+    [guess, matchGuessInput]
   );
 
   if (!room) {
