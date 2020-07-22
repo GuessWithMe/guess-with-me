@@ -1,11 +1,10 @@
-import services from "services";
-import { Room, SpotifyPlaylist } from "commonTypes";
+import { SpotifyPlaylist } from "commonTypes";
 
 class PlaylistSocketService {
   public import = (ws: WebSocket, spotifyPlaylistId: SpotifyPlaylist["id"]) => {
     ws.send(
       JSON.stringify({
-        action: "IMPORT_PLAYLIST",
+        type: "IMPORT_PLAYLIST",
         payload: { spotifyPlaylistId },
       })
     );
