@@ -18,7 +18,7 @@ class SequelizeConfig {
         password,
         port,
         username,
-        logging: false
+        logging: false,
       });
 
       this.client.addModels(Object.values(models));

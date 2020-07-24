@@ -1,13 +1,12 @@
-import { AutoIncrement, BelongsTo, Column, ForeignKey, Model, PrimaryKey, Table, Default } from 'sequelize-typescript';
+import { BelongsTo, Column, ForeignKey, Model, Table, Default, DataType } from 'sequelize-typescript';
+import { UUIDV4 } from 'sequelize';
 
 import { Playlist, Song } from 'models';
 
 @Table({ tableName: 'songPlaylists' })
 export class SongPlaylist extends Model<SongPlaylist> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column
-  public id: number;
+  @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
+  public id: string;
 
   @BelongsTo(() => Song, 'songId')
   public song: Song;
@@ -17,11 +16,11 @@ export class SongPlaylist extends Model<SongPlaylist> {
 
   @ForeignKey(() => Song)
   @Column
-  public songId: number;
+  public songId: string;
 
   @ForeignKey(() => Playlist)
   @Column
-  public playlistId: number;
+  public playlistId: string;
 
   @Default(new Date())
   @Column

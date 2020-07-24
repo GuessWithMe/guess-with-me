@@ -63,7 +63,7 @@ async function sendNextSong(): Promise<void> {
         song: songs[idx],
       },
     };
-  }, {} as Record<Room['slug'], RoomStatus>);
+  }, {});
 
   await redis.set('rooms', '.', rooms);
 
