@@ -1,9 +1,13 @@
 import { Column, HasMany, Model, Table, Default, DataType } from 'sequelize-typescript';
+import { UUIDV4 } from 'sequelize';
 
 import { Playlist } from 'models';
 
 @Table({ tableName: 'users' })
 export class User extends Model<User> {
+  @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
+  public id: string;
+
   @Column
   public spotifyUsername: string;
 

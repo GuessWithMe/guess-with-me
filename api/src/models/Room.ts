@@ -1,18 +1,14 @@
-import { AutoIncrement, BelongsToMany, Column, Model, PrimaryKey, Table, Default } from 'sequelize-typescript';
+import { BelongsToMany, Column, Model, Table, Default, DataType } from 'sequelize-typescript';
 
 import { Playlist, RoomPlaylist } from 'models';
+import { UUIDV4 } from 'sequelize';
 
 @Table({ tableName: 'rooms' })
 export class Room extends Model<Room> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column
-  public id: number;
+  @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
+  public id: string;
 
-  @BelongsToMany(
-    () => Playlist,
-    () => RoomPlaylist
-  )
+  @BelongsToMany(() => Playlist, () => RoomPlaylist)
   public playlists: Playlist[];
 
   @Column
