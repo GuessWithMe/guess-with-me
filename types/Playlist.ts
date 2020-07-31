@@ -1,6 +1,6 @@
 export interface Playlist {
   eligibleSongsAtLastImport: number;
-  id: number;
+  id: string;
   lastImportAt: Date;
   songAmountDifference?: number;
   spotifyId: string;

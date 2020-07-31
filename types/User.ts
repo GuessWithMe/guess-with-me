@@ -1,5 +1,5 @@
 export interface User {
-  id: number;
+  id: string;
   spotifyUsername: string;
   spotifyId: string;
   spotifyAccessToken: string;

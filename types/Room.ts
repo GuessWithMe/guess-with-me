@@ -1,7 +1,7 @@
 import { Playlist } from './Playlist';
 
 export interface Room {
-  id: number;
+  id: string;
   title: string;
   password?: string;
   playlists: Playlist[];
