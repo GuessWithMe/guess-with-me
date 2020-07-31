@@ -8,11 +8,12 @@ const useStyles = makeStyles((theme: Theme) =>
     player: {
       // border: "1px solid black",
       borderRadius: 5,
-      // padding: 5,
+      padding: 5,
       display: "grid",
       gridTemplateColumns: "30px 1fr 50px 50px 50px",
       alignItems: "center",
       marginBottom: theme.spacing(1),
+      background: "white",
     },
     username: {
       maxWidth: 150,
@@ -25,6 +26,7 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: 12,
       textAlign: "center",
       marginBottom: theme.spacing(1),
+      padding: "0 5px",
     },
     avatar: {
       height: 20,

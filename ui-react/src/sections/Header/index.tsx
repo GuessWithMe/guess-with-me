@@ -64,7 +64,7 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="static" className={styles.appBar}>
         <Toolbar>
           <IconButton
             edge="start"
