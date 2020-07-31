@@ -193,6 +193,7 @@ const RoomShow = memo(() => {
         <form noValidate onSubmit={onSubmit} autoComplete="off">
           <TextField
             value={input}
+            placeholder={"Type here"}
             onChange={(ev) => {
               setInput(ev.target.value);
             }}

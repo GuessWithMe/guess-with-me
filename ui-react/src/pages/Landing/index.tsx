@@ -1,13 +1,18 @@
 import React from "react";
 import config from "../../config";
 
+import useStyles from "./styles";
+import spotifyIcon from "./../../assets/spotify-icon.svg";
+
 const Landing = () => {
+  const styles = useStyles();
+
   return (
-    <div>
-      <h1>Landing</h1>
-      <p>
-        <a href={`${config.apiUrl}/auth/spotify`}>Sign in</a>
-      </p>
+    <div className={styles.root}>
+      <a className={styles.link} href={`${config.apiUrl}/auth/spotify`}>
+        <img src={spotifyIcon} alt="Spotify Icon" />
+        <span>Sign in with Spotify</span>
+      </a>
     </div>
   );
 };
