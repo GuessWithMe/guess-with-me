@@ -1,18 +1,14 @@
-import { AutoIncrement, BelongsToMany, Column, Model, PrimaryKey, Table, Default } from 'sequelize-typescript';
+import { BelongsToMany, Column, Model, Table, Default, DataType } from 'sequelize-typescript';
+import { UUIDV4 } from 'sequelize';
 
 import { Song, SongArtist } from 'models';
 
 @Table({ tableName: 'artists' })
 export class Artist extends Model<Artist> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column
-  public id: number;
+  @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
+  public id: string;
 
-  @BelongsToMany(
-    () => Song,
-    () => SongArtist
-  )
+  @BelongsToMany(() => Song, () => SongArtist)
   public songs: Song[];
 
   @Column

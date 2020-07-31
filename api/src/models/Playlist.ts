@@ -1,13 +1,14 @@
-import { BelongsTo, BelongsToMany, Column, Model, Table, Default } from 'sequelize-typescript';
+import { BelongsTo, BelongsToMany, Column, Model, Table, Default, DataType } from 'sequelize-typescript';
+import { UUIDV4 } from 'sequelize';
 
 import { Room, RoomPlaylist, User } from 'models';
 
 @Table({ tableName: 'playlists' })
 export class Playlist extends Model<Playlist> {
-  @BelongsToMany(
-    () => Room,
-    () => RoomPlaylist
-  )
+  @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
+  public id: string;
+
+  @BelongsToMany(() => Room, () => RoomPlaylist)
   public rooms: Room[];
 
   @BelongsTo(() => User, 'userId')

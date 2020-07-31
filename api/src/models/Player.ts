@@ -1,13 +1,12 @@
-import { AutoIncrement, Column, Model, PrimaryKey, Table, Default, BelongsTo, DataType } from 'sequelize-typescript';
+import { Column, Model, Table, Default, BelongsTo, DataType } from 'sequelize-typescript';
+import { UUIDV4 } from 'sequelize';
 
 import { Room } from 'models';
 
 @Table({ tableName: 'rooms' })
 export class RoomPlayer extends Model<RoomPlayer> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column
-  public id: number;
+  @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
+  public id: string;
 
   @BelongsTo(() => Room, 'roomId')
   public room: Room;

@@ -68,8 +68,6 @@ const RoomShow = memo(() => {
 
   useEffect(() => {
     if (room && room.guess) {
-      console.log(room);
-
       setGuess(prepareGuessArray(room.guess));
     }
   }, [room, prepareGuessArray]);
