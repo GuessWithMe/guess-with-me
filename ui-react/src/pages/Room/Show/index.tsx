@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect, useCallback } from "react";
 import { Box, Typography, TextField, Container } from "@material-ui/core";
 import { Close, Check } from "@material-ui/icons";
-import { useRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 import clsx from "clsx";
 import FuzzySet from "fuzzyset.js";
 
@@ -33,7 +33,7 @@ interface Guess {
 const RoomShow = memo(() => {
   useRoom();
   const styles = useStyles();
-  const [room] = useRecoilState(roomAtoms.current);
+  const room = useRecoilValue(roomAtoms.current);
   const [input, setInput] = useState("");
   const [guess, setGuess] = useState<Guess>({
     artist: [],

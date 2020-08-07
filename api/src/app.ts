@@ -63,8 +63,6 @@ class App {
     wsClient.open(this.server);
 
     console.log('----------------- Server started -----------------');
-
-    this.init();
   }
 
   private mountRoutes(): void {
@@ -94,43 +92,18 @@ class App {
     this.app.use(morgan('tiny'));
   }
 
-  // private configureWebSockets() {
-  //   const server = SocketWrapper.init(this.server, this.session);
-  //   SocketWrapper.namespaces.rooms.on('connection', roomsEvents);
-  //   SocketWrapper.namespaces.playlists.on('connection', playlistsEvents);
-  //   return server;
-  // }
-
-  private async startSongDistributer() {
-    // SongDistributer.start();
-  }
-
   private configureTerminus() {
     const options: TerminusOptions = {
       timeout: 1000,
       signals: ['SIGINT', 'SIGTERM'],
-      beforeShutdown: async () => {
-        // await ActivePlayerHelper.setActivePlayers({});
-      },
+      beforeShutdown: async () => {},
       onSignal: async () => {
-        // Websockets.close();
         process.exit();
       },
     };
 
     createTerminus(this.server, options);
   }
-
-  private closeSocket = () => {
-    return new Promise((resolve) => {
-      this.socket.close(() => resolve());
-    });
-  };
-
-  private init = async () => {
-    // await GameService.initRoomStatuses();
-    this.startSongDistributer();
-  };
 }
 
 export default new App();

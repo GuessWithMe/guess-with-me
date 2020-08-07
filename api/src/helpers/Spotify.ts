@@ -2,7 +2,7 @@ import moment from 'moment';
 import SpotifyWebApi from 'spotify-web-api-node';
 
 import environment from 'config/environment';
-import { User } from 'models';
+import { UserModel } from 'models';
 
 interface RefreshAccessTokenResponse {
   body: {
@@ -14,13 +14,13 @@ interface RefreshAccessTokenResponse {
 }
 
 class SpotifyHelper {
-  public static async initializeSpotify(user: User) {
+  public static async initializeSpotify(user: UserModel) {
     // Checking if token needs to be refreshed
     let spotifyApi = new SpotifyWebApi({
       accessToken: user.spotifyAccessToken,
       clientId: environment.spotifyClientId,
       clientSecret: environment.spotifyClientSecret,
-      refreshToken: user.spotifyRefreshToken
+      refreshToken: user.spotifyRefreshToken,
     });
 
     if (moment(user.tokenExpiresAt).diff(moment()) < 0) {
@@ -30,7 +30,7 @@ class SpotifyHelper {
     return spotifyApi;
   }
 
-  private static async refreshAccessToken(user: User, spotifyApi: SpotifyWebApi) {
+  private static async refreshAccessToken(user: UserModel, spotifyApi: SpotifyWebApi) {
     const res: RefreshAccessTokenResponse = await spotifyApi.refreshAccessToken();
     spotifyApi.setAccessToken(res.body.access_token);
 

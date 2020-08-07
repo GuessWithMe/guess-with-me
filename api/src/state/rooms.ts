@@ -13,9 +13,10 @@ interface Player {
 class RoomsState {
   public rooms: Record<Room['slug'], RoomLib> = {};
 
-  public onPlayerJoin = (slug: Room['slug'], user: User) => {
+  public onPlayerJoin = async (slug: Room['slug'], user: User) => {
     if (!this.rooms[slug]) {
-      this.rooms[slug] = new RoomLib();
+      this.rooms[slug] = new RoomLib(slug);
+      await this.rooms[slug].nextSong();
     }
 
     this.rooms[slug].addPlayer(user);

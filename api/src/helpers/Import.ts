@@ -1,50 +1,50 @@
 import moment from 'moment';
 
-import { Album, Artist, Playlist, Song, User } from 'models';
+import { AlbumModel, ArtistModel, PlaylistModel, SongModel, UserModel } from 'models';
 
 class ImportHelper {
   public static async importSong(track: SpotifyApi.TrackObjectFull) {
-    let song = await Song.findOne({ where: { spotifyId: track.id } });
+    let song = await SongModel.findOne({ where: { spotifyId: track.id } });
 
     const songObject = {
       name: track.name,
       popularity: track.popularity,
       previewUrl: track.preview_url,
       spotifyId: track.id,
-      spotifyUrl: track.external_urls.spotify
+      spotifyUrl: track.external_urls.spotify,
     };
 
-    song = song ? await song.update(songObject) : await Song.create(songObject);
+    song = song ? await song.update(songObject) : await SongModel.create(songObject);
     return song;
   }
 
   public static async importArtist(spotifyArtist: SpotifyApi.ArtistObjectSimplified) {
-    let artist = await Artist.findOne({
+    let artist = await ArtistModel.findOne({
       where: {
-        spotifyId: spotifyArtist.id
-      }
+        spotifyId: spotifyArtist.id,
+      },
     });
 
     const artistObject = {
       name: spotifyArtist.name,
       spotifyId: spotifyArtist.id,
-      spotifyUrl: spotifyArtist.external_urls.spotify
+      spotifyUrl: spotifyArtist.external_urls.spotify,
     };
 
-    artist = artist ? await artist.update(artistObject) : await Artist.create(artistObject);
+    artist = artist ? await artist.update(artistObject) : await ArtistModel.create(artistObject);
     return artist;
   }
 
   public static async createOrUpdatePlaylist(
-    user: User,
+    user: UserModel,
     spotifyPlaylist: SpotifyApi.SinglePlaylistResponse,
     eligibleTracks: number
-  ): Promise<Playlist> {
-    let playlist = await Playlist.findOne({
+  ): Promise<PlaylistModel> {
+    let playlist = await PlaylistModel.findOne({
       where: {
         spotifyId: spotifyPlaylist.id,
-        userId: user.id
-      }
+        userId: user.id,
+      },
     });
 
     const playlistObject = {
@@ -53,10 +53,10 @@ class ImportHelper {
       spotifyId: spotifyPlaylist.id,
       title: spotifyPlaylist.name,
       totalSongsAtLastImport: spotifyPlaylist.tracks.items.length,
-      userId: user.id
+      userId: user.id,
     };
 
-    playlist = playlist ? await playlist.update(playlistObject) : await Playlist.create(playlistObject);
+    playlist = playlist ? await playlist.update(playlistObject) : await PlaylistModel.create(playlistObject);
     return playlist;
   }
 
@@ -67,10 +67,10 @@ class ImportHelper {
       release_date: string;
     }
   ) {
-    let album = await Album.findOne({
+    let album = await AlbumModel.findOne({
       where: {
-        spotifyId: spotifyAlbum.id
-      }
+        spotifyId: spotifyAlbum.id,
+      },
     });
 
     let imageUrl: string;
@@ -99,10 +99,10 @@ class ImportHelper {
       name: spotifyAlbum.name,
       releaseDate,
       spotifyId: spotifyAlbum.id,
-      spotifyUrl: spotifyAlbum.external_urls.spotify
+      spotifyUrl: spotifyAlbum.external_urls.spotify,
     };
 
-    album = album ? await album.update(albumObject) : await Album.create(albumObject);
+    album = album ? await album.update(albumObject) : await AlbumModel.create(albumObject);
     return album;
   }
 }

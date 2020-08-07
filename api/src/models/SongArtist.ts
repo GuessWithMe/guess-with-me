@@ -1,24 +1,24 @@
 import { Table, Model, Column, BelongsTo, ForeignKey, Default, DataType } from 'sequelize-typescript';
 import { UUIDV4 } from 'sequelize';
 
-import { Artist, Song } from 'models';
+import { ArtistModel, SongModel } from 'models';
 
 @Table({ tableName: 'songArtists' })
 export class SongArtist extends Model<SongArtist> {
   @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
   public id: string;
 
-  @BelongsTo(() => Song, 'songId')
-  public song: Song;
+  @BelongsTo(() => SongModel, 'songId')
+  public song: SongModel;
 
-  @BelongsTo(() => Artist, 'artistId')
-  public artist: Artist;
+  @BelongsTo(() => ArtistModel, 'artistId')
+  public artist: ArtistModel;
 
-  @ForeignKey(() => Song)
+  @ForeignKey(() => SongModel)
   @Column
   public songId: string;
 
-  @ForeignKey(() => Artist)
+  @ForeignKey(() => ArtistModel)
   @Column
   public artistId: string;
 

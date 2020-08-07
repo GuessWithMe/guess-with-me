@@ -1,24 +1,24 @@
 import { BelongsTo, Column, ForeignKey, Model, Table, Default, DataType } from 'sequelize-typescript';
 import { UUIDV4 } from 'sequelize';
 
-import { Playlist, Room } from 'models';
+import { PlaylistModel, RoomModel } from 'models';
 
 @Table({ tableName: 'roomPlaylists' })
-export class RoomPlaylist extends Model<RoomPlaylist> {
+export class RoomPlaylistModel extends Model<RoomPlaylistModel> {
   @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
   public id: string;
 
-  @BelongsTo(() => Room, 'roomId')
-  public room: Room;
+  @BelongsTo(() => RoomModel, 'roomId')
+  public room: RoomModel;
 
-  @BelongsTo(() => Playlist, 'playlistId')
-  public playlist: Playlist;
+  @BelongsTo(() => PlaylistModel, 'playlistId')
+  public playlist: PlaylistModel;
 
-  @ForeignKey(() => Room)
+  @ForeignKey(() => RoomModel)
   @Column
   public roomId: string;
 
-  @ForeignKey(() => Playlist)
+  @ForeignKey(() => PlaylistModel)
   @Column
   public playlistId: string;
 

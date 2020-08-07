@@ -16,7 +16,7 @@ const RoomPlayers: FC<{}> = memo(() => {
   const players = useMemo(() => {
     return room.players.map(
       ({ avatar, username, artistCorrect, titleCorrect }) => (
-        <Box className={styles.player}>
+        <Box key={username} className={styles.player}>
           <img className={styles.avatar} alt="avatar" src={avatar}></img>
           <span className={styles.username}>{username}</span>
           <Box className={styles.gridItemWrapper}>

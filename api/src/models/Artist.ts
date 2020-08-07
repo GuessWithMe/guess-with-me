@@ -1,15 +1,15 @@
 import { BelongsToMany, Column, Model, Table, Default, DataType } from 'sequelize-typescript';
 import { UUIDV4 } from 'sequelize';
 
-import { Song, SongArtist } from 'models';
+import { SongModel, SongArtist } from 'models';
 
 @Table({ tableName: 'artists' })
-export class Artist extends Model<Artist> {
+export class ArtistModel extends Model<ArtistModel> {
   @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
   public id: string;
 
-  @BelongsToMany(() => Song, () => SongArtist)
-  public songs: Song[];
+  @BelongsToMany(() => SongModel, () => SongArtist)
+  public songs: SongModel[];
 
   @Column
   public name: string;

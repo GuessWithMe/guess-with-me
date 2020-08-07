@@ -1,5 +1,7 @@
-import { User, Artist } from '@types';
-import { Song } from 'models';
+import Sequelize from 'sequelize';
+
+import { User, Artist, Room as RoomI } from '@types';
+import { SongModel, ArtistModel } from 'models';
 
 enum RoomStatus {
   PAUSE,
@@ -25,12 +27,9 @@ class Room {
   private timeLeft: number;
   private timer: NodeJS.Timeout;
   private status: RoomStatus;
-  private guess: Guess = {
-    artists: [{ name: 'Linkin Park' }],
-    name: 'Shadow of the day',
-  };
+  private guess: Guess;
 
-  constructor() {
+  constructor(slug: RoomI['slug']) {
     this.timeLeft = 30;
     this.status = RoomStatus.SONG_PLAYING;
     this.timer = setInterval(() => {
@@ -41,6 +40,7 @@ class Room {
           // End song
         } else if (this.status === RoomStatus.PAUSE) {
           // Send next song;
+          this.nextSong();
           this.timeLeft = 30;
         }
 
@@ -67,11 +67,20 @@ class Room {
     return this.getStatus();
   };
 
-  public nextSong = () => {
-    const song = Song.findOne({ where: {} });
+  public nextSong = async () => {
+    const { artists, name } = await SongModel.findOne({
+      include: [ArtistModel],
+      order: [Sequelize.fn('RANDOM')],
+    });
+    this.guess = {
+      artists,
+      name,
+    };
   };
 
   public getStatus = () => {
+    console.log(this.timeLeft);
+
     return {
       players: this.players,
       guess: this.guess,

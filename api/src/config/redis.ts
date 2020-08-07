@@ -10,7 +10,7 @@ class Redis {
     if (!this.client) {
       this.client = redis.createClient({ host: Environment.redis.host, port: Environment.redis.port });
 
-      this.client.on('error', error => {
+      this.client.on('error', (error) => {
         console.log('Redis error');
         console.log(error);
       });
@@ -20,7 +20,7 @@ class Redis {
   };
 
   public close = () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       this.client.quit(() => {
         delete this.client;
         resolve();

@@ -1,19 +1,19 @@
 import WebSocket from 'ws';
 
-import { Room } from 'models';
+import { RoomModel } from 'models';
 import { User } from '@types';
 import state from 'state';
 
 class RoomService {
-  public onJoin = async (ws: WebSocket, slug: Room['slug'], user: User) => {
-    const roomInfo = await Room.findOne({
+  public onJoin = async (ws: WebSocket, slug: RoomModel['slug'], user: User) => {
+    const roomInfo = await RoomModel.findOne({
       where: {
         slug,
       },
     });
 
     const currentRoomSockets = state.roomSockets.onSocketJoin(slug, ws);
-    const room = state.rooms.onPlayerJoin(slug, user);
+    const room = await state.rooms.onPlayerJoin(slug, user);
 
     currentRoomSockets.forEach((socket) => {
       socket.send(

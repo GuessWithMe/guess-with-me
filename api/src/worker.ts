@@ -2,7 +2,7 @@ import kue, { Job, Queue } from 'kue';
 import WebSocket from 'ws';
 
 import { ImportHelper } from 'helpers';
-import { PlaylistSocketService } from 'socketServices';
+// import { PlaylistSocketService } from 'socketServices';
 import { SpotifyService } from 'services';
 import { User } from '@types';
 import Environment from 'config/environment';
@@ -54,13 +54,7 @@ class BackgroundWorker {
 
           songsProcessed += 1;
           const progress = songsProcessed / eligibleTracks.length;
-          new PlaylistSocketService().sendPlaylistImportProgress(job.data.socketId, {
-            playlist: {
-              spotifyId: playlist.id,
-              name: playlist.name,
-            },
-            progress,
-          });
+          // TODO: Send playlist import progress
         }
 
         done();

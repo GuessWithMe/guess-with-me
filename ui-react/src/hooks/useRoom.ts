@@ -37,6 +37,7 @@ const useRoom = () => {
 
     ws.onmessage = (event) => {
       const data: RoomSocketAction = JSON.parse(event.data);
+      console.warn(data);
 
       switch (data.type) {
         case "JOIN_ROOM_SOCKET": {
@@ -56,7 +57,7 @@ const useRoom = () => {
     };
 
     return () => {
-      console.log("CLOSE HERE ?");
+      setRoom(null);
       ws.close();
     };
   }, [slug, setAppTitle, setRoom]);

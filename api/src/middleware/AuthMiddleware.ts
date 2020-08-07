@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from 'express';
 
-import { User } from 'models';
+import { UserModel } from 'models';
 
 export const isAuthenticated = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
     if (req.session.passport.user) {
-      res.locals.user = await User.findByPk(req.session.passport.user.id);
+      res.locals.user = await UserModel.findByPk(req.session.passport.user.id);
       next();
     } else {
       throw new Error();

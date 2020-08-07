@@ -2,7 +2,7 @@ import { Column, Model, Table, Default, DataType } from 'sequelize-typescript';
 import { UUIDV4 } from 'sequelize';
 
 @Table({ tableName: 'albums' })
-export class Album extends Model<Album> {
+export class AlbumModel extends Model<AlbumModel> {
   @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
   public id: string;
 

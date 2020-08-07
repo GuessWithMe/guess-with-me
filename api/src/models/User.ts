@@ -1,10 +1,10 @@
 import { Column, HasMany, Model, Table, Default, DataType } from 'sequelize-typescript';
 import { UUIDV4 } from 'sequelize';
 
-import { Playlist } from 'models';
+import { PlaylistModel } from 'models';
 
 @Table({ tableName: 'users' })
-export class User extends Model<User> {
+export class UserModel extends Model<UserModel> {
   @Column({ type: DataType.UUID, primaryKey: true, defaultValue: UUIDV4 })
   public id: string;
 
@@ -29,8 +29,8 @@ export class User extends Model<User> {
   @Column
   public tokenExpiresAt: Date;
 
-  @HasMany(() => Playlist, 'userId')
-  public playlists: Playlist[];
+  @HasMany(() => PlaylistModel, 'userId')
+  public playlists: PlaylistModel[];
 
   @Default(new Date())
   @Column
