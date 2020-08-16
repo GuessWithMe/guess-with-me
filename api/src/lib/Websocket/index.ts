@@ -55,6 +55,8 @@ class WebsocketClient {
         state.roomSockets.state[slug].forEach((roomSocket) => {
           roomSocket.send(
             JSON.stringify({
+              // This should actually be another action type, this is just a shortcut,
+              // tp update player list if a players socket connection is lost
               type: 'JOIN_ROOM_SOCKET',
               payload: {
                 room: status,
@@ -64,6 +66,15 @@ class WebsocketClient {
         });
       }
     });
+  };
+
+  public send = async (socket: WebSocket, data: { type: string; payload: unknown }) => {
+    socket.send(
+      JSON.stringify({
+        type: data.type,
+        payload: data.payload,
+      })
+    );
   };
 }
 

@@ -1,6 +1,7 @@
 import { atom } from "recoil";
+import RoomState from "commonTypes/Game/RoomState";
 
-const roomCurrentState = atom({
+const roomCurrentState = atom<RoomState | null>({
   key: "roomCurrent",
   default: null,
 });

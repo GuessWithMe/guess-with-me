@@ -18,10 +18,17 @@ import userAtoms from "recoil/atoms/user";
 import useMe from "hooks/useMe";
 
 import "./App.css";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 
 function App() {
   useMe();
   const me = useRecoilValue(userAtoms.me);
+
+  const theme = createMuiTheme({
+    typography: {
+      fontFamily: "Open Sans",
+    },
+  });
 
   if (!me) {
     return (
@@ -32,17 +39,19 @@ function App() {
   }
 
   return (
-    <Router history={history}>
-      <Switch>
-        <Route exact path="/" component={Landing} />
-        <>
-          <Header />
-          <RoutePrivate exact path="/rooms/:slug" component={RoomShow} />
-          <Route exact path="/rooms" component={RoomsList} />
-          <Route exact path="/playlists" component={PlaylistsList} />
-        </>
-      </Switch>
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router history={history}>
+        <Switch>
+          <Route exact path="/" component={Landing} />
+          <>
+            <Header />
+            <RoutePrivate exact path="/rooms/:slug" component={RoomShow} />
+            <Route exact path="/rooms" component={RoomsList} />
+            <Route exact path="/playlists" component={PlaylistsList} />
+          </>
+        </Switch>
+      </Router>
+    </ThemeProvider>
   );
 }
 

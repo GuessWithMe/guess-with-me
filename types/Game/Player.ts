@@ -3,6 +3,8 @@ import { User } from '../User';
 interface GuessStatus {
   titleCorrect?: boolean;
   artistCorrect?: boolean;
+  avatar: string;
+  username: string;
 }
 
 type UserOmitted = Pick<User, 'id' | 'spotifyUsername' | 'spotifyImageUrl'>;

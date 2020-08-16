@@ -4,6 +4,7 @@ import { Close, Check } from "@material-ui/icons";
 import { useRecoilValue } from "recoil";
 import clsx from "clsx";
 import FuzzySet from "fuzzyset.js";
+import { Howl } from "howler";
 
 import roomAtoms from "recoil/atoms/room";
 
@@ -34,6 +35,7 @@ const RoomShow = memo(() => {
   useRoom();
   const styles = useStyles();
   const room = useRecoilValue(roomAtoms.current);
+
   const [input, setInput] = useState("");
   const [guess, setGuess] = useState<Guess>({
     artist: [],
@@ -67,8 +69,15 @@ const RoomShow = memo(() => {
   );
 
   useEffect(() => {
-    if (room && room.guess) {
-      setGuess(prepareGuessArray(room.guess));
+    if (room && room.song) {
+      setGuess(prepareGuessArray(room.song));
+      const sound = new Howl({
+        src: [room.song.previewUrl],
+        volume: 0.5,
+        html5: true,
+      });
+
+      sound.play();
     }
   }, [room, prepareGuessArray]);
 
