@@ -26,16 +26,12 @@ import wsClient from 'lib/Websocket';
 
 import redis from 'config/redis';
 
-// import playlistsEvents from 'sockets/playlists';
-// import roomsEvents from './sockets/rooms';
 import { startWorker } from './worker';
-// import state from 'state';
 
 class App {
   public app: Express;
   public server: http.Server;
   private session: express.RequestHandler;
-  private socket!: SocketIO.Server;
 
   constructor() {
     this.app = express();

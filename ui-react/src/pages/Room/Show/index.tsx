@@ -1,41 +1,22 @@
 import React, { memo, useState, useEffect, useCallback, useRef } from "react";
-import {
-  Box,
-  Typography,
-  TextField,
-  Container,
-  Button,
-} from "@material-ui/core";
-import { Close, Check } from "@material-ui/icons";
+import { Box, TextField, Container, Button } from "@material-ui/core";
 import { useRecoilValue } from "recoil";
-import clsx from "clsx";
 import FuzzySet from "fuzzyset.js";
 import ReactHowler from "react-howler";
 
 import roomAtoms from "recoil/atoms/room";
 
+import RoomGuess from "sections/RoomGuess";
 import RoomPlayers from "sections/RoomPlayers";
-
-import Timer from "components/Timer";
 
 import useRoom from "hooks/useRoom";
 
-import { Song, Artist } from "commonTypes";
+import { Song, Artist, Guess } from "commonTypes";
 
 import { guessHelper } from "helpers";
 
 import useStyles from "./styles";
-
-interface Guess {
-  artist: {
-    word: string;
-    correct: boolean;
-  }[];
-  name: {
-    word: string;
-    correct: boolean;
-  }[];
-}
+import RoomTop from "sections/RoomTop";
 
 const RoomShow = memo(() => {
   useRoom();
@@ -48,7 +29,7 @@ const RoomShow = memo(() => {
     artist: [],
     name: [],
   });
-  const [flash, setFlash] = useState({
+  const [flash, setFlash] = useState<{ red: boolean; green: boolean }>({
     red: false,
     green: false,
   });
@@ -175,38 +156,9 @@ const RoomShow = memo(() => {
 
   return (
     <Container maxWidth="xs">
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <Close
-          className={clsx(styles.guessMarker, flash.red && "flash", "red")}
-        />
-        <Typography variant="h1" className={styles.timer}>
-          <Timer timeLeft={room.timeLeft} />
-        </Typography>
-        <Check
-          className={clsx(styles.guessMarker, flash.green && "flash", "green")}
-        />
-      </Box>
+      <RoomTop timeLeft={room.timeLeft} flash={flash} />
       <Box display="flex" flexDirection="column" alignItems="center">
-        {/* Artist */}
-        <Box display="block">
-          {guess.artist.map(({ word, correct }, key) => (
-            <Box key={key} className={styles.wordContainer}>
-              {!correct &&
-                word.split("").map((letter, idx) => <span key={idx}>_</span>)}
-              {correct && <span>{word}</span>}
-            </Box>
-          ))}
-        </Box>
-        {/* Name */}
-        <Box display="block">
-          {guess.name.map(({ word, correct }, key) => (
-            <Box key={key} className={styles.wordContainer}>
-              {!correct &&
-                word.split("").map((letter, idx) => <span key={idx}>_</span>)}
-              {correct && <span>{word}</span>}
-            </Box>
-          ))}
-        </Box>
+        <RoomGuess guess={guess} />
 
         {audioContext.state === "suspended" ? (
           <Button onClick={onLoad}>Unmute</Button>

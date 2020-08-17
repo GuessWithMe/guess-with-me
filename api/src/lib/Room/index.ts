@@ -18,6 +18,8 @@ interface Guess {
   previewUrl: string;
 }
 
+const SONG_LENGHT = 10;
+
 class Room {
   public players: Player[] = [];
 
@@ -28,16 +30,20 @@ class Room {
   private song: Song;
 
   constructor(private slug: RoomI['slug']) {
-    this.timeLeft = 10;
+    this.timeLeft = SONG_LENGHT;
     this.status = Status.SONG_PLAYING;
     this.timer = setInterval(() => {
       if (this.timeLeft === 0) {
         if (this.status === Status.SONG_PLAYING) {
+          console.log('send pause');
+
           this.pause();
         } else if (this.status === Status.PAUSE) {
+          console.log('send next song');
+
           // Send next song;
           this.nextSong();
-          this.timeLeft = 30;
+          this.timeLeft = SONG_LENGHT;
         }
 
         return;
