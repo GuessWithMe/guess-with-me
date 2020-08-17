@@ -1,10 +1,16 @@
-import React, { memo, useState, useEffect, useCallback } from "react";
-import { Box, Typography, TextField, Container } from "@material-ui/core";
+import React, { memo, useState, useEffect, useCallback, useRef } from "react";
+import {
+  Box,
+  Typography,
+  TextField,
+  Container,
+  Button,
+} from "@material-ui/core";
 import { Close, Check } from "@material-ui/icons";
 import { useRecoilValue } from "recoil";
 import clsx from "clsx";
 import FuzzySet from "fuzzyset.js";
-import { Howl } from "howler";
+import ReactHowler from "react-howler";
 
 import roomAtoms from "recoil/atoms/room";
 
@@ -14,7 +20,7 @@ import Timer from "components/Timer";
 
 import useRoom from "hooks/useRoom";
 
-import { Song } from "commonTypes";
+import { Song, Artist } from "commonTypes";
 
 import { guessHelper } from "helpers";
 
@@ -33,6 +39,7 @@ interface Guess {
 
 const RoomShow = memo(() => {
   useRoom();
+  const player = useRef<ReactHowler>(null);
   const styles = useStyles();
   const room = useRecoilValue(roomAtoms.current);
 
@@ -56,30 +63,31 @@ const RoomShow = memo(() => {
   }, []);
 
   const prepareGuessArray = useCallback(
-    (song: Song) => {
-      const artist = splitIntoGuessWords(song.artists[0].name);
-      const name = splitIntoGuessWords(song.name);
-
+    ({ artists, name }: { artists: Artist[]; name: Song["name"] }) => {
       return {
-        artist,
-        name,
+        artist: splitIntoGuessWords(artists[0].name),
+        name: splitIntoGuessWords(name),
       };
     },
     [splitIntoGuessWords]
   );
 
-  useEffect(() => {
-    if (room && room.song) {
-      setGuess(prepareGuessArray(room.song));
-      const sound = new Howl({
-        src: [room.song.previewUrl],
-        volume: 0.5,
-        html5: true,
-      });
+  const onInputChange = useCallback((ev) => {
+    setInput(ev.target.value);
+  }, []);
 
-      sound.play();
+  const onLoad = useCallback(() => {
+    if (room && room.guess) {
+      const { artists, name } = room.guess;
+
+      setGuess(prepareGuessArray({ artists, name }));
+      player.current?.seek(room.timeLeft);
     }
-  }, [room, prepareGuessArray]);
+  }, [prepareGuessArray, room]);
+
+  useEffect(() => {
+    onLoad();
+  }, [onLoad]);
 
   const fuzzyMatch = useCallback((input, wordToMatch) => {
     const fuzzyset = FuzzySet();
@@ -162,6 +170,9 @@ const RoomShow = memo(() => {
     return null;
   }
 
+  // A hack for checking if audio context is suspended or not.
+  const audioContext = new AudioContext();
+
   return (
     <Container maxWidth="xs">
       <Box display="flex" alignItems="center" justifyContent="center">
@@ -197,16 +208,27 @@ const RoomShow = memo(() => {
           ))}
         </Box>
 
+        {audioContext.state === "suspended" ? (
+          <Button onClick={onLoad}>Unmute</Button>
+        ) : (
+          <ReactHowler
+            src={room.guess.previewUrl}
+            playing={true}
+            ref={player}
+            html5={true}
+            volume={0.01}
+          />
+        )}
+
         <form noValidate onSubmit={onSubmit} autoComplete="off">
           <TextField
             value={input}
             placeholder={"Type here"}
-            onChange={(ev) => {
-              setInput(ev.target.value);
-            }}
+            onChange={onInputChange}
             className={styles.input}
           />
         </form>
+        {/* )} */}
       </Box>
       <RoomPlayers />
     </Container>

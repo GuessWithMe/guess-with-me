@@ -1,5 +1,6 @@
 import { Room } from '../Room';
 import { Song } from '../Song';
+import { Artist } from '../Artist';
 
 export enum Status {
   PAUSE = 'pause',
@@ -8,7 +9,11 @@ export enum Status {
 
 type RoomState = {
   info: Room;
-  song: Song;
+  guess: {
+    artists: Artist[];
+    name: Song['name'];
+    previewUrl: Song['previewUrl'];
+  };
   status: Status;
   timeLeft: number;
 };
