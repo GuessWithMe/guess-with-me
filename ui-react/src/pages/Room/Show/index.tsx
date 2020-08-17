@@ -1,13 +1,15 @@
 import React, { memo, useState, useEffect, useCallback, useRef } from "react";
-import { Box, TextField, Container, Button } from "@material-ui/core";
-import { useRecoilValue } from "recoil";
+import { Box, Container, Button } from "@material-ui/core";
+import { useRecoilValue, useRecoilState } from "recoil";
 import FuzzySet from "fuzzyset.js";
 import ReactHowler from "react-howler";
 
 import roomAtoms from "recoil/atoms/room";
 
 import RoomGuess from "sections/RoomGuess";
+import RoomInput from "sections/RoomInput";
 import RoomPlayers from "sections/RoomPlayers";
+import RoomTop from "sections/RoomTop";
 
 import useRoom from "hooks/useRoom";
 
@@ -15,16 +17,12 @@ import { Song, Artist, Guess } from "commonTypes";
 
 import { guessHelper } from "helpers";
 
-import useStyles from "./styles";
-import RoomTop from "sections/RoomTop";
-
 const RoomShow = memo(() => {
   useRoom();
   const player = useRef<ReactHowler>(null);
-  const styles = useStyles();
   const room = useRecoilValue(roomAtoms.current);
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useRecoilState(roomAtoms.showInput);
   const [guess, setGuess] = useState<Guess>({
     artist: [],
     name: [],
@@ -52,10 +50,6 @@ const RoomShow = memo(() => {
     },
     [splitIntoGuessWords]
   );
-
-  const onInputChange = useCallback((ev) => {
-    setInput(ev.target.value);
-  }, []);
 
   const onLoad = useCallback(() => {
     if (room && room.guess) {
@@ -144,7 +138,7 @@ const RoomShow = memo(() => {
       matchGuessInput(guess);
       setInput("");
     },
-    [guess, matchGuessInput]
+    [guess, matchGuessInput, setInput]
   );
 
   if (!room) {
@@ -172,15 +166,7 @@ const RoomShow = memo(() => {
           />
         )}
 
-        <form noValidate onSubmit={onSubmit} autoComplete="off">
-          <TextField
-            value={input}
-            placeholder={"Type here"}
-            onChange={onInputChange}
-            className={styles.input}
-          />
-        </form>
-        {/* )} */}
+        <RoomInput onSubmit={onSubmit} />
       </Box>
       <RoomPlayers />
     </Container>
