@@ -1,7 +1,9 @@
 import WebSocket from 'ws';
 
+import wsClient from 'lib/Websocket';
+
 import { RoomModel } from 'models';
-import { User } from '@types';
+import { User, Room } from '@types';
 import state from 'state';
 
 class RoomService {
@@ -22,11 +24,24 @@ class RoomService {
           payload: {
             room: {
               ...room,
-              ...roomInfo.toJSON(),
+              info: roomInfo.toJSON(),
             },
           },
         })
       );
+    });
+  };
+
+  public sendStatus = async (slug: Room['slug'], status: object) => {
+    const currentRoomSockets = state.roomSockets.state[slug];
+
+    currentRoomSockets.forEach((socket) => {
+      wsClient.send(socket, {
+        type: 'ROOM_STATUS_UPDATE',
+        payload: {
+          status,
+        },
+      });
     });
   };
 }

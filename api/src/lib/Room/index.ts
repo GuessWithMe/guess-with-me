@@ -1,12 +1,8 @@
-import Sequelize from 'sequelize';
+import { Sequelize, Op } from 'sequelize';
 
-import { User, Artist, Room as RoomI } from '@types';
+import { User, Artist, Room as RoomI, Song, Status } from '@types';
 import { SongModel, ArtistModel } from 'models';
-
-enum RoomStatus {
-  PAUSE,
-  SONG_PLAYING,
-}
+import { RoomService } from 'services';
 
 interface Player {
   avatar: string;
@@ -19,6 +15,7 @@ interface Player {
 interface Guess {
   artists: Partial<Artist>[];
   name: string;
+  previewUrl: string;
 }
 
 class Room {
@@ -26,19 +23,18 @@ class Room {
 
   private timeLeft: number;
   private timer: NodeJS.Timeout;
-  private status: RoomStatus;
+  private status: Status;
   private guess: Guess;
+  private song: Song;
 
-  constructor(slug: RoomI['slug']) {
-    this.timeLeft = 30;
-    this.status = RoomStatus.SONG_PLAYING;
+  constructor(private slug: RoomI['slug']) {
+    this.timeLeft = 10;
+    this.status = Status.SONG_PLAYING;
     this.timer = setInterval(() => {
       if (this.timeLeft === 0) {
-        if (this.status === RoomStatus.SONG_PLAYING) {
-          this.status = RoomStatus.PAUSE;
-          this.timeLeft = 5;
-          // End song
-        } else if (this.status === RoomStatus.PAUSE) {
+        if (this.status === Status.SONG_PLAYING) {
+          this.pause();
+        } else if (this.status === Status.PAUSE) {
           // Send next song;
           this.nextSong();
           this.timeLeft = 30;
@@ -68,23 +64,36 @@ class Room {
   };
 
   public nextSong = async () => {
-    const { artists, name } = await SongModel.findOne({
+    const { artists, name, previewUrl } = await SongModel.findOne({
       include: [ArtistModel],
+      where: {
+        previewUrl: {
+          [Op.ne]: null,
+        },
+      },
       order: [Sequelize.fn('RANDOM')],
     });
+
     this.guess = {
       artists,
       name,
+      previewUrl,
     };
   };
 
-  public getStatus = () => {
-    console.log(this.timeLeft);
+  public pause = async () => {
+    this.status = Status.PAUSE;
+    this.timeLeft = 5;
 
+    new RoomService().sendStatus(this.slug, this.getStatus());
+  };
+
+  public getStatus = () => {
     return {
       players: this.players,
       guess: this.guess,
       timeLeft: this.timeLeft,
+      status: this.status,
     };
   };
 }

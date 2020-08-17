@@ -10,7 +10,8 @@ const useMe = () => {
   useEffect(() => {
     const get = async () => {
       const me = await services.user.me();
-      setMe(me);
+
+      if (me) setMe(() => me);
     };
     get();
   }, [setMe]);

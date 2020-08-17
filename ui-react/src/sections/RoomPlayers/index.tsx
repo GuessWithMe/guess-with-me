@@ -1,20 +1,20 @@
 import React, { FC, memo, useMemo } from "react";
 import { useRecoilValue } from "recoil";
-
 import { Close, Check } from "@material-ui/icons";
 import { Box } from "@material-ui/core";
 
-import RoomState from "commonTypes/Game/RoomState";
+import { Player } from "commonTypes/Game/Player";
+
 import roomAtoms from "recoil/atoms/room";
 
 import useStyles from "./styles";
 
 const RoomPlayers: FC<{}> = memo(() => {
   const styles = useStyles();
-  const room: RoomState = useRecoilValue(roomAtoms.current);
+  const playersState: Player[] = useRecoilValue(roomAtoms.players);
 
   const players = useMemo(() => {
-    return room.players.map(
+    return playersState.map(
       ({ avatar, username, artistCorrect, titleCorrect }) => (
         <Box key={username} className={styles.player}>
           <img className={styles.avatar} alt="avatar" src={avatar}></img>
@@ -30,7 +30,7 @@ const RoomPlayers: FC<{}> = memo(() => {
       )
     );
   }, [
-    room.players,
+    playersState,
     styles.avatar,
     styles.player,
     styles.username,

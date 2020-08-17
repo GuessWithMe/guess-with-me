@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import roomAtoms from "recoil/atoms/room";
 
-import { Room } from "commonTypes";
+import { Room, Player } from "commonTypes";
 import RoomState from "commonTypes/Game/RoomState";
 
 import services from "services";
@@ -14,7 +14,7 @@ import appAtoms from "recoil/atoms/app";
 interface RoomJoinAction {
   type: "JOIN_ROOM_SOCKET";
   payload: {
-    room: RoomState;
+    room: RoomState & { players: Player[] };
   };
 }
 
@@ -25,10 +25,21 @@ interface RoomLeaveAction {
   };
 }
 
-type RoomSocketAction = RoomJoinAction | RoomLeaveAction;
+interface RoomStatusUpdateAction {
+  type: "ROOM_STATUS_UPDATE";
+  payload: {
+    status: object;
+  };
+}
+
+type RoomSocketAction =
+  | RoomJoinAction
+  | RoomLeaveAction
+  | RoomStatusUpdateAction;
 
 const useRoom = () => {
   const setRoom = useSetRecoilState(roomAtoms.current);
+  const setPlayers = useSetRecoilState(roomAtoms.players);
   const setAppTitle = useSetRecoilState(appAtoms.title);
   const { slug } = useParams();
 
@@ -37,16 +48,23 @@ const useRoom = () => {
 
     ws.onmessage = (event) => {
       const data: RoomSocketAction = JSON.parse(event.data);
-      console.warn(data);
+      console.warn(data.type);
+      console.warn(data.payload);
 
       switch (data.type) {
         case "JOIN_ROOM_SOCKET": {
-          setRoom(data.payload.room);
-          setAppTitle(data.payload.room.title);
+          const { players, ...rest } = data.payload.room;
+
+          setRoom(rest);
+          setPlayers(players);
+          setAppTitle(data.payload.room.info.title);
+          break;
+        }
+        case "ROOM_STATUS_UPDATE": {
+          // setRoom(data.payload.status);
           break;
         }
         case "ROOM_LEAVE_RES": {
-          console.log(data.payload.roomLeft);
           break;
         }
       }
@@ -60,6 +78,6 @@ const useRoom = () => {
       setRoom(null);
       ws.close();
     };
-  }, [slug, setAppTitle, setRoom]);
+  }, [slug, setAppTitle, setRoom, setPlayers]);
 };
 export default useRoom;

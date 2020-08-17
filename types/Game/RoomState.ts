@@ -1,19 +1,21 @@
-import { Room } from 'commonTypes';
+import { Room } from '../Room';
+import { Song } from '../Song';
+import { Artist } from '../Artist';
 
-interface Player {
-  avatar: string;
-  username: string;
-  artistCorrect: boolean;
-  titleCorrect: boolean;
-  points: number;
+export enum Status {
+  PAUSE = 'pause',
+  SONG_PLAYING = 'song-playing',
 }
 
-type RoomState = Room & {
-  players: Player[];
+type RoomState = {
+  info: Room;
   guess: {
-    artist: string;
-    title: string;
+    artists: Artist[];
+    name: Song['name'];
+    previewUrl: Song['previewUrl'];
   };
+  status: Status;
+  timeLeft: number;
 };
 
 export default RoomState;
