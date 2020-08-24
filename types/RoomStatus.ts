@@ -8,6 +8,5 @@ export interface RoomStatus {
 }
 
 export interface RoomStatusResponse extends RoomStatus {
-  // isPaused: boolean;
   startTime: Date;
 }

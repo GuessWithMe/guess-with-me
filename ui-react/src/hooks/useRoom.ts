@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
-import roomAtoms from "recoil/atoms/room";
 
-import { Room, Player } from "commonTypes";
-import RoomState from "commonTypes/Game/RoomState";
+import roomAtoms from "recoil/atoms/room";
+import appAtoms from "recoil/atoms/app";
+
+import { Room, Player, RoomState } from "commonTypes";
 
 import services from "services";
 
 import config from "config";
-import appAtoms from "recoil/atoms/app";
 
 interface RoomJoinAction {
   type: "JOIN_ROOM_SOCKET";
@@ -61,6 +61,8 @@ const useRoom = () => {
           break;
         }
         case "ROOM_STATUS_UPDATE": {
+          console.log(data.payload);
+
           // setRoom(data.payload.status);
           break;
         }

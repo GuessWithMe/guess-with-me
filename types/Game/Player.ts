@@ -1,6 +1,6 @@
 import { User } from '../User';
 
-interface GuessStatus {
+export interface GuessStatus {
   titleCorrect?: boolean;
   artistCorrect?: boolean;
   avatar: string;

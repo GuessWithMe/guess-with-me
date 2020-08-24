@@ -14,6 +14,7 @@ import RoomTop from "sections/RoomTop";
 import useRoom from "hooks/useRoom";
 
 import { Song, Artist, Guess } from "commonTypes";
+import { Status } from "commonTypes/Game/RoomState";
 
 import { guessHelper } from "helpers";
 
@@ -21,6 +22,8 @@ const RoomShow = memo(() => {
   useRoom();
   const player = useRef<ReactHowler>(null);
   const room = useRecoilValue(roomAtoms.current);
+
+  console.log(room);
 
   const [input, setInput] = useRecoilState(roomAtoms.showInput);
   const [guess, setGuess] = useState<Guess>({
@@ -150,24 +153,28 @@ const RoomShow = memo(() => {
 
   return (
     <Container maxWidth="xs">
-      <RoomTop timeLeft={room.timeLeft} flash={flash} />
-      <Box display="flex" flexDirection="column" alignItems="center">
-        <RoomGuess guess={guess} />
+      {room.status === Status.SONG_PLAYING && (
+        <>
+          <RoomTop timeLeft={room.timeLeft} flash={flash} />
+          <Box display="flex" flexDirection="column" alignItems="center">
+            <RoomGuess guess={guess} />
 
-        {audioContext.state === "suspended" ? (
-          <Button onClick={onLoad}>Unmute</Button>
-        ) : (
-          <ReactHowler
-            src={room.guess.previewUrl}
-            playing={true}
-            ref={player}
-            html5={true}
-            volume={0.01}
-          />
-        )}
+            {audioContext.state === "suspended" ? (
+              <Button onClick={onLoad}>Unmute</Button>
+            ) : (
+              <ReactHowler
+                src={room.guess.previewUrl}
+                playing={true}
+                ref={player}
+                html5={true}
+                volume={0.01}
+              />
+            )}
 
-        <RoomInput onSubmit={onSubmit} />
-      </Box>
+            <RoomInput onSubmit={onSubmit} />
+          </Box>
+        </>
+      )}
       <RoomPlayers />
     </Container>
   );
