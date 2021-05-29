@@ -40,7 +40,7 @@
     "tsconfig-paths": "^3.6.0",
     "typescript": "^3.7.2",
     "typescript-eslint-parser": "^22.0.0",
-    "ws": "7.3.0"
+    "ws": "7.4.6"
   },
   "devDependencies": {
     "@types/connect-redis": "^0.0.14",
