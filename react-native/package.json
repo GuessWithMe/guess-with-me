@@ -15,7 +15,7 @@
     "jshashes": "^1.0.8",
     "random-string": "^0.2.0",
     "react": "16.11.0",
-    "react-native": "0.62.2",
+    "react-native": "0.62.3",
     "react-native-config": "^1.0.0",
     "react-native-extended-stylesheet": "^0.12.0",
     "react-native-vector-icons": "^6.6.0"
